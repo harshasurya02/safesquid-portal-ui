@@ -46,7 +46,7 @@ export function ForgotPasswordForm() {
     setError("");
     try {
       const res = await fetch(
-        "http://localhost:3000/api/reset-password/initiate",
+        `${process.env.API_URL}/api/reset-password/initiate`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -74,7 +74,7 @@ export function ForgotPasswordForm() {
     setOtp(otpValue);
     try {
       const res = await fetch(
-        "http://localhost:3000/api/reset-password/verify-otp",
+        `${process.env.API_URL}/api/reset-password/verify-otp`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -112,7 +112,7 @@ export function ForgotPasswordForm() {
     setError("");
     try {
       const res = await fetch(
-        "http://localhost:3000/api/reset-password/complete",
+        `${process.env.API_URL}/api/reset-password/complete`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -152,7 +152,7 @@ export function ForgotPasswordForm() {
 
     try {
       const res = await fetch(
-        "http://localhost:3000/api/reset-password/resend-otp",
+        `${process.env.API_URL}/api/reset-password/resend-otp`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
