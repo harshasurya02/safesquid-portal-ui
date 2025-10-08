@@ -63,7 +63,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
 
     try {
       const response = await fetch(
-        `${process.env.API_URL}/api/signin/initiate`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/signin/initiate`,
         {
           method: "POST",
           headers: {
@@ -97,7 +97,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
 
     try {
       const response = await fetch(
-        `${process.env.API_URL}/api/signin/verify-otp`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/signin/verify-otp`,
         {
           method: "POST",
           headers: {
@@ -139,7 +139,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
 
     try {
       const response = await fetch(
-        `${process.env.API_URL}/api/signup/initiate`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/signup/initiate`,
         {
           method: "POST",
           headers: {
@@ -173,7 +173,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
 
     try {
       const response = await fetch(
-        `${process.env.API_URL}/api/signup/verify-otp`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/signup/verify-otp`,
         {
           method: "POST",
           headers: {
@@ -221,7 +221,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
 
     try {
       const response = await fetch(
-        `${process.env.API_URL}/api/signup/set-password`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/signup/set-password`,
         {
           method: "POST",
           headers: {
@@ -260,7 +260,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
 
     try {
       const response = await fetch(
-        `${process.env.API_URL}/api/signup/complete`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/signup/complete`,
         {
           method: "POST",
           headers: {
@@ -312,7 +312,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
     try {
       if (mode === "login") {
         const response = await fetch(
-          `${process.env.API_URL}/api/signin/initiate`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/signin/initiate`,
           {
             method: "POST",
             headers: {
@@ -333,7 +333,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         }
       } else {
         const response = await fetch(
-          `${process.env.API_URL}/api/signup/initiate`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/signup/initiate`,
           {
             method: "POST",
             headers: {
