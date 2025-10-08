@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { StatefulInput } from "@/components/stateful-input";
 import { StatefulButton } from "@/components/stateful-button";
+import Link from "next/link";
 
 interface EnterpriseLoginFormProps {
   orgName: string;
@@ -62,9 +63,12 @@ export function EnterpriseLoginForm({
           </h1>
           <p className="text-sm text-gray-600 mt-2">
             Use business email for{" "}
-            <a href="#" className="text-blue-600 underline hover:text-blue-700">
+            <Link
+              href="#"
+              className="text-blue-600 underline hover:text-blue-700"
+            >
               Enterprise Account
-            </a>{" "}
+            </Link>{" "}
             benefits
           </p>
         </div>
@@ -118,12 +122,12 @@ export function EnterpriseLoginForm({
           </div>
 
           <div className="text-right -mt-2">
-            <a
+            <Link
               href="/auth/forgot-password"
               className="text-sm text-blue-600 hover:text-blue-700"
             >
               Forgot Password?
-            </a>
+            </Link>
           </div>
 
           <StatefulButton
@@ -136,12 +140,12 @@ export function EnterpriseLoginForm({
 
           <p className="text-center text-sm text-gray-600">
             Don&apos;t have account?{" "}
-            <a
+            <Link
               href="/auth/register"
               className="text-blue-600 hover:text-blue-700"
             >
               Register
-            </a>
+            </Link>
           </p>
         </form>
       </div>

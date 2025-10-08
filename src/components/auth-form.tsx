@@ -9,6 +9,7 @@ import { StatefulInput } from "@/components/stateful-input";
 import { StatefulButton } from "@/components/stateful-button";
 import { OtpInput } from "@/components/otp-input";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface AuthFormProps {
   mode: "login" | "register";
@@ -448,12 +449,12 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             </button>
           </div>
           <div className="text-sm text-gray-600 mt-2">
-            <a
-              href={forgotPasswordLink}
+            <Link
+              href={forgotPasswordLink || ""}
               className="text-blue-600 hover:text-blue-700 font-medium"
             >
               Forgot Password?
-            </a>
+            </Link>
           </div>
         </div>
       )}
@@ -492,12 +493,12 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
       <div className="text-center mb-6">
         <p className="text-sm text-gray-600">
           Use business email for{" "}
-          <a
+          <Link
             href="/auth/enterprise/MTech"
             className="text-blue-600 hover:text-blue-700 underline"
           >
             Enterprise Account
-          </a>{" "}
+          </Link>{" "}
           benefits
         </p>
       </div>
@@ -523,9 +524,12 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         />
         <label htmlFor="terms" className="text-sm text-gray-600">
           I agree to the{" "}
-          <a href="#" className="text-blue-600 hover:text-blue-700 underline">
+          <Link
+            href="#"
+            className="text-blue-600 hover:text-blue-700 underline"
+          >
             Terms & Conditions
-          </a>
+          </Link>
         </label>
       </div>
 
@@ -557,9 +561,12 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
       <div className="text-center mb-6">
         <p className="text-sm text-gray-600">
           We business email for{" "}
-          <a href="#" className="text-blue-600 hover:text-blue-700 underline">
+          <Link
+            href="#"
+            className="text-blue-600 hover:text-blue-700 underline"
+          >
             Enterprise Account
-          </a>{" "}
+          </Link>{" "}
           benefits
         </p>
       </div>
