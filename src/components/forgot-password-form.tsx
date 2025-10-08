@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, Edit2 } from "lucide-react";
 import { StatefulInput } from "@/components/stateful-input";
@@ -199,228 +199,225 @@ export function ForgotPasswordForm() {
   }
 
   return (
-    <Suspense>
-      <div className="min-h-[70vh] flex items-center justify-center p-4">
-        <div className="w-full max-w-md">
-          <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
-            <div className="text-center mb-6">
-              <h1 className="text-2xl font-semibold text-gray-900">
-                Password Reset
-              </h1>
+    <div className="min-h-[70vh] flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
+          <div className="text-center mb-6">
+            <h1 className="text-2xl font-semibold text-gray-900">
+              Password Reset
+            </h1>
+          </div>
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-4">
+              <p className="text-sm text-red-600">{error}</p>
             </div>
+          )}
 
-            {error && (
-              <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-4">
-                <p className="text-sm text-red-600">{error}</p>
+          {/* Step: Email */}
+          {step === "email" && (
+            <form onSubmit={initiate} className="space-y-6">
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-foreground">
+                  Email
+                </label>
+                <StatefulInput
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="mukunds735@safesquid.net"
+                  required
+                />
               </div>
-            )}
 
-            {/* Step: Email */}
-            {step === "email" && (
-              <form onSubmit={initiate} className="space-y-6">
-                <div className="space-y-1">
-                  <label className="text-sm font-medium text-foreground">
-                    Email
-                  </label>
+              <StatefulButton
+                type="submit"
+                variant={isLoading ? "inactive" : "active"}
+                disabled={isLoading}
+              >
+                {isLoading ? "Please wait..." : "Send OTP"}
+              </StatefulButton>
+            </form>
+          )}
+
+          {/* Step: OTP */}
+          {step === "otp" && (
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-foreground">
+                  Email
+                </label>
+                <div className="relative">
                   <StatefulInput
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="mukunds735@safesquid.net"
+                    disabled
+                    className="bg-gray-50"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setStep("email")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    aria-label="Edit email"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium text-foreground">
+                    OTP
+                  </label>
+                  <button
+                    type="button"
+                    onClick={resendOtp}
+                    disabled={resendCooldown > 0}
+                    className="text-sm text-blue-600 hover:text-blue-700 disabled:text-gray-400"
+                  >
+                    {resendCooldown > 0
+                      ? `Resend OTP (${resendCooldown}s)`
+                      : "Resend OTP"}
+                  </button>
+                </div>
+                <OtpInput onComplete={verifyOtp} value={otp} />
+                <p className="text-xs text-gray-500">
+                  6-digit code. Expires in 10 minutes.
+                </p>
+              </div>
+
+              <div className="flex space-x-3">
+                <StatefulButton
+                  type="button"
+                  variant="inactive"
+                  onClick={back}
+                  className="flex-1"
+                >
+                  Back
+                </StatefulButton>
+                <StatefulButton
+                  type="button"
+                  variant="active"
+                  onClick={() => verifyOtp(otp)}
+                  className="flex-1"
+                >
+                  {isLoading ? "Please wait..." : "Update password"}
+                </StatefulButton>
+              </div>
+            </form>
+          )}
+
+          {/* Step: Password */}
+          {step === "password" && (
+            <form onSubmit={complete} className="space-y-6">
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-foreground">
+                  Email
+                </label>
+                <div className="relative">
+                  <StatefulInput
+                    type="email"
+                    value={email}
+                    disabled
+                    className="bg-gray-50"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setStep("otp")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-foreground">
+                  Password
+                </label>
+                <div className="relative">
+                  <StatefulInput
+                    type={showPwd ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="pr-10"
                     required
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPwd((s) => !s)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    {showPwd ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
                 </div>
+              </div>
 
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-foreground">
+                  Re-enter password
+                </label>
+                <div className="relative">
+                  <StatefulInput
+                    type={showConfirm ? "text" : "password"}
+                    value={confirm}
+                    onChange={(e) => setConfirm(e.target.value)}
+                    placeholder="••••••••"
+                    className="pr-10"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirm((s) => !s)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    {showConfirm ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              <div className="text-sm text-gray-600">
+                <p className="font-medium mb-1">For a strong password:</p>
+                <p>
+                  Minimum <span className="font-medium">8 characters</span> with
+                  at least <span className="text-blue-600">one uppercase</span>,{" "}
+                  <span className="text-blue-600">one lowercase</span>, and{" "}
+                  <span className="text-blue-600">one number</span>.
+                </p>
+              </div>
+
+              <div className="flex space-x-3">
+                <StatefulButton
+                  type="button"
+                  variant="inactive"
+                  onClick={back}
+                  className="flex-1"
+                >
+                  Back
+                </StatefulButton>
                 <StatefulButton
                   type="submit"
                   variant={isLoading ? "inactive" : "active"}
                   disabled={isLoading}
+                  className="flex-1"
                 >
-                  {isLoading ? "Please wait..." : "Send OTP"}
+                  {isLoading ? "Please wait..." : "Update password"}
                 </StatefulButton>
-              </form>
-            )}
-
-            {/* Step: OTP */}
-            {step === "otp" && (
-              <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-                <div className="space-y-1">
-                  <label className="text-sm font-medium text-foreground">
-                    Email
-                  </label>
-                  <div className="relative">
-                    <StatefulInput
-                      type="email"
-                      value={email}
-                      disabled
-                      className="bg-gray-50"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setStep("email")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                      aria-label="Edit email"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <label className="text-sm font-medium text-foreground">
-                      OTP
-                    </label>
-                    <button
-                      type="button"
-                      onClick={resendOtp}
-                      disabled={resendCooldown > 0}
-                      className="text-sm text-blue-600 hover:text-blue-700 disabled:text-gray-400"
-                    >
-                      {resendCooldown > 0
-                        ? `Resend OTP (${resendCooldown}s)`
-                        : "Resend OTP"}
-                    </button>
-                  </div>
-                  <OtpInput onComplete={verifyOtp} value={otp} />
-                  <p className="text-xs text-gray-500">
-                    6-digit code. Expires in 10 minutes.
-                  </p>
-                </div>
-
-                <div className="flex space-x-3">
-                  <StatefulButton
-                    type="button"
-                    variant="inactive"
-                    onClick={back}
-                    className="flex-1"
-                  >
-                    Back
-                  </StatefulButton>
-                  <StatefulButton
-                    type="button"
-                    variant="active"
-                    onClick={() => verifyOtp(otp)}
-                    className="flex-1"
-                  >
-                    {isLoading ? "Please wait..." : "Update password"}
-                  </StatefulButton>
-                </div>
-              </form>
-            )}
-
-            {/* Step: Password */}
-            {step === "password" && (
-              <form onSubmit={complete} className="space-y-6">
-                <div className="space-y-1">
-                  <label className="text-sm font-medium text-foreground">
-                    Email
-                  </label>
-                  <div className="relative">
-                    <StatefulInput
-                      type="email"
-                      value={email}
-                      disabled
-                      className="bg-gray-50"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setStep("otp")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-sm font-medium text-foreground">
-                    Password
-                  </label>
-                  <div className="relative">
-                    <StatefulInput
-                      type={showPwd ? "text" : "password"}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
-                      className="pr-10"
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPwd((s) => !s)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    >
-                      {showPwd ? (
-                        <EyeOff className="w-4 h-4" />
-                      ) : (
-                        <Eye className="w-4 h-4" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-sm font-medium text-foreground">
-                    Re-enter password
-                  </label>
-                  <div className="relative">
-                    <StatefulInput
-                      type={showConfirm ? "text" : "password"}
-                      value={confirm}
-                      onChange={(e) => setConfirm(e.target.value)}
-                      placeholder="••••••••"
-                      className="pr-10"
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirm((s) => !s)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    >
-                      {showConfirm ? (
-                        <EyeOff className="w-4 h-4" />
-                      ) : (
-                        <Eye className="w-4 h-4" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="text-sm text-gray-600">
-                  <p className="font-medium mb-1">For a strong password:</p>
-                  <p>
-                    Minimum <span className="font-medium">8 characters</span>{" "}
-                    with at least{" "}
-                    <span className="text-blue-600">one uppercase</span>,{" "}
-                    <span className="text-blue-600">one lowercase</span>, and{" "}
-                    <span className="text-blue-600">one number</span>.
-                  </p>
-                </div>
-
-                <div className="flex space-x-3">
-                  <StatefulButton
-                    type="button"
-                    variant="inactive"
-                    onClick={back}
-                    className="flex-1"
-                  >
-                    Back
-                  </StatefulButton>
-                  <StatefulButton
-                    type="submit"
-                    variant={isLoading ? "inactive" : "active"}
-                    disabled={isLoading}
-                    className="flex-1"
-                  >
-                    {isLoading ? "Please wait..." : "Update password"}
-                  </StatefulButton>
-                </div>
-              </form>
-            )}
-          </div>
+              </div>
+            </form>
+          )}
         </div>
       </div>
-    </Suspense>
+    </div>
   );
 }
