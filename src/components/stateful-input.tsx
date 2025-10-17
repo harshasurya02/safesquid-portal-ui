@@ -1,35 +1,51 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
+import { useState, forwardRef } from "react";
+import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-import { useState, forwardRef } from "react"
-import { X } from "lucide-react"
-import { cn } from "@/lib/utils"
-
-interface StatefulInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string
-  error?: string
-  showClearButton?: boolean
-  onClear?: () => void
+interface StatefulInputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  error?: string;
+  showClearButton?: boolean;
+  onClear?: () => void;
 }
 
 const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
-  ({ className, label, error, showClearButton, onClear, value, onChange, ...props }, ref) => {
-    const [isFocused, setIsFocused] = useState(false)
-    const hasValue = value && value.toString().length > 0
-    const hasError = !!error
+  (
+    {
+      className,
+      label,
+      error,
+      showClearButton,
+      onClear,
+      value,
+      onChange,
+      ...props
+    },
+    ref
+  ) => {
+    const [isFocused, setIsFocused] = useState(false);
+    const hasValue = value && value.toString().length > 0;
+    const hasError = !!error;
 
     const handleClear = () => {
       if (onClear) {
-        onClear()
+        onClear();
       } else if (onChange) {
-        onChange({ target: { value: "" } } as React.ChangeEvent<HTMLInputElement>)
+        onChange({
+          target: { value: "" },
+        } as React.ChangeEvent<HTMLInputElement>);
       }
-    }
+    };
 
     return (
       <div className="space-y-1">
-        {label && <label className="text-sm font-medium text-foreground">{label}</label>}
+        {label && (
+          <label className="text-sm font-medium text-foreground">{label}</label>
+        )}
         <div className="relative">
           <input
             ref={ref}
@@ -38,20 +54,23 @@ const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             className={cn(
-              "flex h-10 w-full rounded-md border px-3 py-2 text-sm transition-colors",
+              "flex h-[48px] w-[432px] rounded-md border px-[20px] py-[12px] text-sm transition-colors",
               "file:border-0 file:bg-transparent file:text-sm file:font-medium",
               "placeholder:text-muted-foreground",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+              "focus-visible:outline-none",
               "disabled:cursor-not-allowed disabled:opacity-50",
-              // Normal state
+              // Normal
               !isFocused && !hasError && "border-input bg-background",
-              // Active/focused state
-              isFocused && !hasError && "border-blue-500 bg-background ring-2 ring-blue-500/20",
-              // Error state
-              hasError && "border-red-500 bg-background ring-2 ring-red-500/20",
-              // Add padding for clear button when it's shown
+              // Focused
+              isFocused &&
+                !hasError &&
+                "border-[1px] border-solid border-primary bg-background",
+              // Error
+              hasError &&
+                "border-[1px] border-solid border-red-500 bg-background",
+              // Extra padding for clear button
               showClearButton && hasValue && "pr-10",
-              className,
+              className
             )}
             {...props}
           />
@@ -67,10 +86,10 @@ const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
         </div>
         {error && <p className="text-sm text-red-500">{error}</p>}
       </div>
-    )
-  },
-)
+    );
+  }
+);
 
-StatefulInput.displayName = "StatefulInput"
+StatefulInput.displayName = "StatefulInput";
 
-export { StatefulInput }
+export { StatefulInput };

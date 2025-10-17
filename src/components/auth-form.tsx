@@ -4,12 +4,22 @@ import type React from "react";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Edit2, ChevronDown } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Edit2,
+  ChevronDown,
+  Repeat2,
+  CreditCard,
+  ChevronLeft,
+  MoveLeft,
+} from "lucide-react";
 import { StatefulInput } from "@/components/stateful-input";
 import { StatefulButton } from "@/components/stateful-button";
 import { OtpInput } from "@/components/otp-input";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { InfoTooltip } from "./info-tooltip";
 
 interface AuthFormProps {
   mode: "login" | "register";
@@ -42,7 +52,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [name, setName] = useState("");
-  const [role, setRole] = useState("");
+  const [designation, setDesignation] = useState("");
   const [countryCode, setCountryCode] = useState("+91");
   const [phoneNumber, setPhoneNumber] = useState("");
 
@@ -269,7 +279,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           body: JSON.stringify({
             email,
             name,
-            role,
+            designation,
             phone: `${countryCode}${phoneNumber}`,
           }),
         }
@@ -384,21 +394,21 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
     if (mode === "login") {
       return (
         <>
-          Welcome back to <span className="text-blue-600">SafeSquid</span>
+          Welcome back to <span className="text-primary">SafeSquid</span>
         </>
       );
     } else {
       return (
         <>
-          Welcome to <span className="text-blue-600">SafeSquid</span> Family
+          Welcome to <span className="text-primary">SafeSquid</span> Family
         </>
       );
     }
   };
 
   const renderLoginForm = () => (
-    <form onSubmit={handleLoginSubmit} className="space-y-6">
-      <div className="space-y-1">
+    <form onSubmit={handleLoginSubmit} className="space-y-8">
+      <div className="">
         <label className="text-sm font-medium text-foreground">Email</label>
         <div className="relative">
           <StatefulInput
@@ -414,7 +424,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             <button
               type="button"
               onClick={handleEditEmail}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors "
             >
               <Edit2 className="w-4 h-4" />
             </button>
@@ -424,9 +434,21 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
 
       {!showOtpStep && (
         <div className="space-y-1">
-          <label className="text-sm font-medium text-foreground">
+          {/* <label className="text-sm font-medium text-foreground">
             Password
-          </label>
+          </label> */}
+
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-foreground">
+              Password
+            </label>
+            <Link
+              href={forgotPasswordLink || ""}
+              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+            >
+              Forgot Password?
+            </Link>
+          </div>
           <div className="relative">
             <StatefulInput
               type={showPassword ? "text" : "password"}
@@ -436,38 +458,42 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
               className="pr-10"
               required
             />
-            <button
-              type="button"
+            <div
+              // type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
             >
               {showPassword ? (
-                <EyeOff className="w-4 h-4" />
+                <InfoTooltip content={"Hide Password"}>
+                  <EyeOff className="w-4 h-4" />
+                </InfoTooltip>
               ) : (
-                <Eye className="w-4 h-4" />
+                <InfoTooltip content={"Show Password"}>
+                  <Eye className="w-4 h-4" />
+                </InfoTooltip>
               )}
-            </button>
+            </div>
           </div>
-          <div className="text-sm text-gray-600 mt-2">
+          {/* <div className="text-sm text-gray-600 mt-2">
             <Link
               href={forgotPasswordLink || ""}
               className="text-blue-600 hover:text-blue-700 font-medium"
             >
               Forgot Password?
             </Link>
-          </div>
+          </div> */}
         </div>
       )}
 
       {showOtpStep && (
-        <div className="space-y-4">
+        <div className="space-y-1">
           <div className="flex items-center justify-between">
             <label className="text-sm font-medium text-foreground">OTP</label>
             <button
               type="button"
               onClick={handleResendOtp}
               disabled={resendCooldown > 0}
-              className="text-sm text-blue-600 hover:text-blue-700 disabled:text-gray-400 disabled:cursor-not-allowed"
+              className="text-sm text-primary hover:text-blue-700 disabled:text-gray-400 disabled:cursor-not-allowed"
             >
               {resendCooldown > 0
                 ? `Resend OTP (${resendCooldown}s)`
@@ -489,8 +515,8 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   );
 
   const renderRegisterEmailStep = () => (
-    <form onSubmit={handleRegisterEmailSubmit} className="space-y-6">
-      <div className="text-center mb-6">
+    <form onSubmit={handleRegisterEmailSubmit} className="space-y-8">
+      <div className="text-center">
         <p className="text-sm text-gray-600">
           Use business email for{" "}
           <Link
@@ -514,7 +540,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         />
       </div>
 
-      <div className="flex items-start space-x-2">
+      <div className="flex items-center-safe space-x-2 ">
         <input
           type="checkbox"
           id="terms"
@@ -532,37 +558,39 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           </Link>
         </label>
       </div>
+      <div className="space-y-[4.5]">
+        <StatefulButton
+          type="submit"
+          variant={isLoading ? "inactive" : "active"}
+          disabled={isLoading}
+          // className="mb-[18px]"
+        >
+          {isLoading ? "Please wait..." : "Verify email"}
+        </StatefulButton>
 
-      <StatefulButton
-        type="submit"
-        variant={isLoading ? "inactive" : "active"}
-        disabled={isLoading}
-      >
-        {isLoading ? "Please wait..." : "Verify email"}
-      </StatefulButton>
-
-      <div className="text-center text-sm text-gray-500 space-y-1">
-        <div className="flex items-center justify-center space-x-4">
-          <span className="flex items-center space-x-1">
-            <span>💳</span>
-            <span>No Credit Card required</span>
-          </span>
-          <span className="flex items-center space-x-1">
-            <span>⏰</span>
-            <span>Free Forever</span>
-          </span>
+        <div className="text-center text-sm text-gray-500 space-y-1">
+          <div className="flex items-center justify-center space-x-4">
+            <span className="flex items-center space-x-1">
+              <CreditCard className="pt-1" />
+              <span>No Credit Card required</span>
+            </span>
+            <span className="flex items-center space-x-1">
+              <Repeat2 className="pt-1" />
+              <span>Free Forever</span>
+            </span>
+          </div>
         </div>
       </div>
     </form>
   );
 
   const renderRegisterOtpStep = () => (
-    <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-      <div className="text-center mb-6">
+    <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
+      <div className="text-center">
         <p className="text-sm text-gray-600">
           We business email for{" "}
           <Link
-            href="#"
+            href="/auth/enterprise/MTech"
             className="text-blue-600 hover:text-blue-700 underline"
           >
             Enterprise Account
@@ -583,14 +611,41 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           <button
             type="button"
             onClick={handleEditEmail}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors h-[24px] w-[24px]"
           >
-            <Edit2 className="w-4 h-4" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              color="oklch(70.7% 0.022 261.325)"
+              fill="none"
+            >
+              <path
+                d="M14.0737 3.88545C14.8189 3.07808 15.1915 2.6744 15.5874 2.43893C16.5427 1.87076 17.7191 1.85309 18.6904 2.39232C19.0929 2.6158 19.4769 3.00812 20.245 3.79276C21.0131 4.5774 21.3972 4.96972 21.6159 5.38093C22.1438 6.37312 22.1265 7.57479 21.5703 8.5507C21.3398 8.95516 20.9446 9.33578 20.1543 10.097L10.7506 19.1543C9.25288 20.5969 8.504 21.3182 7.56806 21.6837C6.63212 22.0493 5.6032 22.0224 3.54536 21.9686L3.26538 21.9613C2.63891 21.9449 2.32567 21.9367 2.14359 21.73C1.9615 21.5234 1.98636 21.2043 2.03608 20.5662L2.06308 20.2197C2.20301 18.4235 2.27297 17.5255 2.62371 16.7182C2.97444 15.9109 3.57944 15.2555 4.78943 13.9445L14.0737 3.88545Z"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M13 4L20 11"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M14 22L22 22"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-1">
         <div className="flex items-center justify-between">
           <label className="text-sm font-medium text-foreground">OTP</label>
           <button
@@ -618,7 +673,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   );
 
   const renderPasswordStep = () => (
-    <form onSubmit={handlePasswordSubmit} className="space-y-6">
+    <form onSubmit={handlePasswordSubmit} className="space-y-8 ">
       <div className="space-y-1">
         <label className="text-sm font-medium text-foreground">Email</label>
         <div className="relative">
@@ -631,7 +686,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           <button
             type="button"
             onClick={handleEditEmail}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
           >
             <Edit2 className="w-4 h-4" />
           </button>
@@ -649,17 +704,21 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             className="pr-10"
             required
           />
-          <button
-            type="button"
+          <div
+            // type="button"
             onClick={() => setShowRegisterPassword(!showRegisterPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
           >
             {showRegisterPassword ? (
-              <EyeOff className="w-4 h-4" />
+              <InfoTooltip content={"Hide Password"}>
+                <EyeOff className="w-4 h-4" />
+              </InfoTooltip>
             ) : (
-              <Eye className="w-4 h-4" />
+              <InfoTooltip content={"Show Password"}>
+                <Eye className="w-4 h-4" />
+              </InfoTooltip>
             )}
-          </button>
+          </div>
         </div>
       </div>
 
@@ -673,20 +732,24 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="••••••••"
-            className="pr-10"
+            // className="pr-10"
             required
           />
-          <button
-            type="button"
+          <div
+            // type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
           >
             {showConfirmPassword ? (
-              <EyeOff className="w-4 h-4" />
+              <InfoTooltip content={"Hide Password"}>
+                <EyeOff className="w-4 h-4" />
+              </InfoTooltip>
             ) : (
-              <Eye className="w-4 h-4" />
+              <InfoTooltip content={"Show Password"}>
+                <Eye className="w-4 h-4" />
+              </InfoTooltip>
             )}
-          </button>
+          </div>
         </div>
       </div>
 
@@ -702,16 +765,19 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         </p>
       </div>
 
-      <div className="flex space-x-3">
+      <div className="flex space-x-5">
         <StatefulButton
           type="button"
           variant="inactive"
           onClick={handleBackStep}
-          className="flex-1"
+          className="flex-[0.3]"
         >
-          ← Back
+          <div className="flex justify-center gap-2">
+            <MoveLeft className="pt-1" />
+            <span>Back</span>
+          </div>
         </StatefulButton>
-        <StatefulButton type="submit" variant="active" className="flex-1">
+        <StatefulButton type="submit" variant="active" className="flex-[0.7]">
           Configure authentication
         </StatefulButton>
       </div>
@@ -745,7 +811,34 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             onClick={handleEditEmail}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
           >
-            <Edit2 className="w-4 h-4" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+              color="#000000"
+              fill="none"
+            >
+              <path
+                d="M14.0737 3.88545C14.8189 3.07808 15.1915 2.6744 15.5874 2.43893C16.5427 1.87076 17.7191 1.85309 18.6904 2.39232C19.0929 2.6158 19.4769 3.00812 20.245 3.79276C21.0131 4.5774 21.3972 4.96972 21.6159 5.38093C22.1438 6.37312 22.1265 7.57479 21.5703 8.5507C21.3398 8.95516 20.9446 9.33578 20.1543 10.097L10.7506 19.1543C9.25288 20.5969 8.504 21.3182 7.56806 21.6837C6.63212 22.0493 5.6032 22.0224 3.54536 21.9686L3.26538 21.9613C2.63891 21.9449 2.32567 21.9367 2.14359 21.73C1.9615 21.5234 1.98636 21.2043 2.03608 20.5662L2.06308 20.2197C2.20301 18.4235 2.27297 17.5255 2.62371 16.7182C2.97444 15.9109 3.57944 15.2555 4.78943 13.9445L14.0737 3.88545Z"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinejoin="round"
+              ></path>
+              <path
+                d="M13 4L20 11"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linejoin="round"
+              ></path>
+              <path
+                d="M14 22L22 22"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
           </button>
         </div>
       </div>
@@ -754,8 +847,8 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         <label className="text-sm font-medium text-foreground">Role</label>
         <StatefulInput
           type="text"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
+          value={designation}
+          onChange={(e) => setDesignation(e.target.value)}
           placeholder="CIO"
           required
         />
@@ -792,7 +885,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
       <div className="flex space-x-3">
         <StatefulButton
           type="button"
-          variant="inactive"
+          variant="outline"
           onClick={handleBackStep}
           className="flex-1"
         >
@@ -830,10 +923,17 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   };
 
   return (
-    <div className="max-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="w-full bg-white rounded-xl shadow-[0_4px_30px_0_rgba(255,106,41,0.10)] p-[3.75rem] ">
+    <div className=" bg-gray-50 flex items-center justify-center ">
+      <div className="w-full bg-white rounded-xl shadow-[0_4px_30px_0_rgba(255,106,41,0.10)] p-[60px] space-y-[42px]">
+        {/* Welcome Message */}
+        <div className="text-center">
+          <h1 className="text-[30px] font-semibold text-[#1D1D1D] mb-2 leading=[140%] self-stretch">
+            {getWelcomeMessage()}
+          </h1>
+        </div>
+
         {/* Mode Toggle */}
-        <div className="flex bg-gray-100 rounded-lg p-1 mb-8">
+        <div className="flex bg-gray-100 rounded-lg p-1">
           <button
             onClick={() => handleModeSwitch("register")}
             disabled={
@@ -870,13 +970,6 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           </button>
         </div>
 
-        {/* Welcome Message */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">
-            {getWelcomeMessage()}
-          </h1>
-        </div>
-
         {/* Error Message */}
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-6">
@@ -886,35 +979,6 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
 
         {/* Form Content */}
         {mode === "login" ? renderLoginForm() : renderRegisterForm()}
-
-        {/* Additional Links */}
-        {!showOtpStep && mode === "login" && (
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
-              <button
-                onClick={() => handleModeSwitch("register")}
-                className="text-blue-600 hover:text-blue-700 font-medium"
-              >
-                Sign up
-              </button>
-            </p>
-          </div>
-        )}
-
-        {mode === "register" && registerStep === "email" && (
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Already have an account?{" "}
-              <button
-                onClick={() => handleModeSwitch("login")}
-                className="text-blue-600 hover:text-blue-700 font-medium"
-              >
-                Sign in
-              </button>
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );

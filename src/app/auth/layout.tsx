@@ -19,7 +19,7 @@ export default function AuthLayout({
       </div>
 
       <div className="flex items-center justify-center px-4 pb-4">
-        <div className="w-full max-w-md">{children}</div>
+        <div className="w-[552px]">{children}</div>
       </div>
     </div>
   );

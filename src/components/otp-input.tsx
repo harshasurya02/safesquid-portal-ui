@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -26,32 +25,28 @@ export function OtpInput({
   useEffect(() => {
     if (value === "") {
       setOtp(new Array(length).fill(""));
-      if (inputRefs.current[0]) {
-        inputRefs.current[0].focus();
-      }
+      inputRefs.current[0]?.focus();
     }
   }, [value, length]);
 
   useEffect(() => {
-    if (inputRefs.current[0]) {
-      inputRefs.current[0].focus();
-    }
+    inputRefs.current[0]?.focus();
   }, []);
 
-  const handleChange = (index: number, value: string) => {
-    if (isNaN(Number(value))) return;
+  const handleChange = (index: number, val: string) => {
+    const char = val.slice(-1).toUpperCase(); // take last char and convert to uppercase
+    if (!/^[0-9A-Z]?$/.test(char)) return; // allow only digits or uppercase letters
 
     const newOtp = [...otp];
-    // Allow only single digit
-    newOtp[index] = value.substring(value.length - 1);
+    newOtp[index] = char;
     setOtp(newOtp);
 
-    // Auto focus next input
-    if (value && index < length - 1 && inputRefs.current[index + 1]) {
+    // move to next input if not empty
+    if (char && index < length - 1) {
       inputRefs.current[index + 1]?.focus();
     }
 
-    // Call onComplete when all fields are filled
+    // call onComplete if all filled
     const otpValue = newOtp.join("");
     if (otpValue.length === length) {
       onComplete?.(otpValue);
@@ -59,39 +54,30 @@ export function OtpInput({
   };
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (
-      e.key === "Backspace" &&
-      !otp[index] &&
-      index > 0 &&
-      inputRefs.current[index - 1]
-    ) {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
   };
 
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
-    const pasteData = e.clipboardData.getData("text");
+    const pasteData = e.clipboardData.getData("text").toUpperCase();
     const pasteValues = pasteData.slice(0, length).split("");
 
-    if (pasteValues.every((val) => !isNaN(Number(val)))) {
+    if (pasteValues.every((val) => /^[0-9A-Z]$/.test(val))) {
       const newOtp = [...otp];
-      pasteValues.forEach((value, index) => {
-        if (index < length) {
-          newOtp[index] = value;
-        }
+      pasteValues.forEach((char, i) => {
+        if (i < length) newOtp[i] = char;
       });
       setOtp(newOtp);
 
-      // Focus the next empty input or the last input
-      const nextIndex = Math.min(pasteValues.length, length - 1);
-      inputRefs.current[nextIndex]?.focus();
-
-      // Call onComplete if all fields are filled
       const otpValue = newOtp.join("");
       if (otpValue.length === length) {
         onComplete?.(otpValue);
       }
+
+      const nextIndex = Math.min(pasteValues.length, length - 1);
+      inputRefs.current[nextIndex]?.focus();
     }
   };
 
@@ -100,15 +86,17 @@ export function OtpInput({
       {otp.map((value, index) => (
         <input
           key={index}
-          ref={(el) => { inputRefs.current[index] = el; }}
+          ref={(el) => {
+            inputRefs.current[index] = el;
+          }}
           type="text"
-          inputMode="numeric"
+          inputMode="text"
           maxLength={1}
           value={value}
           onChange={(e) => handleChange(index, e.target.value)}
           onKeyDown={(e) => handleKeyDown(index, e)}
           onPaste={handlePaste}
-          className="flex-1 max-w-[60px] h-12 text-center text-lg font-medium border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+          className="flex-1 max-w-[60px] h-12 text-center text-lg font-medium border border-gray-300 rounded-lg focus:outline-none focus:border-primary transition-colors uppercase"
           placeholder="0"
         />
       ))}
