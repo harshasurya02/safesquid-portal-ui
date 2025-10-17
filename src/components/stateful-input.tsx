@@ -54,7 +54,7 @@ const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             className={cn(
-              "flex h-[48px] w-[432px] rounded-md border px-[20px] py-[12px] text-sm transition-colors",
+              "flex h-[48px] w-full rounded-md border px-[20px] py-[12px] text-sm transition-colors",
               "file:border-0 file:bg-transparent file:text-sm file:font-medium",
               "placeholder:text-muted-foreground",
               "focus-visible:outline-none",

@@ -14,7 +14,7 @@ const StatefulButton = forwardRef<HTMLButtonElement, StatefulButtonProps>(
         ref={ref}
         disabled={variant === "inactive" || disabled}
         className={cn(
-          "w-full px-4 py-3 rounded-lg font-medium transition-all duration-200 cursor-pointer border border-transparent",
+          "w-full px-4 py-3 rounded-[4px] font-medium transition-all duration-200 cursor-pointer border border-transparent",
           {
             // Active (solid)
             "bg-primary text-white hover:bg-blue-700 active:bg-blue-800":

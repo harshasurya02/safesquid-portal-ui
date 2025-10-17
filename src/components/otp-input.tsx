@@ -96,7 +96,7 @@ export function OtpInput({
           onChange={(e) => handleChange(index, e.target.value)}
           onKeyDown={(e) => handleKeyDown(index, e)}
           onPaste={handlePaste}
-          className="flex-1 max-w-[60px] h-12 text-center text-lg font-medium border border-gray-300 rounded-lg focus:outline-none focus:border-primary transition-colors uppercase"
+          className="flex-1 max-w-[60px] rounded-[8px] h-12 text-center text-lg font-medium border border-gray-300 focus:outline-none focus:border-primary transition-colors uppercase"
           placeholder="0"
         />
       ))}

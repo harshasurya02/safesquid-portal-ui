@@ -4,7 +4,7 @@ import type React from "react";
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Eye, EyeOff, Edit2 } from "lucide-react";
+import { Eye, EyeOff, Edit2, CircleCheckBig } from "lucide-react";
 import { StatefulInput } from "@/components/stateful-input";
 import { StatefulButton } from "@/components/stateful-button";
 import { OtpInput } from "@/components/otp-input";
@@ -33,7 +33,7 @@ export function ForgotPasswordForm() {
   }, [prefillEmail]);
 
   const passwordValid = useMemo(() => {
-    const lengthOk = password.length >= 8;
+    const lengthOk = password.length >= 12;
     const upper = /[A-Z]/.test(password);
     const lower = /[a-z]/.test(password);
     const digit = /[0-9]/.test(password);
@@ -100,7 +100,7 @@ export function ForgotPasswordForm() {
     e.preventDefault();
     if (!passwordValid) {
       setError(
-        "Password must be at least 8 chars and include upper, lower, and a number."
+        "Password must be at least 12 chars and include upper, lower, and a number."
       );
       return;
     }
@@ -176,13 +176,31 @@ export function ForgotPasswordForm() {
 
   if (step === "success") {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="w-full max-w-sm bg-white rounded-xl shadow-md p-6 text-center">
-          <div className="mx-auto mb-3 w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-            <span className="text-green-600 text-xl">✓</span>
+      <div className="min-h-[85vh] flex items-center justify-center">
+        <div className="w-full max-w-sm bg-white rounded-xl shadow-md pt-[20px] px-[16px] pb-[16px] text-center">
+          <div className="w-full flex justify-center mb-4">
+            <div
+              className="flex items-center justify-center w-12 h-12 rounded-full"
+              style={{ backgroundColor: "#ECFDF3" }}
+            >
+              {/* Inner circle background */}
+              <div
+                className="flex items-center justify-center w-6 h-6 rounded-full"
+                style={{ backgroundColor: "#D1FADF" }}
+              >
+                {/* Icon */}
+                <CircleCheckBig
+                  size={80}
+                  strokeWidth={1.75}
+                  className="text-green-600"
+                />
+              </div>
+            </div>
           </div>
-          <h2 className="font-semibold text-gray-900">Password Updated</h2>
-          <p className="text-sm text-gray-600 mt-1">
+          <h2 className="font-semibold text-gray-900 text-lg mb-2">
+            Password Updated
+          </h2>
+          <p className="text-sm text-gray-600 mb-6">
             Use your new password to login.
           </p>
           <div className="mt-4">
@@ -201,22 +219,22 @@ export function ForgotPasswordForm() {
   return (
     <div className="min-h-[70vh] flex items-center justify-center p-4">
       <div className="w-full ">
-        <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
-          <div className="text-center mb-6">
+        <div className="bg-white rounded-xl shadow-md p-15 space-y-[42px]">
+          <div className="text-center">
             <h1 className="text-2xl font-semibold text-gray-900">
               Password Reset
             </h1>
           </div>
 
-          {error && (
+          {/* {error && (
             <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-4">
               <p className="text-sm text-red-600">{error}</p>
             </div>
-          )}
+          )} */}
 
           {/* Step: Email */}
           {step === "email" && (
-            <form onSubmit={initiate} className="space-y-6">
+            <form onSubmit={initiate} className="space-y-8">
               <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Email
@@ -229,20 +247,29 @@ export function ForgotPasswordForm() {
                   required
                 />
               </div>
-
-              <StatefulButton
-                type="submit"
-                variant={isLoading ? "inactive" : "active"}
-                disabled={isLoading}
-              >
-                {isLoading ? "Please wait..." : "Send OTP"}
-              </StatefulButton>
+              <div className="flex space-x-5">
+                <StatefulButton
+                  type="button"
+                  variant={"outline"}
+                  onClick={() => router.push("/auth/login")}
+                  // disabled={isLoading}
+                >
+                  {"Back"}
+                </StatefulButton>
+                <StatefulButton
+                  type="submit"
+                  variant={isLoading ? "inactive" : "active"}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Please wait..." : "Send OTP"}
+                </StatefulButton>
+              </div>
             </form>
           )}
 
           {/* Step: OTP */}
           {step === "otp" && (
-            <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
               <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Email
@@ -282,15 +309,12 @@ export function ForgotPasswordForm() {
                   </button>
                 </div>
                 <OtpInput onComplete={verifyOtp} value={otp} />
-                <p className="text-xs text-gray-500">
-                  6-digit code. Expires in 10 minutes.
-                </p>
               </div>
 
-              <div className="flex space-x-3">
+              <div className="flex space-x-5">
                 <StatefulButton
                   type="button"
-                  variant="inactive"
+                  variant="outline"
                   onClick={back}
                   className="flex-1"
                 >
@@ -310,7 +334,7 @@ export function ForgotPasswordForm() {
 
           {/* Step: Password */}
           {step === "password" && (
-            <form onSubmit={complete} className="space-y-6">
+            <form onSubmit={complete} className="space-y-8">
               <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Email
@@ -399,7 +423,7 @@ export function ForgotPasswordForm() {
               <div className="flex space-x-3">
                 <StatefulButton
                   type="button"
-                  variant="inactive"
+                  variant="outline"
                   onClick={back}
                   className="flex-1"
                 >

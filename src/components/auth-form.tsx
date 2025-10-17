@@ -426,7 +426,36 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
               onClick={handleEditEmail}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors "
             >
-              <Edit2 className="w-4 h-4" />
+              {/* <Edit2 className="w-4 h-4" /> */}
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                color="oklch(70.7% 0.022 261.325)"
+                fill="none"
+              >
+                <path
+                  d="M14.0737 3.88545C14.8189 3.07808 15.1915 2.6744 15.5874 2.43893C16.5427 1.87076 17.7191 1.85309 18.6904 2.39232C19.0929 2.6158 19.4769 3.00812 20.245 3.79276C21.0131 4.5774 21.3972 4.96972 21.6159 5.38093C22.1438 6.37312 22.1265 7.57479 21.5703 8.5507C21.3398 8.95516 20.9446 9.33578 20.1543 10.097L10.7506 19.1543C9.25288 20.5969 8.504 21.3182 7.56806 21.6837C6.63212 22.0493 5.6032 22.0224 3.54536 21.9686L3.26538 21.9613C2.63891 21.9449 2.32567 21.9367 2.14359 21.73C1.9615 21.5234 1.98636 21.2043 2.03608 20.5662L2.06308 20.2197C2.20301 18.4235 2.27297 17.5255 2.62371 16.7182C2.97444 15.9109 3.57944 15.2555 4.78943 13.9445L14.0737 3.88545Z"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M13 4L20 11"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M14 22L22 22"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </button>
           )}
         </div>
@@ -673,7 +702,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   );
 
   const renderPasswordStep = () => (
-    <form onSubmit={handlePasswordSubmit} className="space-y-8 ">
+    <form onSubmit={handlePasswordSubmit} className="space-y-6">
       <div className="space-y-1">
         <label className="text-sm font-medium text-foreground">Email</label>
         <div className="relative">
@@ -688,7 +717,35 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             onClick={handleEditEmail}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
           >
-            <Edit2 className="w-4 h-4" />
+            {/* <Edit2 className="w-4 h-4" /> */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              color="oklch(70.7% 0.022 261.325)"
+              fill="none"
+            >
+              <path
+                d="M14.0737 3.88545C14.8189 3.07808 15.1915 2.6744 15.5874 2.43893C16.5427 1.87076 17.7191 1.85309 18.6904 2.39232C19.0929 2.6158 19.4769 3.00812 20.245 3.79276C21.0131 4.5774 21.3972 4.96972 21.6159 5.38093C22.1438 6.37312 22.1265 7.57479 21.5703 8.5507C21.3398 8.95516 20.9446 9.33578 20.1543 10.097L10.7506 19.1543C9.25288 20.5969 8.504 21.3182 7.56806 21.6837C6.63212 22.0493 5.6032 22.0224 3.54536 21.9686L3.26538 21.9613C2.63891 21.9449 2.32567 21.9367 2.14359 21.73C1.9615 21.5234 1.98636 21.2043 2.03608 20.5662L2.06308 20.2197C2.20301 18.4235 2.27297 17.5255 2.62371 16.7182C2.97444 15.9109 3.57944 15.2555 4.78943 13.9445L14.0737 3.88545Z"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M13 4L20 11"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M14 22L22 22"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
         </div>
       </div>
@@ -814,8 +871,8 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              width="24"
-              height="24"
+              width="22"
+              height="22"
               color="#000000"
               fill="none"
             >
@@ -828,15 +885,15 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
               <path
                 d="M13 4L20 11"
                 stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linejoin="round"
+                strokeWidth="1.5"
+                strokeLinejoin="round"
               ></path>
               <path
                 d="M14 22L22 22"
                 stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               ></path>
             </svg>
           </button>
@@ -858,27 +915,30 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         <label className="text-sm font-medium text-foreground">
           Phone Number
         </label>
-        <div className="flex space-x-2">
-          <div className="relative">
+        <div className="flex w-full space-x-2">
+          {/* Country Code */}
+          <div className="flex-shrink-0">
             <select
               value={countryCode}
               onChange={(e) => setCountryCode(e.target.value)}
-              className="appearance-none bg-white border border-gray-300 rounded-md px-3 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="h-12 appearance-none bg-white border border-gray-300 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="+91">🇮🇳 +91</option>
               <option value="+1">🇺🇸 +1</option>
               <option value="+44">🇬🇧 +44</option>
             </select>
-            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
           </div>
-          <StatefulInput
-            type="tel"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            placeholder="98765 43219"
-            className="flex-1"
-            required
-          />
+
+          <div className="flex-1 h-12 w-full">
+            <StatefulInput
+              type="tel"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              placeholder="98765 43219"
+              required
+            />
+          </div>
         </div>
       </div>
 
@@ -924,7 +984,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
 
   return (
     <div className=" bg-gray-50 flex items-center justify-center ">
-      <div className="w-full bg-white rounded-xl shadow-[0_4px_30px_0_rgba(255,106,41,0.10)] p-[60px] space-y-[42px]">
+      <div className="w-full bg-white rounded-xl shadow-[0_4px_30px_0_rgba(255,106,41,0.10)] p-15 space-y-[42px]">
         {/* Welcome Message */}
         <div className="text-center">
           <h1 className="text-[30px] font-semibold text-[#1D1D1D] mb-2 leading=[140%] self-stretch">
