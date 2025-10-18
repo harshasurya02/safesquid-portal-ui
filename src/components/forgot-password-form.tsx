@@ -8,8 +8,18 @@ import { Eye, EyeOff, Edit2, CircleCheckBig } from "lucide-react";
 import { StatefulInput } from "@/components/stateful-input";
 import { StatefulButton } from "@/components/stateful-button";
 import { OtpInput } from "@/components/otp-input";
+import { validateFormFields } from "@/services/validation.service";
 
 type Step = "email" | "otp" | "password" | "success";
+
+const defaultErrorState = {
+  email: "",
+  password: "",
+  confirmPassword: "",
+  otp: "",
+  network: "",
+  common: "",
+};
 
 export function ForgotPasswordForm() {
   const router = useRouter();
@@ -24,13 +34,18 @@ export function ForgotPasswordForm() {
   const [showPwd, setShowPwd] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] =
+    useState<Partial<typeof defaultErrorState>>(defaultErrorState);
   const [resendCooldown, setResendCooldown] = useState(0);
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
 
   useEffect(() => {
     if (prefillEmail) setEmail(prefillEmail);
   }, [prefillEmail]);
+
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
 
   const passwordValid = useMemo(() => {
     const lengthOk = password.length >= 12;
@@ -43,7 +58,16 @@ export function ForgotPasswordForm() {
   async function initiate(e: React.FormEvent) {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
+    setError(defaultErrorState);
+
+    const errors = validateFormFields({ email });
+        console.log(errors);
+        if (errors !== true) {
+          // validations contains errors
+          setError(errors);
+          setIsLoading(false);
+          return;
+        }
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/reset-password/initiate`,
@@ -62,7 +86,7 @@ export function ForgotPasswordForm() {
         setStep("otp");
       }
     } catch {
-      setError("Network error. Please try again.");
+      setError({ network: "Network error. Please try again." });
     } finally {
       setIsLoading(false);
     }
@@ -70,8 +94,16 @@ export function ForgotPasswordForm() {
 
   async function verifyOtp(otpValue: string) {
     setIsLoading(true);
-    setError("");
+    setError(defaultErrorState);
     setOtp(otpValue);
+
+    const errors = validateFormFields({ otp: otpValue });
+    if (errors !== true) {
+      // validations contains errors
+      setError(errors);
+      setIsLoading(false);
+      return;
+    }
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/reset-password/verify-otp`,
@@ -89,7 +121,7 @@ export function ForgotPasswordForm() {
         setOtp("");
       }
     } catch {
-      setError("Network error. Please try again.");
+      setError({ network: "Network error. Please try again." });
       setOtp("");
     } finally {
       setIsLoading(false);
@@ -98,18 +130,31 @@ export function ForgotPasswordForm() {
 
   async function complete(e: React.FormEvent) {
     e.preventDefault();
-    if (!passwordValid) {
-      setError(
-        "Password must be at least 12 chars and include upper, lower, and a number."
-      );
-      return;
-    }
-    if (password !== confirm) {
-      setError("Passwords do not match");
-      return;
-    }
+    // if (!passwordValid) {
+    //   setError({
+    //     password:
+    //       "Password must be at least 12 chars and include upper, lower, and a number.",
+    //   });
+    //   return;
+    // }
+    // if (password !== confirm) {
+    //   setError({"Passwords do not match");
+    //   return;
+    // }
     setIsLoading(true);
-    setError("");
+    setError(defaultErrorState);
+
+    const errors = validateFormFields(
+      { password, confirmPassword: confirm },
+      { password }
+    );
+    if (errors !== true) {
+      // validations contains errors
+      setError(errors);
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/reset-password/complete`,
@@ -128,10 +173,10 @@ export function ForgotPasswordForm() {
       if (data?.success) {
         setStep("success");
       } else {
-        setError(data?.message || "Failed to update password");
+        setError({ common: "Failed to update password" });
       }
     } catch {
-      setError("Network error. Please try again.");
+      setError({ network: "Network error. Please try again." });
     } finally {
       setIsLoading(false);
     }
@@ -169,7 +214,7 @@ export function ForgotPasswordForm() {
   }
 
   function back() {
-    setError("");
+    setError(defaultErrorState);
     if (step === "otp") setStep("email");
     else if (step === "password") setStep("otp");
   }
@@ -244,6 +289,7 @@ export function ForgotPasswordForm() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="mukunds735@safesquid.net"
+                  error={error?.email}
                   required
                 />
               </div>
@@ -308,7 +354,11 @@ export function ForgotPasswordForm() {
                       : "Resend OTP"}
                   </button>
                 </div>
-                <OtpInput onComplete={verifyOtp} value={otp} />
+                <OtpInput
+                  onComplete={verifyOtp}
+                  value={otp}
+                  error={error?.otp}
+                />
               </div>
 
               <div className="flex space-x-5">
@@ -345,6 +395,7 @@ export function ForgotPasswordForm() {
                     value={email}
                     disabled
                     className="bg-gray-50"
+                    error={error?.email}
                   />
                   <button
                     type="button"
@@ -367,6 +418,7 @@ export function ForgotPasswordForm() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
                     className="pr-10"
+                    error={error?.password}
                     required
                   />
                   <button
@@ -393,6 +445,7 @@ export function ForgotPasswordForm() {
                     value={confirm}
                     onChange={(e) => setConfirm(e.target.value)}
                     placeholder="••••••••"
+                    error={error?.confirmPassword}
                     className="pr-10"
                     required
                   />
