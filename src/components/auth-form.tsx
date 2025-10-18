@@ -26,6 +26,18 @@ interface AuthFormProps {
   forgotPasswordLink?: string;
 }
 
+const defaultErrorState = {
+  email: "",
+  terms: "",
+  password: "",
+  confirmPassword: "",
+  otp: "",
+  designation: "",
+  phone: "",
+  name: "",
+  network: "",
+};
+
 type RegisterStep = "email" | "otp" | "password" | "details";
 
 export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
@@ -34,7 +46,8 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   // Common states
   const [email, setEmail] = useState("admin@email.com");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] =
+    useState<Partial<typeof defaultErrorState>>(defaultErrorState);
 
   // Login states
   const [password, setPassword] = useState("SecurePass123!");
@@ -61,7 +74,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
     setShowOtpStep(false);
     setRegisterStep("email");
     setOtp("");
-    setError("");
+    setError(defaultErrorState);
     setAcceptTerms(false);
     router.push(`/auth/${newMode}`);
   };
@@ -69,7 +82,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
+    setError(defaultErrorState);
 
     try {
       const response = await fetch(
@@ -90,11 +103,11 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         setOtpExpiresAt(data.expiresAt);
         setShowOtpStep(true);
       } else {
-        setError(data.message || "Failed to send OTP");
+        setError({ otp: "Failed to send OTP" });
       }
     } catch (err) {
       console.error("[v0] API Error:", err);
-      setError("Network error. Please try again.");
+      setError({ network: "Network error. Please try again." });
     } finally {
       setIsLoading(false);
     }
@@ -103,7 +116,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   const handleLoginOtpComplete = async (otpValue: string) => {
     setOtp(otpValue);
     setIsLoading(true);
-    setError("");
+    setError(defaultErrorState);
 
     try {
       const response = await fetch(
@@ -125,12 +138,12 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         localStorage.setItem("session", JSON.stringify(data.session));
         router.push("/dashboard");
       } else {
-        setError(data.message || "Invalid OTP");
+        setError({ otp: "Invalid OTP" });
         setOtp("");
       }
     } catch (err) {
       console.error("[v0] OTP Verification Error:", err);
-      setError("Network error. Please try again.");
+      setError({ network: "Network error. Please try again." });
       setOtp("");
     } finally {
       setIsLoading(false);
@@ -140,12 +153,12 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   const handleRegisterEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!acceptTerms) {
-      setError("Please accept the Terms & Conditions");
+      setError({ terms: "Please accept the Terms & Conditions" });
       return;
     }
 
     setIsLoading(true);
-    setError("");
+    setError(defaultErrorState);
 
     try {
       const response = await fetch(
@@ -166,11 +179,11 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         setOtpExpiresAt(data.expiresAt);
         setRegisterStep("otp");
       } else {
-        setError(data.message || "Failed to send verification email");
+        setError({ email: "Failed to send verification email" });
       }
     } catch (err) {
       console.error("[v0] API Error:", err);
-      setError("Network error. Please try again.");
+      setError({ network: "Network error. Please try again." });
     } finally {
       setIsLoading(false);
     }
@@ -179,7 +192,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   const handleRegisterOtpComplete = async (otpValue: string) => {
     setOtp(otpValue);
     setIsLoading(true);
-    setError("");
+    setError(defaultErrorState);
 
     try {
       const response = await fetch(
@@ -201,12 +214,12 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           setRegisterStep("password");
         }
       } else {
-        setError(data.message || "Invalid OTP");
+        setError({ otp: "Invalid OTP" });
         setOtp("");
       }
     } catch (err) {
       console.error("[v0] OTP Verification Error:", err);
-      setError("Network error. Please try again.");
+      setError({ network: "Network error. Please try again." });
       setOtp("");
     } finally {
       setIsLoading(false);
@@ -217,17 +230,17 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
     e.preventDefault();
 
     if (registerPassword !== confirmPassword) {
-      setError("Passwords do not match");
+      setError({ confirmPassword: "Passwords do not match" });
       return;
     }
 
     if (registerPassword.length < 12) {
-      setError("Password must be at least 12 characters long");
+      setError({ password: "Password must be at least 12 characters long" });
       return;
     }
 
     setIsLoading(true);
-    setError("");
+    setError(defaultErrorState);
 
     try {
       const response = await fetch(
@@ -253,11 +266,11 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           setRegisterStep("details");
         }
       } else {
-        setError(data.message || "Failed to set password");
+        setError({ password: "Failed to set password" });
       }
     } catch (err) {
       console.error("[v0] Set Password Error:", err);
-      setError("Network error. Please try again.");
+      setError({ network: "Network error. Please try again." });
     } finally {
       setIsLoading(false);
     }
@@ -266,7 +279,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   const handleDetailsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
+    setError(defaultErrorState);
 
     try {
       const response = await fetch(
@@ -292,14 +305,14 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         // Store user data temporarily or redirect to login
         localStorage.setItem("signupComplete", "true");
         localStorage.setItem("signupEmail", email);
-        // Redirect to login page with success message
-        router.push("/auth/login?signup=success");
+
+        if (data.session) router.push("/dashboard");
       } else {
         setError(data.message || "Registration failed. Please try again.");
       }
     } catch (err) {
       console.error("[v0] Signup Complete Error:", err);
-      setError("Network error. Please try again.");
+      setError({ network: "Network error. Please try again." });
     } finally {
       setIsLoading(false);
     }
@@ -337,9 +350,9 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         if (data.success) {
           console.log("[v0] OTP resent successfully");
           setOtpExpiresAt(data.expiresAt);
-          setError("");
+          setError(defaultErrorState);
         } else {
-          setError(data.message || "Failed to resend OTP");
+          setError({ otp: "Failed to resend OTP" });
         }
       } else {
         const response = await fetch(
@@ -358,14 +371,14 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         if (data.success) {
           console.log("[v0] OTP resent successfully");
           setOtpExpiresAt(data.expiresAt);
-          setError("");
+          setError(defaultErrorState);
         } else {
-          setError(data.message || "Failed to resend OTP");
+          setError({ otp: "Failed to resend OTP" });
         }
       }
     } catch (err) {
       console.error("[v0] Resend OTP Error:", err);
-      setError("Failed to resend OTP");
+      setError({ otp: "Failed to resend OTP" });
     }
   };
 
@@ -376,11 +389,11 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
       setRegisterStep("email");
     }
     setOtp("");
-    setError("");
+    setError(defaultErrorState);
   };
 
   const handleBackStep = () => {
-    setError("");
+    setError(defaultErrorState);
     if (registerStep === "otp") {
       setRegisterStep("email");
     } else if (registerStep === "password") {
@@ -407,8 +420,8 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   };
 
   const renderLoginForm = () => (
-    <form onSubmit={handleLoginSubmit} className="space-y-8">
-      <div className="">
+    <form onSubmit={handleLoginSubmit} className="space-y-7 md:space-y-8">
+      <div className="space-y-1">
         <label className="text-sm font-medium text-foreground">Email</label>
         <div className="relative">
           <StatefulInput
@@ -418,6 +431,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             placeholder="example@example.com"
             disabled={showOtpStep}
             className={showOtpStep ? "bg-gray-50" : ""}
+            error={error.email || undefined}
             required
           />
           {showOtpStep && (
@@ -485,6 +499,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               className="pr-10"
+              error={error.password || undefined}
               required
             />
             <div
@@ -544,7 +559,10 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   );
 
   const renderRegisterEmailStep = () => (
-    <form onSubmit={handleRegisterEmailSubmit} className="space-y-8">
+    <form
+      onSubmit={handleRegisterEmailSubmit}
+      className="space-y-7 md:space-y-8"
+    >
       <div className="text-center">
         <p className="text-sm text-gray-600">
           Use business email for{" "}
@@ -565,29 +583,40 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="mukunds735@safesquid.net"
+          error={error.email || undefined}
           required
         />
       </div>
 
-      <div className="flex items-center-safe space-x-2 ">
-        <input
-          type="checkbox"
-          id="terms"
-          checked={acceptTerms}
-          onChange={(e) => setAcceptTerms(e.target.checked)}
-          className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-        />
-        <label htmlFor="terms" className="text-sm text-gray-600">
-          I agree to the{" "}
-          <Link
-            href="#"
-            className="text-blue-600 hover:text-blue-700 underline"
-          >
-            Terms & Conditions
-          </Link>
-        </label>
+      <div className="">
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id="terms"
+            checked={acceptTerms}
+            onChange={(e) => setAcceptTerms(e.target.checked)}
+            className={` w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 ${
+              error.terms ? "border-red-500" : ""
+            }`}
+            //   ${
+            //   error.terms ? "text-red-500" : ""
+            //
+
+            // }
+          />
+          <label htmlFor="terms" className={`text-sm text-gray-600 `}>
+            I agree to the{" "}
+            <Link
+              href="#"
+              className="text-blue-600 hover:text-blue-700 underline"
+            >
+              Terms & Conditions
+            </Link>
+          </label>
+        </div>
+        {error && <p className="text-sm text-red-500">{error.terms}</p>}
       </div>
-      <div className="space-y-[4.5]">
+      <div className="space-y-[18px]">
         <StatefulButton
           type="submit"
           variant={isLoading ? "inactive" : "active"}
@@ -614,7 +643,10 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   );
 
   const renderRegisterOtpStep = () => (
-    <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
+    <form
+      onSubmit={(e) => e.preventDefault()}
+      className="space-y-7 md:space-y-8"
+    >
       <div className="text-center">
         <p className="text-sm text-gray-600">
           We business email for{" "}
@@ -636,6 +668,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             value={email}
             disabled
             className="bg-gray-50"
+            error={error.email || undefined}
           />
           <button
             type="button"
@@ -702,7 +735,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   );
 
   const renderPasswordStep = () => (
-    <form onSubmit={handlePasswordSubmit} className="space-y-6">
+    <form onSubmit={handlePasswordSubmit} className="space-y-5 md:space-y-6">
       <div className="space-y-1">
         <label className="text-sm font-medium text-foreground">Email</label>
         <div className="relative">
@@ -711,6 +744,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             value={email}
             disabled
             className="bg-gray-50"
+            error={error.email || undefined}
           />
           <button
             type="button"
@@ -759,6 +793,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             onChange={(e) => setRegisterPassword(e.target.value)}
             placeholder="••••••••••••"
             className="pr-10"
+            error={error.password || undefined}
             required
           />
           <div
@@ -789,6 +824,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="••••••••"
+            error={error.confirmPassword || undefined}
             // className="pr-10"
             required
           />
@@ -842,7 +878,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   );
 
   const renderDetailsStep = () => (
-    <form onSubmit={handleDetailsSubmit} className="space-y-6">
+    <form onSubmit={handleDetailsSubmit} className="space-y-5 md:space-y-6">
       <div className="space-y-1">
         <label className="text-sm font-medium text-foreground">Name</label>
         <StatefulInput
@@ -850,6 +886,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Mukund Sharma"
+          error={error.name || undefined}
           required
         />
       </div>
@@ -862,6 +899,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             value={email}
             disabled
             className="bg-gray-50"
+            error={error.email || undefined}
           />
           <button
             type="button"
@@ -907,6 +945,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           value={designation}
           onChange={(e) => setDesignation(e.target.value)}
           placeholder="CIO"
+          error={error.designation || undefined}
           required
         />
       </div>
@@ -936,6 +975,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
               placeholder="98765 43219"
+              error={error.phone || undefined}
               required
             />
           </div>
@@ -983,11 +1023,11 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   };
 
   return (
-    <div className=" bg-gray-50 flex items-center justify-center ">
-      <div className="w-full bg-white rounded-xl shadow-[0_4px_30px_0_rgba(255,106,41,0.10)] p-15 space-y-[42px]">
+    <div className=" bg-gray-50 flex items-center justify-center my-auto">
+      <div className="w-full space-y-6 md:bg-white md:rounded-xl md:shadow-[0_4px_30px_0_rgba(255,106,41,0.10)] md:p-15 md:space-y-[42px]">
         {/* Welcome Message */}
         <div className="text-center">
-          <h1 className="text-[30px] font-semibold text-[#1D1D1D] mb-2 leading=[140%] self-stretch">
+          <h1 className="text-[22px] md:text-[30px] font-semibold text-[#1D1D1D] mb-2 leading=[140%] self-stretch">
             {getWelcomeMessage()}
           </h1>
         </div>
@@ -1031,11 +1071,11 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         </div>
 
         {/* Error Message */}
-        {error && (
+        {/* {error && (
           <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-6">
             <p className="text-sm text-red-600">{error}</p>
           </div>
-        )}
+        )} */}
 
         {/* Form Content */}
         {mode === "login" ? renderLoginForm() : renderRegisterForm()}
