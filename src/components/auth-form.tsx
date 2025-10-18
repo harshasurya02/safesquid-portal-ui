@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Eye,
@@ -20,6 +20,7 @@ import { OtpInput } from "@/components/otp-input";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { InfoTooltip } from "./info-tooltip";
+import { validateFormFields } from "@/services/validation.service";
 
 interface AuthFormProps {
   mode: "login" | "register";
@@ -36,6 +37,7 @@ const defaultErrorState = {
   phone: "",
   name: "",
   network: "",
+  common: "",
 };
 
 type RegisterStep = "email" | "otp" | "password" | "details";
@@ -69,6 +71,10 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   const [countryCode, setCountryCode] = useState("+91");
   const [phoneNumber, setPhoneNumber] = useState("");
 
+  // useEffect(() => {
+  //   console.log(error);
+  // }, [error]);
+
   const handleModeSwitch = (newMode: "login" | "register") => {
     // Reset all states
     setShowOtpStep(false);
@@ -84,6 +90,14 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
     setIsLoading(true);
     setError(defaultErrorState);
 
+    const errors = validateFormFields({ email, password });
+    console.log(errors);
+    if (errors !== true) {
+      // validations contains errors
+      setError(errors);
+      setIsLoading(false);
+      return;
+    }
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/signin/initiate`,
@@ -103,7 +117,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         setOtpExpiresAt(data.expiresAt);
         setShowOtpStep(true);
       } else {
-        setError({ otp: "Failed to send OTP" });
+        setError({ common: "Failed to send OTP" });
       }
     } catch (err) {
       console.error("[v0] API Error:", err);
@@ -117,6 +131,14 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
     setOtp(otpValue);
     setIsLoading(true);
     setError(defaultErrorState);
+
+    const errors = validateFormFields({ otp: otpValue });
+    if (errors !== true) {
+      // validations contains errors
+      setError(errors);
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch(
@@ -160,6 +182,15 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
     setIsLoading(true);
     setError(defaultErrorState);
 
+    const errors = validateFormFields({ email });
+    console.log(errors);
+    if (errors !== true) {
+      // validations contains errors
+      setError(errors);
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/signup/initiate`,
@@ -179,7 +210,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         setOtpExpiresAt(data.expiresAt);
         setRegisterStep("otp");
       } else {
-        setError({ email: "Failed to send verification email" });
+        setError({ email: "Email already exists" });
       }
     } catch (err) {
       console.error("[v0] API Error:", err);
@@ -193,6 +224,14 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
     setOtp(otpValue);
     setIsLoading(true);
     setError(defaultErrorState);
+
+    const errors = validateFormFields({ otp: otpValue });
+    if (errors !== true) {
+      // validations contains errors
+      setError(errors);
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch(
@@ -229,18 +268,30 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (registerPassword !== confirmPassword) {
-      setError({ confirmPassword: "Passwords do not match" });
-      return;
-    }
+    // if (registerPassword !== confirmPassword) {
+    //   setError({ confirmPassword: "Passwords do not match" });
+    //   return;
+    // }
 
-    if (registerPassword.length < 12) {
-      setError({ password: "Password must be at least 12 characters long" });
-      return;
-    }
+    // if (registerPassword.length < 12) {
+    //   setError({ password: "Password must be at least 12 characters long" });
+    //   return;
+    // }
 
     setIsLoading(true);
     setError(defaultErrorState);
+
+    const errors = validateFormFields(
+      { password: registerPassword, confirmPassword },
+      { password: registerPassword }
+    );
+
+    if (errors !== true) {
+      // validations contains errors
+      setError(errors);
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch(
@@ -281,6 +332,17 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
     setIsLoading(true);
     setError(defaultErrorState);
 
+    const errors = validateFormFields({
+      name,
+      designation,
+      phoneNumber,
+    });
+    if (errors !== true) {
+      // validations contains errors
+      setError(errors);
+      setIsLoading(false);
+      return;
+    }
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/signup/complete`,
@@ -544,17 +606,37 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
                 : "Resend OTP"}
             </button>
           </div>
-          <OtpInput onComplete={handleLoginOtpComplete} value={otp} />
+          <OtpInput
+            onComplete={handleLoginOtpComplete}
+            value={otp}
+            error={error.otp || undefined}
+          />
         </div>
       )}
+      <>
+        {/* {error.common && <p className="text-red-500">{error.common}</p>}
+        {error.network && <p className="text-red-500">{error.network}</p>} */}
 
-      <StatefulButton
-        type="submit"
-        variant={isLoading ? "inactive" : "active"}
-        disabled={isLoading}
-      >
-        {isLoading ? "Please wait..." : "Access the dashboard"}
-      </StatefulButton>
+        {!showOtpStep && (
+          <StatefulButton
+            type="submit"
+            variant={isLoading ? "inactive" : "active"}
+            disabled={isLoading}
+          >
+            {isLoading ? "Please wait..." : "Access the dashboard"}
+          </StatefulButton>
+        )}
+        {showOtpStep && (
+          <StatefulButton
+            type="button"
+            variant={isLoading ? "inactive" : "active"}
+            disabled={isLoading}
+            onClick={(e) => handleLoginOtpComplete(otp)}
+          >
+            {isLoading ? "Please wait..." : "Access the dashboard"}
+          </StatefulButton>
+        )}
+      </>
     </form>
   );
 
@@ -721,11 +803,16 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
               : "Resend OTP"}
           </button>
         </div>
-        <OtpInput onComplete={handleRegisterOtpComplete} value={otp} />
+        <OtpInput
+          onComplete={handleRegisterOtpComplete}
+          value={otp}
+          error={error.otp || undefined}
+        />
       </div>
 
       <StatefulButton
-        type="submit"
+        type="button"
+        onClick={(e) => handleRegisterOtpComplete(otp)}
         variant={isLoading ? "inactive" : "active"}
         disabled={isLoading}
       >
@@ -799,7 +886,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           <div
             // type="button"
             onClick={() => setShowRegisterPassword(!showRegisterPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+            className="absolute right-3 top-1/3 -translate-y-1/3 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
           >
             {showRegisterPassword ? (
               <InfoTooltip content={"Hide Password"}>
@@ -831,7 +918,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           <div
             // type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+            className="absolute right-3 top-1/3 -translate-y-1/3 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
           >
             {showConfirmPassword ? (
               <InfoTooltip content={"Hide Password"}>
@@ -858,19 +945,23 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         </p>
       </div>
 
-      <div className="flex space-x-5">
+      <div className="flex flex-col md:flex-row space-x-5 space-y-2">
         <StatefulButton
           type="button"
           variant="inactive"
           onClick={handleBackStep}
-          className="flex-[0.3]"
+          className="flex-1 md:flex-[0.3]"
         >
           <div className="flex justify-center gap-2">
             <MoveLeft className="pt-1" />
             <span>Back</span>
           </div>
         </StatefulButton>
-        <StatefulButton type="submit" variant="active" className="flex-[0.7]">
+        <StatefulButton
+          type="submit"
+          variant="active"
+          className="flex-1 md:flex-[0.7]"
+        >
           Configure authentication
         </StatefulButton>
       </div>

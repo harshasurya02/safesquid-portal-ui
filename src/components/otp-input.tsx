@@ -10,6 +10,7 @@ interface OtpInputProps {
   className?: string;
   value?: string;
   onReset?: () => void;
+  error?: string; // new prop for error
 }
 
 export function OtpInput({
@@ -18,6 +19,7 @@ export function OtpInput({
   className,
   value = "",
   onReset,
+  error,
 }: OtpInputProps) {
   const [otp, setOtp] = useState<string[]>(new Array(length).fill(""));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -82,24 +84,30 @@ export function OtpInput({
   };
 
   return (
-    <div className={cn("flex justify-between w-full", className)}>
-      {otp.map((value, index) => (
-        <input
-          key={index}
-          ref={(el) => {
-            inputRefs.current[index] = el;
-          }}
-          type="text"
-          inputMode="text"
-          maxLength={1}
-          value={value}
-          onChange={(e) => handleChange(index, e.target.value)}
-          onKeyDown={(e) => handleKeyDown(index, e)}
-          onPaste={handlePaste}
-          className="flex-1 max-w-[60px] rounded-[8px] h-12 text-center text-lg font-medium border border-gray-300 focus:outline-none focus:border-primary transition-colors uppercase"
-          placeholder="0"
-        />
-      ))}
+    <div className={cn("flex flex-col w-full", className)}>
+      <div className="flex justify-between w-full">
+        {otp.map((value, index) => (
+          <input
+            key={index}
+            ref={(el) => {
+              inputRefs.current[index] = el;
+            }}
+            type="text"
+            inputMode="text"
+            maxLength={1}
+            value={value}
+            onChange={(e) => handleChange(index, e.target.value)}
+            onKeyDown={(e) => handleKeyDown(index, e)}
+            onPaste={handlePaste}
+            className={cn(
+              "flex-1 max-w-12 rounded-sm md:max-w-15 md:rounded-lg h-12 text-center text-lg font-medium border border-gray-300 focus:outline-none focus:border-primary transition-colors uppercase",
+              error && "border-red-500" // red border if error
+            )}
+            placeholder="0"
+          />
+        ))}
+      </div>
+      {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
     </div>
   );
 }
