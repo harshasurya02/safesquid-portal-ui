@@ -61,13 +61,13 @@ export function ForgotPasswordForm() {
     setError(defaultErrorState);
 
     const errors = validateFormFields({ email });
-        console.log(errors);
-        if (errors !== true) {
-          // validations contains errors
-          setError(errors);
-          setIsLoading(false);
-          return;
-        }
+    // console.log(errors);
+    if (errors !== true) {
+      // validations contains errors
+      setError(errors);
+      setIsLoading(false);
+      return;
+    }
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/reset-password/initiate`,

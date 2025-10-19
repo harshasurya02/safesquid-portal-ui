@@ -101,13 +101,13 @@ export function OtpInput({
             onPaste={handlePaste}
             className={cn(
               "flex-1 max-w-12 rounded-sm md:max-w-15 md:rounded-lg h-12 text-center text-lg font-medium border border-gray-300 focus:outline-none focus:border-primary transition-colors uppercase",
-              error && "border-red-500" // red border if error
+              error && "border-destructive" // red border if error
             )}
             placeholder="0"
           />
         ))}
       </div>
-      {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+      {error && <p className="mt-1 text-sm text-destructive">{error}</p>}
     </div>
   );
 }

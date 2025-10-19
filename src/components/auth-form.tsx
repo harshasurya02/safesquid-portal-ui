@@ -678,7 +678,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             checked={acceptTerms}
             onChange={(e) => setAcceptTerms(e.target.checked)}
             className={` w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 ${
-              error.terms ? "border-red-500" : ""
+              error.terms ? "border-destructive" : ""
             }`}
             //   ${
             //   error.terms ? "text-red-500" : ""
@@ -696,7 +696,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             </Link>
           </label>
         </div>
-        {error && <p className="text-sm text-red-500">{error.terms}</p>}
+        {error && <p className="text-sm text-destructive">{error.terms}</p>}
       </div>
       <div className="space-y-[18px]">
         <StatefulButton
@@ -1124,17 +1124,17 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         </div>
 
         {/* Mode Toggle */}
-        <div className="flex bg-gray-100 rounded-lg p-1">
+        <div className="flex bg-neutral-100 rounded-lg space-x-4 p-1">
           <button
             onClick={() => handleModeSwitch("register")}
             disabled={
               showOtpStep || (mode === "register" && registerStep !== "email")
             }
             className={cn(
-              "flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all duration-200",
+              "flex-1 p-[10px] text-sm font-normal rounded-sm transition-all duration-200",
               mode === "register"
-                ? "bg-white text-gray-900 shadow-sm"
-                : "text-gray-600 hover:text-gray-900",
+                ? "bg-white text-black shadow-sm"
+                : "text-black hover:text-gray-900",
               (showOtpStep ||
                 (mode === "register" && registerStep !== "email")) &&
                 "opacity-50 cursor-not-allowed"
@@ -1148,10 +1148,10 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
               showOtpStep || (mode === "register" && registerStep !== "email")
             }
             className={cn(
-              "flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all duration-200",
+              "flex-1 p-[10px] text-sm font-normal rounded-sm transition-all duration-200",
               mode === "login"
-                ? "bg-white text-gray-900 shadow-sm"
-                : "text-gray-600 hover:text-gray-900",
+                ? "bg-white text-black shadow-sm"
+                : "text-black hover:text-gray-900",
               (showOtpStep ||
                 (mode === "register" && registerStep !== "email")) &&
                 "opacity-50 cursor-not-allowed"

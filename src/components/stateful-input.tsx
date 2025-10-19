@@ -67,7 +67,7 @@ const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
                 "border-[1px] border-solid border-primary bg-background",
               // Error
               hasError &&
-                "border-[1px] border-solid border-red-500 bg-background",
+                "border-[1px] border-solid border-destructive bg-background",
               // Extra padding for clear button
               showClearButton && hasValue && "pr-10",
               className
@@ -84,7 +84,7 @@ const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
             </button>
           )}
         </div>
-        {error && <p className="text-sm text-red-500">{error}</p>}
+        {error && <p className="text-sm text-destructive">{error}</p>}
       </div>
     );
   }

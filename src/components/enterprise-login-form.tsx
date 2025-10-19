@@ -78,7 +78,7 @@ export function EnterpriseLoginForm({
 
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-4">
-            <p className="text-sm text-red-600">{error}</p>
+            <p className="text-sm text-destructive">{error}</p>
           </div>
         )}
 
