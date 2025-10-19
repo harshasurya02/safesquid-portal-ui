@@ -950,7 +950,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           type="button"
           variant="inactive"
           onClick={handleBackStep}
-          className="flex-1 md:flex-[0.3]"
+          className="flex-1 h-12 md:flex-[0.3] "
         >
           <div className="flex justify-center gap-2">
             <MoveLeft className="pt-1" />
@@ -960,7 +960,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         <StatefulButton
           type="submit"
           variant="active"
-          className="flex-1 md:flex-[0.7]"
+          className="flex-1 h-12 md:flex-[0.7]"
         >
           Configure authentication
         </StatefulButton>
