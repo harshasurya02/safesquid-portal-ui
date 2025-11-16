@@ -708,16 +708,16 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           {isLoading ? "Please wait..." : "Verify email"}
         </StatefulButton>
 
-        <div className="text-center text-sm text-gray-500 space-y-1">
-          <div className="flex items-center justify-center space-x-4">
-            <span className="flex items-center space-x-1">
-              <CreditCard className="pt-1" />
+        <div className="text-center text-sm text-gray-500">
+          <div className="flex items-center justify-center gap-8">
+            <div className="flex items-center gap-2">
+              <CreditCard className="w-4 h-4 flex-shrink-0" />
               <span>No Credit Card required</span>
-            </span>
-            <span className="flex items-center space-x-1">
-              <Repeat2 className="pt-1" />
+            </div>
+            <div className="flex items-center gap-2">
+              <Repeat2 className="w-4 h-4 flex-shrink-0" />
               <span>Free Forever</span>
-            </span>
+            </div>
           </div>
         </div>
       </div>
