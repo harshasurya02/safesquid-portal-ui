@@ -646,11 +646,11 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
       className="space-y-7 md:space-y-8"
     >
       <div className="text-center">
-        <p className="text-sm text-gray-600">
-          Use business email for{" "}
+        <p className="text-sm md:text-lg text-muted inline">
+          We business email for{" "}
           <Link
             href="/auth/enterprise/MTech"
-            className="text-blue-600 hover:text-blue-700 underline"
+            className="text-primary underline"
           >
             Enterprise Account
           </Link>{" "}
@@ -708,14 +708,14 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           {isLoading ? "Please wait..." : "Verify email"}
         </StatefulButton>
 
-        <div className="text-center text-sm text-gray-500">
-          <div className="flex items-center justify-center gap-8">
-            <div className="flex items-center gap-2">
-              <CreditCard className="w-4 h-4 flex-shrink-0" />
+        <div className="text-center text-sm text-muted">
+          <div className="flex items-center justify-center gap-4">
+            <div className="flex items-center gap-3">
+              <CreditCard className="w-4 h-4 flex-shrink-0" size={16} />
               <span>No Credit Card required</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Repeat2 className="w-4 h-4 flex-shrink-0" />
+            <div className="flex items-center gap-3">
+              <Repeat2 className="w-4 h-4 flex-shrink-0" size={16} />
               <span>Free Forever</span>
             </div>
           </div>
@@ -730,11 +730,11 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
       className="space-y-7 md:space-y-8"
     >
       <div className="text-center">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm md:text-lg text-muted inline">
           We business email for{" "}
           <Link
             href="/auth/enterprise/MTech"
-            className="text-blue-600 hover:text-blue-700 underline"
+            className="text-primary underline"
           >
             Enterprise Account
           </Link>{" "}
@@ -743,7 +743,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
       </div>
 
       <div className="space-y-1">
-        <label className="text-sm font-medium text-foreground">Email</label>
+        <label className="text-sm text-foreground">Email</label>
         <div className="relative">
           <StatefulInput
             type="email"

@@ -13,6 +13,7 @@ import "./globals.css";
 // });
 
 const inter = Inter({
+  weight: "400",
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
