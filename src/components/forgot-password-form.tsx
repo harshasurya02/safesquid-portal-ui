@@ -264,7 +264,7 @@ export function ForgotPasswordForm() {
   return (
     <div className="min-h-[70vh] flex items-center justify-center p-4">
       <div className="w-full ">
-        <div className="bg-white rounded-xl shadow-md p-15 space-y-[42px]">
+        <div className="w-full space-y-6 md:bg-white md:rounded-xl md:shadow-[0_4px_30px_0_rgba(255,106,41,0.10)] md:p-15 md:space-y-[42px]">
           <div className="text-center">
             <h1 className="text-2xl font-semibold text-gray-900">
               Password Reset
@@ -279,7 +279,7 @@ export function ForgotPasswordForm() {
 
           {/* Step: Email */}
           {step === "email" && (
-            <form onSubmit={initiate} className="space-y-8">
+            <form onSubmit={initiate} className="space-y-7 md:space-y-8">
               <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Email
@@ -315,7 +315,10 @@ export function ForgotPasswordForm() {
 
           {/* Step: OTP */}
           {step === "otp" && (
-            <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
+            <form
+              onSubmit={(e) => e.preventDefault()}
+              className="space-y-7 md:space-y-8"
+            >
               <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Email
