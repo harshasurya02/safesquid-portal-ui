@@ -97,8 +97,8 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
       });
     };
 
-    checkPasswordConditions(password);
-  }, [password]);
+    checkPasswordConditions(registerPassword);
+  }, [registerPassword]);
 
   const handleModeSwitch = (newMode: "login" | "register") => {
     // Reset all states
