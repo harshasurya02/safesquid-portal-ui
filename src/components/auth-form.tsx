@@ -7,12 +7,12 @@ import { useRouter } from "next/navigation";
 import {
   Eye,
   EyeOff,
-  Edit2,
+  // Edit2,
   ChevronDown,
   Repeat2,
   CreditCard,
-  ChevronLeft,
-  MoveLeft,
+  // ChevronLeft,
+  // MoveLeft,
 } from "lucide-react";
 import { StatefulInput } from "@/components/stateful-input";
 import { StatefulButton } from "@/components/stateful-button";
@@ -680,7 +680,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
     >
       <div className="text-center">
         <p className="text-sm md:text-lg text-muted inline">
-          We business email for{" "}
+          Use business email for{" "}
           <Link
             href="/auth/enterprise/MTech"
             className="text-primary underline"
@@ -765,7 +765,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
     >
       <div className="text-center">
         <p className="text-sm md:text-lg text-muted inline">
-          We business email for{" "}
+          Use business email for{" "}
           <Link
             href="/auth/enterprise/MTech"
             className="text-primary underline"
@@ -951,7 +951,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             type={showConfirmPassword ? "text" : "password"}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="••••••••"
+            placeholder="••••••••••••"
             error={error.confirmPassword || undefined}
             showClearButton={false}
             rightElement={
