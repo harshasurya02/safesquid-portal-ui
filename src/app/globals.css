@@ -120,3 +120,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Hide password reveal button in MS Edge */
+input::-ms-reveal {
+  display: none;
+}
+
+/* Optional: You may also hide the clear button, which sometimes appears in IE/Edge */
+input::-ms-clear {
+  display: none;
+}

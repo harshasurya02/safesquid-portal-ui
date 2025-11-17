@@ -981,7 +981,16 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         <p className="font-medium mb-1">For a strong password:</p>
         <p>
           We recommend minimum{" "}
-          <span className="font-medium">12 characters</span> with atleast{" "}
+          <span
+            className={
+              passwordConditions.minLength
+                ? "font-medium text-primary"
+                : "font-medium"
+            }
+          >
+            12 characters
+          </span>{" "}
+          with atleast{" "}
           <span className={passwordConditions.upperCase ? "text-primary" : ""}>
             one upper case
           </span>
@@ -1001,22 +1010,18 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
       </div>
 
       <div className="flex flex-col md:flex-row space-x-5 space-y-2">
-        <StatefulButton
+        {/* <StatefulButton
           type="button"
           variant="inactive"
           onClick={handleBackStep}
           className="flex-1 h-12 md:flex-[0.3] "
         >
           <div className="flex justify-center gap-2">
-            {/* <MoveLeft className="pt-1" /> */}
+            
             <span>Back</span>
           </div>
-        </StatefulButton>
-        <StatefulButton
-          type="submit"
-          variant="active"
-          className="flex-1 h-12 md:flex-[0.7]"
-        >
+        </StatefulButton> */}
+        <StatefulButton type="submit" variant="active" className="flex-1 h-12">
           Configure authentication
         </StatefulButton>
       </div>

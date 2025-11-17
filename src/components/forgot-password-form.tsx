@@ -509,8 +509,16 @@ export function ForgotPasswordForm() {
                 <p className="font-medium mb-1">For a strong password:</p>
                 <p>
                   We recommend minimum{" "}
-                  <span className="font-medium">12 characters</span> with
-                  atleast{" "}
+                  <span
+                    className={
+                      passwordConditions.minLength
+                        ? "font-medium text-primary"
+                        : "font-medium"
+                    }
+                  >
+                    12 characters
+                  </span>{" "}
+                  with atleast{" "}
                   <span
                     className={
                       passwordConditions.upperCase ? "text-primary" : ""
