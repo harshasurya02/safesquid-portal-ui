@@ -11,6 +11,7 @@ interface StatefulInputProps
   error?: string;
   showClearButton?: boolean;
   onClear?: () => void;
+  rightElement?: React.ReactNode;
 }
 
 const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
@@ -23,6 +24,7 @@ const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
       onClear,
       value,
       onChange,
+      rightElement,
       ...props
     },
     ref
@@ -41,6 +43,8 @@ const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
       }
     };
 
+    const showRightElement = rightElement || (showClearButton && hasValue);
+
     return (
       <div className="space-y-1">
         {label && (
@@ -54,7 +58,7 @@ const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             className={cn(
-              "flex h-[48px] w-full rounded-md border px-[20px] py-[12px] text-sm transition-colors",
+              "flex h-[48px] w-full rounded-[5px] border px-[20px] py-[12px] text-sm transition-colors",
               "file:border-0 file:bg-transparent file:text-sm file:font-medium",
               "placeholder:text-muted-foreground",
               "focus-visible:outline-none",
@@ -74,7 +78,21 @@ const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
             )}
             {...props}
           />
-          {showClearButton && hasValue && (
+          {showRightElement && (
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+              {showClearButton && hasValue && (
+                <button
+                  type="button"
+                  onClick={handleClear}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+              {rightElement}
+            </div>
+          )}
+          {/* {showClearButton && hasValue && (
             <button
               type="button"
               onClick={handleClear}
@@ -82,7 +100,7 @@ const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
             >
               <X className="h-4 w-4" />
             </button>
-          )}
+          )} */}
         </div>
         {error && <p className="text-sm text-destructive">{error}</p>}
       </div>

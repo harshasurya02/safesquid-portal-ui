@@ -41,6 +41,13 @@ const defaultErrorState = {
 };
 
 type RegisterStep = "email" | "otp" | "password" | "details";
+type PasswordCondition = {
+  upperCase: boolean;
+  lowerCase: boolean;
+  symbol: boolean;
+  number: boolean;
+  minLength: boolean;
+};
 
 export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   const router = useRouter();
@@ -62,6 +69,14 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   // Registration states
   const [registerStep, setRegisterStep] = useState<RegisterStep>("email");
   const [registerPassword, setRegisterPassword] = useState("");
+  const [passwordConditions, setPasswordConditions] =
+    useState<PasswordCondition>({
+      upperCase: false,
+      lowerCase: false,
+      number: false,
+      minLength: false,
+      symbol: false,
+    });
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -71,9 +86,19 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   const [countryCode, setCountryCode] = useState("+91");
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  // useEffect(() => {
-  //   console.log(error);
-  // }, [error]);
+  useEffect(() => {
+    const checkPasswordConditions = (pass: string) => {
+      setPasswordConditions({
+        upperCase: /[A-Z]/.test(pass), // At least one uppercase letter
+        lowerCase: /[a-z]/.test(pass), // At least one lowercase letter
+        number: /[0-9]/.test(pass), // At least one number
+        minLength: pass.length >= 12, // At least 12 characters
+        symbol: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pass), // At least one symbol
+      });
+    };
+
+    checkPasswordConditions(password);
+  }, [password]);
 
   const handleModeSwitch = (newMode: "login" | "register") => {
     // Reset all states
@@ -482,7 +507,11 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   };
 
   const renderLoginForm = () => (
-    <form onSubmit={handleLoginSubmit} className="space-y-7 md:space-y-8">
+    <form
+      onSubmit={handleLoginSubmit}
+      className="space-y-7 md:space-y-8"
+      noValidate
+    >
       <div className="space-y-1">
         <label className="text-sm font-medium text-foreground">Email</label>
         <div className="relative">
@@ -549,7 +578,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             </label>
             <Link
               href={forgotPasswordLink || ""}
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              className="text-sm text-primary font-medium"
             >
               Forgot Password?
             </Link>
@@ -559,26 +588,29 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="pr-10"
+              placeholder="••••••••••••"
+              // className="pr-10"
               error={error.password || undefined}
+              showClearButton={false}
+              rightElement={
+                <div
+                  // type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className=" text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center  w-8 h-8"
+                >
+                  {showPassword ? (
+                    <InfoTooltip content={"Hide Password"}>
+                      <EyeOff className="w-6 h-6" />
+                    </InfoTooltip>
+                  ) : (
+                    <InfoTooltip content={"Show Password"}>
+                      <Eye className="w-6 h-6" />
+                    </InfoTooltip>
+                  )}
+                </div>
+              }
               required
             />
-            <div
-              // type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-            >
-              {showPassword ? (
-                <InfoTooltip content={"Hide Password"}>
-                  <EyeOff className="w-4 h-4" />
-                </InfoTooltip>
-              ) : (
-                <InfoTooltip content={"Show Password"}>
-                  <Eye className="w-4 h-4" />
-                </InfoTooltip>
-              )}
-            </div>
           </div>
           {/* <div className="text-sm text-gray-600 mt-2">
             <Link
@@ -644,6 +676,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
     <form
       onSubmit={handleRegisterEmailSubmit}
       className="space-y-7 md:space-y-8"
+      noValidate
     >
       <div className="text-center">
         <p className="text-sm md:text-lg text-muted inline">
@@ -677,7 +710,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             id="terms"
             checked={acceptTerms}
             onChange={(e) => setAcceptTerms(e.target.checked)}
-            className={` w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 ${
+            className={` w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary ${
               error.terms ? "border-destructive" : ""
             }`}
             //   ${
@@ -728,6 +761,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
     <form
       onSubmit={(e) => e.preventDefault()}
       className="space-y-7 md:space-y-8"
+      noValidate
     >
       <div className="text-center">
         <p className="text-sm md:text-lg text-muted inline">
@@ -822,7 +856,11 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   );
 
   const renderPasswordStep = () => (
-    <form onSubmit={handlePasswordSubmit} className="space-y-5 md:space-y-6">
+    <form
+      onSubmit={handlePasswordSubmit}
+      className="space-y-5 md:space-y-6"
+      noValidate
+    >
       <div className="space-y-1">
         <label className="text-sm font-medium text-foreground">Email</label>
         <div className="relative">
@@ -881,23 +919,26 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             placeholder="••••••••••••"
             className="pr-10"
             error={error.password || undefined}
+            showClearButton={false}
+            rightElement={
+              <div
+                // type="button"
+                onClick={() => setShowRegisterPassword(!showRegisterPassword)}
+                className=" text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center  w-8 h-8"
+              >
+                {showRegisterPassword ? (
+                  <InfoTooltip content={"Hide Password"}>
+                    <EyeOff className="w-6 h-6" />
+                  </InfoTooltip>
+                ) : (
+                  <InfoTooltip content={"Show Password"}>
+                    <Eye className="w-6 h-6" />
+                  </InfoTooltip>
+                )}
+              </div>
+            }
             required
           />
-          <div
-            // type="button"
-            onClick={() => setShowRegisterPassword(!showRegisterPassword)}
-            className="absolute right-3 top-1/3 -translate-y-1/3 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
-          >
-            {showRegisterPassword ? (
-              <InfoTooltip content={"Hide Password"}>
-                <EyeOff className="w-4 h-4" />
-              </InfoTooltip>
-            ) : (
-              <InfoTooltip content={"Show Password"}>
-                <Eye className="w-4 h-4" />
-              </InfoTooltip>
-            )}
-          </div>
         </div>
       </div>
 
@@ -912,24 +953,27 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="••••••••"
             error={error.confirmPassword || undefined}
+            showClearButton={false}
+            rightElement={
+              <div
+                // type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className=" text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center w-8 h-8"
+              >
+                {showConfirmPassword ? (
+                  <InfoTooltip content={"Hide Password"}>
+                    <EyeOff className="w-6 h-6" />
+                  </InfoTooltip>
+                ) : (
+                  <InfoTooltip content={"Show Password"}>
+                    <Eye className="w-6 h-6" />
+                  </InfoTooltip>
+                )}
+              </div>
+            }
             // className="pr-10"
             required
           />
-          <div
-            // type="button"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute right-3 top-1/3 -translate-y-1/3 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
-          >
-            {showConfirmPassword ? (
-              <InfoTooltip content={"Hide Password"}>
-                <EyeOff className="w-4 h-4" />
-              </InfoTooltip>
-            ) : (
-              <InfoTooltip content={"Show Password"}>
-                <Eye className="w-4 h-4" />
-              </InfoTooltip>
-            )}
-          </div>
         </div>
       </div>
 
@@ -938,10 +982,21 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         <p>
           We recommend minimum{" "}
           <span className="font-medium">12 characters</span> with atleast{" "}
-          <span className="text-blue-600">one upper case</span>,{" "}
-          <span className="text-blue-600">lower case</span>,{" "}
-          <span className="text-blue-600">number</span> and{" "}
-          <span className="text-blue-600">symbol</span>
+          <span className={passwordConditions.upperCase ? "text-primary" : ""}>
+            one upper case
+          </span>
+          ,{" "}
+          <span className={passwordConditions.lowerCase ? "text-primary" : ""}>
+            lower case
+          </span>
+          ,{" "}
+          <span className={passwordConditions.number ? "text-primary" : ""}>
+            number
+          </span>{" "}
+          and{" "}
+          <span className={passwordConditions.symbol ? "text-primary" : ""}>
+            symbol
+          </span>
         </p>
       </div>
 
@@ -953,7 +1008,7 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
           className="flex-1 h-12 md:flex-[0.3] "
         >
           <div className="flex justify-center gap-2">
-            <MoveLeft className="pt-1" />
+            {/* <MoveLeft className="pt-1" /> */}
             <span>Back</span>
           </div>
         </StatefulButton>
@@ -969,7 +1024,11 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
   );
 
   const renderDetailsStep = () => (
-    <form onSubmit={handleDetailsSubmit} className="space-y-5 md:space-y-6">
+    <form
+      onSubmit={handleDetailsSubmit}
+      className="space-y-5 md:space-y-6"
+      noValidate
+    >
       <div className="space-y-1">
         <label className="text-sm font-medium text-foreground">Name</label>
         <StatefulInput
@@ -1075,20 +1134,20 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
 
       <div className="flex space-x-3">
         <StatefulButton
-          type="button"
-          variant="outline"
-          onClick={handleBackStep}
-          className="flex-1"
-        >
-          Back
-        </StatefulButton>
-        <StatefulButton
           type="submit"
           variant={isLoading ? "inactive" : "active"}
           disabled={isLoading}
           className="flex-1"
         >
           {isLoading ? "Please wait..." : "Setup first SafeSquid"}
+        </StatefulButton>
+        <StatefulButton
+          type="button"
+          variant="outline"
+          onClick={handleBackStep}
+          className="flex-1"
+        >
+          Back
         </StatefulButton>
       </div>
 
@@ -1124,17 +1183,17 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
         </div>
 
         {/* Mode Toggle */}
-        <div className="flex bg-neutral-100 rounded-lg space-x-4 p-1">
+        <div className="flex bg-neutral-100 rounded-lg space-x-0 p-1">
           <button
             onClick={() => handleModeSwitch("register")}
             disabled={
               showOtpStep || (mode === "register" && registerStep !== "email")
             }
             className={cn(
-              "flex-1 p-[10px] text-sm font-normal rounded-sm transition-all duration-200",
+              "flex-1 p-[10px] h-[55px] text-sm md:text-lg font-normal  rounded-sm transition-all duration-200",
               mode === "register"
-                ? "bg-white text-black shadow-sm"
-                : "text-black hover:text-gray-900",
+                ? "bg-white text-accent shadow-sm"
+                : "text-accent-foreground",
               (showOtpStep ||
                 (mode === "register" && registerStep !== "email")) &&
                 "opacity-50 cursor-not-allowed"
@@ -1148,10 +1207,10 @@ export function AuthForm({ mode, forgotPasswordLink }: AuthFormProps) {
               showOtpStep || (mode === "register" && registerStep !== "email")
             }
             className={cn(
-              "flex-1 p-[10px] text-sm font-normal rounded-sm transition-all duration-200",
+              "flex-1 p-[10px] h-[55px] text-sm md:text-lg font-normal  rounded-sm transition-all duration-200",
               mode === "login"
-                ? "bg-white text-black shadow-sm"
-                : "text-black hover:text-gray-900",
+                ? "bg-white text-accent shadow-sm"
+                : "text-accent-foreground",
               (showOtpStep ||
                 (mode === "register" && registerStep !== "email")) &&
                 "opacity-50 cursor-not-allowed"

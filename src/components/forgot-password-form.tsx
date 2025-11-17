@@ -9,6 +9,7 @@ import { StatefulInput } from "@/components/stateful-input";
 import { StatefulButton } from "@/components/stateful-button";
 import { OtpInput } from "@/components/otp-input";
 import { validateFormFields } from "@/services/validation.service";
+import { Edit } from "./icons/edit";
 
 type Step = "email" | "otp" | "password" | "success";
 
@@ -20,6 +21,13 @@ const defaultErrorState = {
   network: "",
   common: "",
 };
+type PasswordCondition = {
+  upperCase: boolean;
+  lowerCase: boolean;
+  symbol: boolean;
+  number: boolean;
+  minLength: boolean;
+};
 
 export function ForgotPasswordForm() {
   const router = useRouter();
@@ -30,6 +38,14 @@ export function ForgotPasswordForm() {
   const [email, setEmail] = useState(prefillEmail);
   const [otp, setOtp] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConditions, setPasswordConditions] =
+    useState<PasswordCondition>({
+      upperCase: false,
+      lowerCase: false,
+      number: false,
+      minLength: false,
+      symbol: false,
+    });
   const [confirm, setConfirm] = useState("");
   const [showPwd, setShowPwd] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -47,12 +63,18 @@ export function ForgotPasswordForm() {
     console.log(error);
   }, [error]);
 
-  const passwordValid = useMemo(() => {
-    const lengthOk = password.length >= 12;
-    const upper = /[A-Z]/.test(password);
-    const lower = /[a-z]/.test(password);
-    const digit = /[0-9]/.test(password);
-    return lengthOk && upper && lower && digit;
+  useEffect(() => {
+    const checkPasswordConditions = (pass: string) => {
+      setPasswordConditions({
+        upperCase: /[A-Z]/.test(pass), // At least one uppercase letter
+        lowerCase: /[a-z]/.test(pass), // At least one lowercase letter
+        number: /[0-9]/.test(pass), // At least one number
+        minLength: pass.length >= 12, // At least 12 characters
+        symbol: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pass), // At least one symbol
+      });
+    };
+
+    checkPasswordConditions(password);
   }, [password]);
 
   async function initiate(e: React.FormEvent) {
@@ -279,7 +301,11 @@ export function ForgotPasswordForm() {
 
           {/* Step: Email */}
           {step === "email" && (
-            <form onSubmit={initiate} className="space-y-7 md:space-y-8">
+            <form
+              onSubmit={initiate}
+              className="space-y-7 md:space-y-8"
+              noValidate
+            >
               <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Email
@@ -293,7 +319,7 @@ export function ForgotPasswordForm() {
                   required
                 />
               </div>
-              <div className="flex space-x-5">
+              <div className="flex flex-col md:flex-row space-x-5 space-y-2">
                 <StatefulButton
                   type="button"
                   variant={"outline"}
@@ -318,6 +344,7 @@ export function ForgotPasswordForm() {
             <form
               onSubmit={(e) => e.preventDefault()}
               className="space-y-7 md:space-y-8"
+              noValidate
             >
               <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
@@ -333,10 +360,10 @@ export function ForgotPasswordForm() {
                   <button
                     type="button"
                     onClick={() => setStep("email")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                     aria-label="Edit email"
                   >
-                    <Edit2 className="w-4 h-4" />
+                    <Edit />
                   </button>
                 </div>
               </div>
@@ -364,7 +391,7 @@ export function ForgotPasswordForm() {
                 />
               </div>
 
-              <div className="flex space-x-5">
+              <div className="flex flex-col md:flex-row space-x-5 space-y-2">
                 <StatefulButton
                   type="button"
                   variant="outline"
@@ -387,7 +414,7 @@ export function ForgotPasswordForm() {
 
           {/* Step: Password */}
           {step === "password" && (
-            <form onSubmit={complete} className="space-y-8">
+            <form onSubmit={complete} className="space-y-8" noValidate>
               <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">
                   Email
@@ -405,7 +432,13 @@ export function ForgotPasswordForm() {
                     onClick={() => setStep("otp")}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    <Edit2 className="w-4 h-4" />
+                    {/* <button
+                      type="button"
+                      onClick={handleEditEmail}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    > */}
+                    <Edit />
+                    {/* </button> */}
                   </button>
                 </div>
               </div>
@@ -419,22 +452,25 @@ export function ForgotPasswordForm() {
                     type={showPwd ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
+                    placeholder="••••••••••••"
                     className="pr-10"
                     error={error?.password}
+                    showClearButton={false}
+                    rightElement={
+                      <button
+                        type="button"
+                        onClick={() => setShowPwd((s) => !s)}
+                        className=" text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center w-8 h-8"
+                      >
+                        {showPwd ? (
+                          <EyeOff className="w-6 h-6" />
+                        ) : (
+                          <Eye className="w-6 h-6" />
+                        )}
+                      </button>
+                    }
                     required
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPwd((s) => !s)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    {showPwd ? (
-                      <EyeOff className="w-4 h-4" />
-                    ) : (
-                      <Eye className="w-4 h-4" />
-                    )}
-                  </button>
                 </div>
               </div>
 
@@ -447,36 +483,65 @@ export function ForgotPasswordForm() {
                     type={showConfirm ? "text" : "password"}
                     value={confirm}
                     onChange={(e) => setConfirm(e.target.value)}
-                    placeholder="••••••••"
+                    placeholder="••••••••••••"
                     error={error?.confirmPassword}
                     className="pr-10"
+                    showClearButton={false}
+                    rightElement={
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirm((s) => !s)}
+                        className=" text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center w-8 h-8"
+                      >
+                        {showConfirm ? (
+                          <EyeOff className="w-6 h-6" />
+                        ) : (
+                          <Eye className="w-6 h-6" />
+                        )}
+                      </button>
+                    }
                     required
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirm((s) => !s)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    {showConfirm ? (
-                      <EyeOff className="w-4 h-4" />
-                    ) : (
-                      <Eye className="w-4 h-4" />
-                    )}
-                  </button>
                 </div>
               </div>
 
               <div className="text-sm text-gray-600">
                 <p className="font-medium mb-1">For a strong password:</p>
                 <p>
-                  Minimum <span className="font-medium">8 characters</span> with
-                  at least <span className="text-blue-600">one uppercase</span>,{" "}
-                  <span className="text-blue-600">one lowercase</span>, and{" "}
-                  <span className="text-blue-600">one number</span>.
+                  We recommend minimum{" "}
+                  <span className="font-medium">12 characters</span> with
+                  atleast{" "}
+                  <span
+                    className={
+                      passwordConditions.upperCase ? "text-primary" : ""
+                    }
+                  >
+                    one upper case
+                  </span>
+                  ,{" "}
+                  <span
+                    className={
+                      passwordConditions.lowerCase ? "text-primary" : ""
+                    }
+                  >
+                    lower case
+                  </span>
+                  ,{" "}
+                  <span
+                    className={passwordConditions.number ? "text-primary" : ""}
+                  >
+                    number
+                  </span>{" "}
+                  and{" "}
+                  <span
+                    className={passwordConditions.symbol ? "text-primary" : ""}
+                  >
+                    symbol
+                  </span>
                 </p>
               </div>
 
-              <div className="flex space-x-3">
+              <div className="flex flex-col md:flex-row md:space-x-5 space-y-2">
                 <StatefulButton
                   type="button"
                   variant="outline"
