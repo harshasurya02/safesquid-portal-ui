@@ -13,7 +13,7 @@ export function validateFormFields(
     },
     password: (value) => {
       const regex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])(?!.*\s).{12,}$/;
       return regex.test(value) ? null : "Invalid Password";
     },
     confirmPassword: (value) => {

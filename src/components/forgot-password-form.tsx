@@ -319,12 +319,12 @@ export function ForgotPasswordForm() {
                   required
                 />
               </div>
-              <div className="flex flex-col md:flex-row space-x-5 space-y-2">
+              <div className="flex flex-col md:flex-row gap-5">
                 <StatefulButton
                   type="button"
                   variant={"outline"}
                   onClick={() => router.push("/auth/login")}
-                  // disabled={isLoading}
+                  className="flex-1"
                 >
                   {"Back"}
                 </StatefulButton>
@@ -332,6 +332,7 @@ export function ForgotPasswordForm() {
                   type="submit"
                   variant={isLoading ? "inactive" : "active"}
                   disabled={isLoading}
+                  className="flex-1"
                 >
                   {isLoading ? "Please wait..." : "Send OTP"}
                 </StatefulButton>
@@ -356,15 +357,18 @@ export function ForgotPasswordForm() {
                     value={email}
                     disabled
                     className="bg-gray-50"
+                    rightElement={
+                      <div
+                        // type="button"
+                        onClick={() => setStep("email")}
+                        className=" text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center w-8 h-8"
+                        aria-label="Edit email"
+                      >
+                        <Edit />
+                      </div>
+                    }
                   />
-                  <button
-                    type="button"
-                    onClick={() => setStep("email")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                    aria-label="Edit email"
-                  >
-                    <Edit />
-                  </button>
+
                 </div>
               </div>
 
@@ -391,7 +395,7 @@ export function ForgotPasswordForm() {
                 />
               </div>
 
-              <div className="flex flex-col md:flex-row space-x-5 space-y-2">
+              <div className="flex flex-col md:flex-row md:gap-x-5 gap-y-2">
                 <StatefulButton
                   type="button"
                   variant="outline"
@@ -426,20 +430,21 @@ export function ForgotPasswordForm() {
                     disabled
                     className="bg-gray-50"
                     error={error?.email}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setStep("otp")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    {/* <button
+                    rightElement={<button
+                      type="button"
+                      onClick={() => setStep("email")}
+                      className=" text-gray-400 hover:text-gray-600"
+                    >
+                      {/* <button
                       type="button"
                       onClick={handleEditEmail}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                     > */}
-                    <Edit />
-                    {/* </button> */}
-                  </button>
+                      <Edit />
+                      {/* </button> */}
+                    </button>}
+                  />
+
                 </div>
               </div>
 
@@ -512,8 +517,8 @@ export function ForgotPasswordForm() {
                   <span
                     className={
                       passwordConditions.minLength
-                        ? "font-medium text-primary"
-                        : "font-medium"
+                        ? "font-medium"
+                        : "font-medium text-primary"
                     }
                   >
                     12 characters
@@ -521,7 +526,7 @@ export function ForgotPasswordForm() {
                   with atleast{" "}
                   <span
                     className={
-                      passwordConditions.upperCase ? "text-primary" : ""
+                      passwordConditions.upperCase ? "" : "text-primary"
                     }
                   >
                     one upper case
@@ -529,27 +534,27 @@ export function ForgotPasswordForm() {
                   ,{" "}
                   <span
                     className={
-                      passwordConditions.lowerCase ? "text-primary" : ""
+                      passwordConditions.lowerCase ? "" : "text-primary"
                     }
                   >
                     lower case
                   </span>
                   ,{" "}
                   <span
-                    className={passwordConditions.number ? "text-primary" : ""}
+                    className={passwordConditions.number ? "" : "text-primary"}
                   >
                     number
                   </span>{" "}
                   and{" "}
                   <span
-                    className={passwordConditions.symbol ? "text-primary" : ""}
+                    className={passwordConditions.symbol ? "" : "text-primary"}
                   >
                     symbol
                   </span>
                 </p>
               </div>
 
-              <div className="flex flex-col md:flex-row md:space-x-5 space-y-2">
+              <div className="flex flex-col md:flex-row md:gap-x-5 gap-y-2">
                 <StatefulButton
                   type="button"
                   variant="outline"

@@ -20,7 +20,8 @@ export function OtpInput({
   value = "",
   onReset,
   error,
-}: OtpInputProps) {
+  onChange,
+}: OtpInputProps & { onChange?: (value: string) => void }) {
   const [otp, setOtp] = useState<string[]>(new Array(length).fill(""));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -43,13 +44,15 @@ export function OtpInput({
     newOtp[index] = char;
     setOtp(newOtp);
 
+    const otpValue = newOtp.join("");
+    onChange?.(otpValue);
+
     // move to next input if not empty
     if (char && index < length - 1) {
       inputRefs.current[index + 1]?.focus();
     }
 
     // call onComplete if all filled
-    const otpValue = newOtp.join("");
     if (otpValue.length === length) {
       onComplete?.(otpValue);
     }
@@ -107,7 +110,9 @@ export function OtpInput({
           />
         ))}
       </div>
-      {error && <p className="mt-1 text-sm text-destructive">{error}</p>}
+      <div className="min-h-[24px] mt-1 -mb-[24px]">
+        {error && <p className="text-sm text-destructive">{error}</p>}
+      </div>
     </div>
   );
 }

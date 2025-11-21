@@ -46,9 +46,9 @@ const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
     const showRightElement = rightElement || (showClearButton && hasValue);
 
     return (
-      <div className="space-y-1">
+      <div>
         {label && (
-          <label className="text-sm font-medium text-foreground">{label}</label>
+          <label className="text-sm font-medium text-foreground mb-1 block">{label}</label>
         )}
         <div className="relative">
           <input
@@ -67,11 +67,11 @@ const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
               !isFocused && !hasError && "border-input bg-background",
               // Focused
               isFocused &&
-                !hasError &&
-                "border-[1px] border-solid border-primary bg-background",
+              !hasError &&
+              "border-[1px] border-solid border-primary bg-background",
               // Error
               hasError &&
-                "border-[1px] border-solid border-destructive bg-background",
+              "border-[1px] border-solid border-destructive bg-background",
               // Extra padding for clear button
               showClearButton && hasValue && "pr-10",
               className
@@ -92,17 +92,10 @@ const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
               {rightElement}
             </div>
           )}
-          {/* {showClearButton && hasValue && (
-            <button
-              type="button"
-              onClick={handleClear}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          )} */}
         </div>
-        {error && <p className="text-xs text-destructive">{error}</p>}
+        <div className="min-h-[20px] -mb-[20px]">
+          {error && <p className="text-xs text-destructive mt-1">{error}</p>}
+        </div>
       </div>
     );
   }
