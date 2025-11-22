@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
 const AuthModeSwitcher = ({ mode }: { mode: "login" | "register" }) => {
@@ -6,12 +5,6 @@ const AuthModeSwitcher = ({ mode }: { mode: "login" | "register" }) => {
     const router = useRouter();
 
     const handleModeSwitch = (newMode: "login" | "register") => {
-        // Reset all states
-        // setShowOtpStep(false);
-        // setRegisterStep("email");
-        // setOtp("");
-        // setError(defaultErrorState);
-        // setAcceptTerms(false);
         router.push(`/auth/${newMode}`);
     };
 

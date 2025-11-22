@@ -64,7 +64,7 @@ export function EnterpriseLoginForm({
           <h1 className="text-2xl font-semibold text-gray-900">
             Welcome to <span className="text-blue-600">{orgName}</span>
           </h1>
-          <p className="text-sm text-gray-600 mt-2">
+          <p className="mx-auto text-sm text-gray-600 mt-2">
             Use business email for{" "}
             <Link
               href="#"

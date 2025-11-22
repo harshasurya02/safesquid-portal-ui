@@ -119,7 +119,7 @@ export const RegisterEmailStep = ({
                     {isLoading ? "Please wait..." : "Verify email"}
                 </StatefulButton>
 
-                <div className="text-center text-sm text-muted">
+                <div className="text-sm text-muted">
                     <div className="flex items-center justify-center gap-4">
                         <div className="flex items-center gap-3">
                             <CreditCard className="w-4 h-4 flex-shrink-0" size={16} />

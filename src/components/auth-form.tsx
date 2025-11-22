@@ -27,14 +27,6 @@ export function AuthForm({ mode }: AuthFormProps) {
         {/* Mode Toggle */}
         <AuthModeSwitcher mode={mode} />
 
-        {/* Error Message */}
-        {/* {error && (
-          <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-6">
-            <p className="text-sm text-red-600">{error}</p>
-          </div>
-        )} */}
-
-        {/* Form Content */}
         {mode === "login" ? <LoginForm forgotPasswordLink={"/auth/forgot-password"} /> : <RegisterForm />}
       </div>
     </div>
