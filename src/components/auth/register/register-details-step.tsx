@@ -157,20 +157,20 @@ export const RegisterDetailsStep = ({
 
             <div className="flex space-x-3">
                 <StatefulButton
-                    type="submit"
-                    variant={isLoading ? "inactive" : "active"}
-                    disabled={isLoading}
-                    className="flex-1"
-                >
-                    {isLoading ? "Please wait..." : "Setup first SafeSquid"}
-                </StatefulButton>
-                <StatefulButton
                     type="button"
                     variant="outline"
                     onClick={onBack}
                     className="flex-1"
                 >
                     Back
+                </StatefulButton>
+                <StatefulButton
+                    type="submit"
+                    variant={isLoading ? "inactive" : "active"}
+                    disabled={isLoading}
+                    className="flex-1"
+                >
+                    {isLoading ? "Please wait..." : "Setup first SafeSquid"}
                 </StatefulButton>
             </div>
 

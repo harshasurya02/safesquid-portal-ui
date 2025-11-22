@@ -28,13 +28,13 @@ const RegisterForm = () => {
     };
 
     const handleBackStep = () => {
-        if (registerStep === "otp") {
-            setRegisterStep("email");
-        } else if (registerStep === "password") {
-            setRegisterStep("otp");
-        } else if (registerStep === "details") {
-            setRegisterStep("password");
-        }
+        // if (registerStep === "otp") {
+        setRegisterStep("email");
+        // } else if (registerStep === "password") {
+        //     setRegisterStep("otp");
+        // } else if (registerStep === "details") {
+        //     setRegisterStep("password");
+        // }
     };
 
     const renderRegisterForm = () => {

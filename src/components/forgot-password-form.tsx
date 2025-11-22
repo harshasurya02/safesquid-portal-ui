@@ -244,7 +244,7 @@ export function ForgotPasswordForm() {
   if (step === "success") {
     return (
       <div className="min-h-[85vh] flex items-center justify-center">
-        <div className="w-full max-w-sm bg-white rounded-xl shadow-md pt-[20px] px-[16px] pb-[16px] text-center">
+        <div className="w-full max-w-sm bg-white rounded-xl shadow-md pt-[1.25rem] px-4 pb-4 text-center">
           <div className="w-full flex justify-center mb-4">
             <div
               className="flex items-center justify-center w-12 h-12 rounded-full"

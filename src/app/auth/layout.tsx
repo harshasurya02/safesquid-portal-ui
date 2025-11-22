@@ -16,14 +16,14 @@ export default function AuthLayout({
           width={211}
           height={32}
           alt="SafeSquid"
-          className="h-8 w-[211px]"
+          className="h-8 w-[13.18988rem]"
         />
         <HelpCircle className="w-5 h-5 text-gray-400" />
       </div>
 
       {/* Main content */}
       <div className="flex flex-col items-center justify-center px-4 pb-4 min-h-screen md:min-h-auto">
-        <div className="w-full p-2 md:max-w-[552px] md:p-0 my-auto">
+        <div className="w-full p-2 md:max-w-[34.5rem] md:p-0 my-auto">
           {children}
         </div>
       </div>

@@ -93,7 +93,7 @@ const StatefulInput = forwardRef<HTMLInputElement, StatefulInputProps>(
             </div>
           )}
         </div>
-        <div className="min-h-[20px] -mb-[20px]">
+        <div className="min-h-[20px] -mb-[22px]">
           {error && <p className="text-xs text-destructive mt-1">{error}</p>}
         </div>
       </div>
