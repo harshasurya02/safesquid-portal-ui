@@ -106,7 +106,7 @@ export const RegisterEmailStep = ({
                 </div>
                 <div className="min-h-[20px] -mb-[20px]">
                     {errors.terms && (
-                        <p className="text-sm text-destructive">{errors.terms.message}</p>
+                        <p className="text-xs text-destructive">{errors.terms.message}</p>
                     )}
                 </div>
             </div>
