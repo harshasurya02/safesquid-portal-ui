@@ -139,7 +139,7 @@ const LoginForm = ({ forgotPasswordLink }: { forgotPasswordLink: string }) => {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/signin/initiate`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/signin/resend-otp`,
         {
           method: "POST",
           headers: {

@@ -53,7 +53,7 @@ export const RegisterOtpStep = ({
 
         try {
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/signup/initiate`,
+                `${process.env.NEXT_PUBLIC_API_URL}/api/signup/resend-otp`,
                 {
                     method: "POST",
                     headers: {
@@ -127,14 +127,15 @@ export const RegisterOtpStep = ({
                         value={email}
                         disabled
                         className="bg-gray-50"
+                        rightElement={<button
+                            type="button"
+                            onClick={onEditEmail}
+                            className=" text-gray-400 hover:text-gray-600 transition-colors h-[24px] w-[24px]"
+                        >
+                            <Edit />
+                        </button>}
                     />
-                    <button
-                        type="button"
-                        onClick={onEditEmail}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors h-[24px] w-[24px]"
-                    >
-                        <Edit />
-                    </button>
+
                 </div>
             </div>
 
