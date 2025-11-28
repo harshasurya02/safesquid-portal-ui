@@ -3,9 +3,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { StatefulInput } from "@/components/stateful-input";
 import { StatefulButton } from "@/components/stateful-button";
 import { OtpInput } from "@/components/otp-input";
-import { Edit } from "../icons/edit";
 import { otpSchema, type OtpSchema } from "./schema";
 import { useEffect } from "react";
+import { Edit2 } from "lucide-react";
 
 interface OtpStepProps {
     email: string;
@@ -74,7 +74,7 @@ export function OtpStep({
                                 className="text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center w-8 h-8 cursor-pointer"
                                 aria-label="Edit email"
                             >
-                                <Edit />
+                                <Edit2 className="w-6 h-6" />
                             </div>
                         }
                     />

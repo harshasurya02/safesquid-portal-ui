@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useEffect } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Edit2, Eye, EyeOff } from "lucide-react";
 import { StatefulInput } from "@/components/stateful-input";
 import { StatefulButton } from "@/components/stateful-button";
-import { Edit } from "../icons/edit";
+// import { Edit } from "../icons/edit";
 import { passwordSchema, type PasswordSchema } from "./schema";
 
 interface PasswordStepProps {
@@ -86,9 +86,9 @@ export function PasswordStep({
                             <button
                                 type="button"
                                 onClick={onBack}
-                                className="text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center w-8 h-8"
+                                className="text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center w-8 h-8 cursor-pointer"
                             >
-                                <Edit />
+                                <Edit2 className="w-6 h-6" />
                             </button>
                         }
                     />
@@ -109,7 +109,7 @@ export function PasswordStep({
                             <button
                                 type="button"
                                 onClick={() => setShowPwd((s) => !s)}
-                                className="text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center w-8 h-8"
+                                className="text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center w-8 h-8 cursor-pointer"
                             >
                                 {showPwd ? (
                                     <EyeOff className="w-6 h-6" />
@@ -139,7 +139,7 @@ export function PasswordStep({
                             <button
                                 type="button"
                                 onClick={() => setShowConfirm((s) => !s)}
-                                className="text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center w-8 h-8"
+                                className="text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center w-8 h-8 cursor-pointer"
                             >
                                 {showConfirm ? (
                                     <EyeOff className="w-6 h-6" />

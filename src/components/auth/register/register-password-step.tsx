@@ -1,9 +1,8 @@
-import { Edit } from "@/components/icons/edit";
 import { InfoTooltip } from "@/components/info-tooltip";
 import { StatefulButton } from "@/components/stateful-button";
 import { StatefulInput } from "@/components/stateful-input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
+import { Edit2, Eye, EyeOff } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { RegisterPasswordFormData, registerPasswordSchema } from "./register-schema";
@@ -122,9 +121,9 @@ export const RegisterPasswordStep = ({
                         rightElement={<button
                             type="button"
                             onClick={onEditEmail}
-                            className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer h-[24px] w-[24px]"
+                            className="text-gray-400 hover:text-gray-600transition-colors flex items-center justify-center w-8 h-8 cursor-pointer"
                         >
-                            <Edit />
+                            <Edit2 className="w-6 h-6" />
                         </button>}
                     />
                 </div>

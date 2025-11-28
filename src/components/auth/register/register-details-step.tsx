@@ -1,8 +1,7 @@
-import { Edit } from "@/components/icons/edit";
 import { StatefulButton } from "@/components/stateful-button";
 import { StatefulInput } from "@/components/stateful-input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Edit2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -107,9 +106,9 @@ export const RegisterDetailsStep = ({
                         rightElement={<button
                             type="button"
                             onClick={onEditEmail}
-                            className="text-gray-400 hover:text-gray-600 transition-colors h-[24px] w-[24px]"
+                            className="text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center w-8 h-8 cursor-pointer"
                         >
-                            <Edit />
+                            <Edit2 className="w-6 h-6" />
                         </button>}
                     />
 

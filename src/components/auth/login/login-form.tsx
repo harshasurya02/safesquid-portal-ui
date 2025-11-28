@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { Edit } from "../../icons/edit";
 import { StatefulButton } from "../../stateful-button";
 import { StatefulInput } from "../../stateful-input";
 import Link from "next/link";
 import { InfoTooltip } from "../../info-tooltip";
-import { Eye, EyeOff } from "lucide-react";
+import { Edit2, Eye, EyeOff } from "lucide-react";
 import { OtpInput } from "../../otp-input";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
@@ -257,9 +256,9 @@ const LoginForm = ({ forgotPasswordLink }: { forgotPasswordLink: string }) => {
                   <button
                     type="button"
                     onClick={handleEditEmail}
-                    className=" text-gray-400 hover:text-gray-600 transition-colors "
+                    className=" text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center w-8 h-8 cursor-pointer"
                   >
-                    <Edit />
+                    <Edit2 className="w-6 h-6" />
                   </button>
                 }
                 required

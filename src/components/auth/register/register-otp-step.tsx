@@ -1,12 +1,12 @@
-import { Edit } from "@/components/icons/edit";
 import { OtpInput } from "@/components/otp-input";
 import { StatefulButton } from "@/components/stateful-button";
 import { StatefulInput } from "@/components/stateful-input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import EnterpriseMessage from "./enterprise-message";
 import { RegisterOtpFormData, registerOtpSchema } from "./register-schema";
+import { Edit2 } from "lucide-react";
 
 interface RegisterOtpStepProps {
     email: string;
@@ -130,9 +130,9 @@ export const RegisterOtpStep = ({
                         rightElement={<button
                             type="button"
                             onClick={onEditEmail}
-                            className=" text-gray-400 hover:text-gray-600 transition-colors h-[24px] w-[24px]"
+                            className=" text-gray-400 hover:text-gray-600transition-colors flex items-center justify-center w-8 h-8 cursor-pointer"
                         >
-                            <Edit />
+                            <Edit2 className="w-6 h-6" />
                         </button>}
                     />
 
