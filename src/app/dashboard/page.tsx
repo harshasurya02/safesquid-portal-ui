@@ -14,31 +14,37 @@ const dashboardItems = [
     icon: Database,
     title: "Instances",
     subtitle: "5 Active",
+    link: "/dashboard/instances",
   },
   {
     icon: FileBadge,
     title: "Certificate",
     subtitle: "Renew before 12 Jan 23",
+    link: "/dashboard/certificate",
   },
   {
     icon: GlobeLock,
     title: "Web Categorisation",
     subtitle: "21 Custom Categories",
+    link: "/dashboard/web-categorisation",
   },
   {
     icon: ShieldAlert,
     title: "ClamAV",
     subtitle: "21 Signatures",
+    link: "/dashboard/clamav",
   },
   {
     icon: Users,
     title: "Team",
     subtitle: "38 Members",
+    link: "/dashboard/team",
   },
   {
     icon: CreditCard,
     title: "Subscription",
     subtitle: "Renew before 12 Jan 23",
+    link: "/dashboard/subscription",
   },
 ];
 
@@ -63,6 +69,7 @@ export default function DashboardPage() {
               icon={item.icon}
               title={item.title}
               subtitle={item.subtitle}
+              link={item.link}
             />
           ))}
         </div>
