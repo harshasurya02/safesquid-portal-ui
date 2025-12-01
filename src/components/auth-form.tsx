@@ -20,7 +20,7 @@ export function AuthForm({ mode }: AuthFormProps) {
 
   return (
     <div className="bg-gray-50 flex items-center justify-center my-auto">
-      <div className="w-full space-y-6 md:bg-white md:rounded-xl md:shadow-[0_4px_30px_0_rgba(255,106,41,0.10)] md:p-15 md:space-y-[2.625rem]">
+      <div className="w-full space-y-6 sm:bg-white sm:rounded-xl sm:shadow-[0_4px_30px_0_rgba(255,106,41,0.10)] sm:p-15 sm:space-y-[2.625rem]">
         {/* Welcome Message */}
         <WelcomeMessage mode={mode} />
 

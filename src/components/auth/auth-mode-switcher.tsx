@@ -24,7 +24,7 @@ const AuthModeSwitcher = ({ mode }: { mode: "login" | "register" }) => {
             <button
                 onClick={() => handleModeSwitch("login")}
                 className={
-                    `flex-1 p-[10px] h-[55px] text-sm md:text-lg font-normal  rounded-sm transition-all duration-200
+                    `flex-1 p-3 lg:h-15 text-sm md:text-lg font-normal  rounded-sm transition-all duration-200
             ${mode === "login"
                         ? "bg-white text-accent shadow-sm"
                         : "text-accent-foreground"}`
