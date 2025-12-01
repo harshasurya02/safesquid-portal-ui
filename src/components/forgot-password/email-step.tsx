@@ -35,7 +35,7 @@ export function EmailStep({
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-7 md:space-y-8" noValidate>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 md:space-y-7 lg:space-y-8" noValidate>
             <div className="space-y-1">
                 <label className="text-sm font-medium text-foreground">Email</label>
                 <StatefulInput

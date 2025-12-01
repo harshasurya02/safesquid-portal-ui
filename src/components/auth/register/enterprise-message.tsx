@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const EnterpriseMessage = () => <div className="w-full text-center">
-    <p className="mx-auto text-sm md:text-lg text-muted text-nowrap">
+    <p className="mx-auto text-sm md:text-base lg:text-lg text-muted text-nowrap">
         Use business email for{" "}
         <Link
             href="/auth/enterprise/MTech"

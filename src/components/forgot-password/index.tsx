@@ -157,7 +157,7 @@ export function ForgotPasswordForm() {
     return (
         <div className="min-h-[70vh] flex items-center justify-center p-4">
             <div className="w-full ">
-                <div className="w-full space-y-6 md:bg-white md:rounded-xl md:shadow-[0_4px_30px_0_rgba(255,106,41,0.10)] md:p-15 md:space-y-[2.625rem]">
+                <div className="w-full space-y-6 md:space-y-8 lg:space-y-[2.625rem] md:bg-white md:rounded-xl md:shadow-[0_4px_30px_0_rgba(255,106,41,0.10)] md:p-10 lg:p-15 lg:bg-white lg:rounded-xl lg:shadow-[0_4px_30px_0_rgba(255,106,41,0.10)]">
                     <div className="text-center">
                         <h1 className="text-2xl font-semibold text-gray-900">
                             Password Reset

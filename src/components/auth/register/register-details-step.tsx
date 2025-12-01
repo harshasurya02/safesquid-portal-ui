@@ -82,7 +82,7 @@ export const RegisterDetailsStep = ({
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-5 md:space-y-6"
+            className="space-y-4 md:space-y-5 lg:space-y-6"
             noValidate
         >
             <div>

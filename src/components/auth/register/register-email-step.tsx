@@ -68,7 +68,7 @@ export const RegisterEmailStep = ({
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-7 md:space-y-8"
+            className="space-y-6 md:space-y-7 lg:space-y-8"
             noValidate
         >
             <EnterpriseMessage />

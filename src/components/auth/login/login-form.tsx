@@ -164,7 +164,7 @@ const LoginForm = ({ forgotPasswordLink }: { forgotPasswordLink: string }) => {
   };
 
   return (
-    <div className="space-y-7 md:space-y-8">
+    <div className="space-y-6 md:space-y-7 lg:space-y-8">
       {!showOtpStep ? (
         <form onSubmit={handleLoginSubmit(onLoginSubmit)} className="space-y-7 md:space-y-8" noValidate>
           <div className="space-y-1">
