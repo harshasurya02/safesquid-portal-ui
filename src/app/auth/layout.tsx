@@ -8,9 +8,9 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50 space-y-4">
-      {/* Navbar — hidden on mobile */}
-      <div className="hidden sm:flex items-center justify-between py-6 px-15 border-b-2">
+    <div className="min-h-screen bg-gray-50 relative">
+      {/* Navbar — fixed position */}
+      <div className="absolute top-0 left-0 right-0 w-full z-50 bg-gray-50 min-h-20 flex items-center justify-between py-3 px-7 md:py-6 md:px-15 border-b-2">
         <Image
           src="/logo.png"
           width={211}
