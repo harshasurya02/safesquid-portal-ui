@@ -29,7 +29,7 @@ export default function AuthLayout({
         </div>
       </div> */}
 
-      <div className="flex flex-col items-center justify-center px-4 pb-4 min-h-screen md:min-h-auto">
+      <div className="flex flex-col items-center justify-center px-4 pb-4 min-h-screen md:min-h-auto md:pt-20">
         <div className="w-full max-w-[clamp(20rem,90vw,34.5rem)] p-[clamp(0.5rem,2vw,0rem)] my-auto">
           {children}
         </div>
