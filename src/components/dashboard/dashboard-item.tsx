@@ -37,7 +37,7 @@ export const DashboardItem = ({
     const subtitleColorClass = getSubtitleColorClass(variant);
 
     return (
-        <Link className="flex flex-col md:flex-row items-center md:items-center gap-3 md:gap-4 p-4 bg-white rounded-lg w-74 md:w-full" href={link}>
+        <Link className="flex flex-col md:flex-row items-center md:items-center gap-3 md:gap-4 p-4 bg-white rounded-lg w-full" href={link}>
             <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-blue-50 rounded-lg text-primary">
                 <Icon className="w-5 h-5 md:w-6 md:h-6" />
             </div>

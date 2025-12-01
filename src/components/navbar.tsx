@@ -33,7 +33,7 @@ const Navbar = () => {
   return (
     <div className="w-full bg-white border-b border-gray-200">
       {/* Mobile Navbar */}
-      <div className="flex md:hidden items-center justify-between px-4 py-3">
+      <div className="flex lg:hidden items-center justify-between px-4 py-3">
         <Image
           src="/logo.png"
           width={140}
@@ -135,7 +135,7 @@ const Navbar = () => {
       )}
 
       {/* Desktop Navbar */}
-      <div className="hidden md:flex items-center justify-between px-8 py-4">
+      <div className="hidden lg:flex items-center justify-between px-8 py-4">
         {/* Logo */}
         <div className="flex items-center">
           <Image
@@ -157,7 +157,7 @@ const Navbar = () => {
           </button>
 
           {/* Search Bar */}
-          <div className="relative flex-1 max-w-xl">
+          <div className="relative flex-1 lg:max-w-xl">
             <input
               type="text"
               placeholder="What would you like to do today?"
