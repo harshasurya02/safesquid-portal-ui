@@ -45,7 +45,7 @@
 
 :root {
   --radius: 0.625rem;
-  --alert: #ff692a;
+  --alert: #ff0000;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -64,7 +64,7 @@
   --destructive: #e11900;
   --info: #e11900;
   --success: #e11900;
-  --warning: #ff692a;
+  --warn: #ff692a;
   --border: oklch(0.922 0 0);
   --input: #e0e3eb;
   --ring: oklch(0.708 0 0);
@@ -84,7 +84,7 @@
 }
 
 .dark {
-  --alert: #ff692a;
+  --alert: #ff0000;
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -102,7 +102,7 @@
   --destructive: #e11900;
   --info: #e11900;
   --success: #e11900;
-  --warning: #ff692a;
+  --warn: #ff692a;
   --border: oklch(1 0 0 / 10%);
   --input: #e0e3eb;
   --ring: oklch(0.556 0 0);

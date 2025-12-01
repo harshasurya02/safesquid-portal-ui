@@ -1,5 +1,5 @@
 import Navbar from "@/components/navbar";
-import { DashboardItem } from "@/components/dashboard/dashboard-item";
+import { DashboardItem, DashboardItemProps } from "@/components/dashboard/dashboard-item";
 import {
   Database,
   FileBadge,
@@ -9,7 +9,7 @@ import {
   CreditCard,
 } from "lucide-react";
 
-const dashboardItems = [
+const dashboardItems: DashboardItemProps[] = [
   {
     icon: Database,
     title: "Instances",
@@ -17,6 +17,7 @@ const dashboardItems = [
     subtitle: "5 Active",
     mobileSubtitle: "5 Active",
     link: "/dashboard/instances",
+    variant: "default",
   },
   {
     icon: FileBadge,
@@ -25,6 +26,7 @@ const dashboardItems = [
     subtitle: "Renew before 12 Jan 23",
     mobileSubtitle: "Renew before 01/12/2023",
     link: "/dashboard/certificate",
+    variant: "warn",
   },
   {
     icon: GlobeLock,
@@ -33,6 +35,7 @@ const dashboardItems = [
     subtitle: "21 Custom Categories",
     mobileSubtitle: "21 Categories",
     link: "/dashboard/web-categorisation",
+    variant: "default",
   },
   {
     icon: ShieldAlert,
@@ -41,6 +44,7 @@ const dashboardItems = [
     subtitle: "21 Signatures",
     mobileSubtitle: "21 Signatures",
     link: "/dashboard/clamav",
+    variant: "default",
   },
   {
     icon: Users,
@@ -49,6 +53,7 @@ const dashboardItems = [
     subtitle: "38 Members",
     mobileSubtitle: "38 Members",
     link: "/dashboard/team",
+    variant: "default",
   },
   {
     icon: CreditCard,
@@ -57,6 +62,7 @@ const dashboardItems = [
     subtitle: "Renew before 12 Jan 23",
     mobileSubtitle: "Renew before 01/12/2023",
     link: "/dashboard/subscription",
+    variant: "destructive",
   },
 ];
 
@@ -74,7 +80,7 @@ export default function DashboardPage() {
           </h1>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-11 gap-y-10 md:max-w-5xl mx-auto justify-items-center">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-11 gap-y-10 md:max-w-5xl mx-auto place-items-center text-center">
           {dashboardItems.map((item, index) => (
             <DashboardItem
               key={index}
@@ -83,6 +89,7 @@ export default function DashboardPage() {
               mobileTitle={item.mobileTitle}
               subtitle={item.subtitle}
               mobileSubtitle={item.mobileSubtitle}
+              variant={item.variant}
               link={item.link}
             />
           ))}
