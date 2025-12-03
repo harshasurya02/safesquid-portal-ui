@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowLeft, Home, CircleHelp, X, Menu, User, Building2, History, MessageSquare, HelpCircle, LogOut, ChevronRight, ChevronLeft, Plus, Pencil } from "lucide-react";
+import { ArrowLeft, Home, CircleHelp, X, Menu, ChevronRight, ChevronLeft, Plus, Pencil } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { GlobalSearch } from "@/components/global-search";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -156,17 +157,11 @@ const Navbar = () => {
             <Home className="w-5 h-5" />
           </button>
 
+
+
+          {/*  inside component */}
           {/* Search Bar */}
-          <div className="relative flex-1 lg:max-w-xl">
-            <input
-              type="text"
-              placeholder="What would you like to do today?"
-              className="w-full py-2.5 pl-4 pr-10 bg-gray-50 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
-            />
-            <button className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-              <X className="w-4 h-4" />
-            </button>
-          </div>
+          <GlobalSearch />
         </div>
 
         {/* Right Actions */}
