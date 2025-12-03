@@ -13,16 +13,6 @@ export function GlobalSearch() {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const router = useRouter();
 
-    // Initialize all categories as expanded by default (as per screenshot seems implied, or maybe just some)
-    // Actually screenshot shows some expanded. Let's expand all by default for now or just let user toggle.
-    // User said "dashboard items are like categories those are accordions".
-    // Let's expand the first one by default or all.
-    // Screenshot shows multiple expanded? No, it shows a list.
-    // "Instance" is expanded. "Certificate" is expanded.
-    // Let's expand all by default for better discoverability in search.
-    React.useEffect(() => {
-        setExpandedCategories(dashboardItems.map((item) => item.title));
-    }, []);
 
     // Close dropdown when clicking outside
     React.useEffect(() => {
