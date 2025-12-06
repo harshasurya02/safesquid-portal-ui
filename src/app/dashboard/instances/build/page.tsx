@@ -6,7 +6,7 @@ import { StepDeploymentOptions } from "@/components/dashboard/instances/build/st
 import { StepProvisionHardware } from "@/components/dashboard/instances/build/step-provision-hardware";
 import { StepInstallation } from "@/components/dashboard/instances/build/step-installation";
 import { StepActivationKey } from "@/components/dashboard/instances/build/step-activation-key";
-
+ 
 export type { Step } from "@/components/dashboard/instances/build/stepper";
 export type DeploymentOption = "on-premise" | "private-cloud" | "manual";
 

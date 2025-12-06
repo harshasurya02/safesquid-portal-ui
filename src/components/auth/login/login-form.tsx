@@ -91,7 +91,8 @@ const LoginForm = ({ forgotPasswordLink }: { forgotPasswordLink: string }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ email, otp: data.otp }),
-        }
+          credentials: "include",
+        },
       );
 
       const responseData = await response.json();

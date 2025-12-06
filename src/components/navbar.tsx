@@ -9,7 +9,19 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [showActivationKeys, setShowActivationKeys] = useState(false);
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
+  const [selectedKeyId, setSelectedKeyId] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  interface UserDetails {
+    email: string;
+    username: string;
+    keys: {
+      id: string;
+      name: string;
+      key: string;
+    }[];
+  }
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -26,10 +38,39 @@ const Navbar = () => {
     };
   }, []);
 
-  const activationKeys = [
-    { name: "Key_database_India_Maha_1", code: "C-Code: 1FFHG123" },
-    { name: "Key_database_India_Maha_1", code: "C-Code: 1FFHG123" },
-  ];
+  // Fetch User Details
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/details`,{credentials: "include"});
+
+        if (response.ok) {
+          const data = await response.json();
+          setUserDetails(data);
+          // Set default selected key if not already set
+          if (data.keys && data.keys.length > 0 && !selectedKeyId) {
+            setSelectedKeyId(data.keys[0].id);
+          }
+        } else {
+            console.error("Failed to fetch user details");
+        }
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    fetchUserDetails();
+  }, [selectedKeyId]); // Added selectedKeyId dependency so logic runs correctly if it changes externally, though fetch mainly on mount
+
+  const handleKeySelect = (keyId: string) => {
+    setSelectedKeyId(keyId);
+    setIsMobileMenuOpen(false); // For mobile
+    setShowActivationKeys(false); // Reset dropdown view
+    setIsProfileOpen(false); // Close dropdown
+  };
+
+  // Determine active key
+  const activeKey = userDetails?.keys?.find(k => k.id === selectedKeyId) || userDetails?.keys?.[0];
 
   return (
     <div className="w-full bg-white border-b border-gray-200">
@@ -77,30 +118,25 @@ const Navbar = () => {
               <div className="mb-8">
                 <h3 className="text-xs text-gray-400 mb-3">Keys</h3>
                 <div className="space-y-2">
-                  {/* Active Key */}
-                  <div className="flex items-start justify-between p-3 bg-blue-50 rounded-lg">
-                    <div className="flex items-start gap-3">
-                      <div className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-2"></div>
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-gray-900">key_database_1</span>
-                        <span className="text-xs text-gray-500">C-Code: 12AB23</span>
+                  {/* Map Keys for Mobile */}
+                   {userDetails?.keys?.map((key) => (
+                      <div 
+                        key={key.id} 
+                        className="flex items-start justify-between p-3 first:bg-blue-50 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                        onClick={() => handleKeySelect(key.id)}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className={`w-1.5 h-1.5 rounded-full mt-2 ${key.id === activeKey?.id ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
+                          <div className="flex flex-col">
+                            <span className="text-sm font-medium text-gray-900">{key.name}</span>
+                            <span className="text-xs text-gray-500">Key: {key.key}</span>
+                          </div>
+                        </div>
+                        <button className="p-1 text-gray-400">
+                          <Pencil className="w-4 h-4" />
+                        </button>
                       </div>
-                    </div>
-                    <button className="p-1 text-gray-400">
-                      <Pencil className="w-4 h-4" />
-                    </button>
-                  </div>
-
-                  {/* Inactive Key */}
-                  <div className="flex items-start justify-between p-3">
-                    <div className="flex items-start gap-3">
-                      <div className="w-1.5 h-1.5 rounded-full bg-gray-300 mt-2"></div>
-                      <span className="text-sm font-medium text-gray-900">key_database_maha_1</span>
-                    </div>
-                    <button className="p-1 text-gray-400">
-                      <Pencil className="w-4 h-4" />
-                    </button>
-                  </div>
+                   ))}
 
                   {/* Add Button */}
                   <div className="flex justify-center mt-4">
@@ -115,7 +151,9 @@ const Navbar = () => {
               <div className="mb-8">
                 <h3 className="text-xs text-gray-400 mb-3">Profile</h3>
                 <nav className="flex flex-col space-y-4">
-                  <a href="#" className="text-sm text-gray-900 hover:text-gray-600">User Profile</a>
+                  <span className="text-sm font-medium text-gray-900">{userDetails?.username || 'User'}</span>
+                   <span className="text-xs text-gray-500">{userDetails?.email}</span>
+                  <a href="#" className="text-sm text-gray-900 hover:text-gray-600 mt-2">User Profile</a>
                   <a href="#" className="text-sm text-gray-900 hover:text-gray-600">Organization profile</a>
                 </nav>
               </div>
@@ -176,11 +214,11 @@ const Navbar = () => {
               onClick={() => setIsProfileOpen(!isProfileOpen)}
             >
               <div className="w-8 h-8 bg-blue-600 text-white rounded flex items-center justify-center text-xs font-medium">
-                MS
+                 {userDetails?.username?.substring(0, 2).toUpperCase() || 'US'}
               </div>
               <div className="flex flex-col">
-                <span className="text-xs font-medium text-gray-900">Key_database_maharashtra_1</span>
-                <span className="text-[10px] text-gray-500">C-Code:12JH132</span>
+                <span className="text-xs font-medium text-gray-900">{activeKey?.name || userDetails?.username || 'Loading...'}</span>
+                <span className="text-[10px] text-gray-500">{activeKey ? `Key: ${activeKey.key.substring(0, 8)}...` : 'No Active Key'}</span>
               </div>
             </button>
 
@@ -207,18 +245,18 @@ const Navbar = () => {
                       <span>Activity History</span>
                     </button>
                     <div className="border-t border-gray-100 my-1"></div>
-                    <div className="px-4 py-3 flex items-center gap-3">
-                      <div className="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium">
-                        M
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-gray-900">Mukund Sharma</span>
-                        <span className="text-xs text-gray-500">mukund@safesquid.net</span>
-                      </div>
-                    </div>
                     <button className="w-full flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
                       <span>Log out</span>
                     </button>
+                    <div className="px-4 py-3 flex items-center gap-3">
+                      <div className="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium">
+                        {userDetails?.username?.charAt(0).toUpperCase() || 'U'}
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-gray-900">{userDetails?.username || 'User'}</span>
+                        <span className="text-xs text-gray-500">{userDetails?.email || 'email@example.com'}</span>
+                      </div>
+                    </div>
                   </div>
                 ) : (
                   // Activation Keys Menu
@@ -233,17 +271,25 @@ const Navbar = () => {
                       <span className="text-sm font-medium text-gray-700">Activation keys</span>
                     </div>
                     <div className="bg-blue-50/50">
-                      {activationKeys.map((key, index) => (
-                        <div key={index} className="px-4 py-3 border-b border-gray-100 last:border-0 flex items-center justify-between group">
-                          <div className="flex flex-col">
-                            <span className="text-sm font-medium text-gray-900">{key.name}</span>
-                            <span className="text-xs text-blue-600">{key.code}</span>
-                          </div>
-                          <button className="p-1 text-gray-400 hover:text-gray-600">
-                            <Pencil className="w-4 h-4" />
-                          </button>
-                        </div>
-                      ))}
+                      {userDetails?.keys?.length ? (
+                          userDetails.keys.map((key) => (
+                            <div 
+                              key={key.id} 
+                              className={`px-4 py-3 border-b border-gray-100 last:border-0 flex items-center justify-between group cursor-pointer hover:bg-blue-50 transition-colors ${key.id === activeKey?.id ? 'bg-blue-50' : ''}`}
+                              onClick={() => handleKeySelect(key.id)}
+                            >
+                              <div className="flex flex-col">
+                                <span className="text-sm font-medium text-gray-900">{key.name}</span>
+                                <span className="text-xs text-blue-600">{key.key}</span>
+                              </div>
+                              <button className="p-1 text-gray-400 hover:text-gray-600">
+                                <Pencil className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ))
+                      ) : (
+                           <div className="px-4 py-3 text-sm text-gray-500">No keys found</div>
+                      )}
                     </div>
                     <button className="w-full flex items-center justify-center py-3 text-gray-600 hover:bg-gray-50 border-t border-gray-100">
                       <Plus className="w-5 h-5" />
