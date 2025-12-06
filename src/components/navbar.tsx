@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { ArrowLeft, Home, CircleHelp, X, Menu, ChevronRight, ChevronLeft, Plus, Pencil } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { GlobalSearch } from "@/components/global-search";
 
 const Navbar = () => {
@@ -12,6 +13,7 @@ const Navbar = () => {
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
   const [selectedKeyId, setSelectedKeyId] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   interface UserDetails {
     email: string;
@@ -43,7 +45,7 @@ const Navbar = () => {
     const fetchUserDetails = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/details`,{credentials: "include"});
-
+        console.log(response);
         if (response.ok) {
           const data = await response.json();
           setUserDetails(data);
@@ -52,7 +54,8 @@ const Navbar = () => {
             setSelectedKeyId(data.keys[0].id);
           }
         } else {
-            console.error("Failed to fetch user details");
+            console.warn("Failed to fetch user details");
+            router.push('/');
         }
       } catch (error) {
         console.error("Error fetching user details:", error);
@@ -67,6 +70,27 @@ const Navbar = () => {
     setIsMobileMenuOpen(false); // For mobile
     setShowActivationKeys(false); // Reset dropdown view
     setIsProfileOpen(false); // Close dropdown
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        router.push('/');
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
   };
 
   // Determine active key
@@ -153,7 +177,7 @@ const Navbar = () => {
                 <nav className="flex flex-col space-y-4">
                   <span className="text-sm font-medium text-gray-900">{userDetails?.username || 'User'}</span>
                    <span className="text-xs text-gray-500">{userDetails?.email}</span>
-                  <a href="#" className="text-sm text-gray-900 hover:text-gray-600 mt-2">User Profile</a>
+                  <a href="/dashboard/profile" className="text-sm text-gray-900 hover:text-gray-600 mt-2">User Profile</a>
                   <a href="#" className="text-sm text-gray-900 hover:text-gray-600">Organization profile</a>
                 </nav>
               </div>
@@ -165,7 +189,12 @@ const Navbar = () => {
                   <a href="#" className="text-sm text-gray-900 hover:text-gray-600">History</a>
                   <a href="#" className="text-sm text-gray-900 hover:text-gray-600">Feedback</a>
                   <a href="#" className="text-sm text-gray-900 hover:text-gray-600">Get help</a>
-                  <a href="#" className="text-sm text-gray-900 hover:text-gray-600">Logout</a>
+                  <button 
+                    onClick={handleLogout}
+                    className="text-sm text-gray-900 hover:text-gray-600 text-left"
+                  >
+                    Logout
+                  </button>
                 </nav>
               </div>
             </div>
@@ -188,7 +217,7 @@ const Navbar = () => {
 
         {/* Center Actions */}
         <div className="flex items-center gap-4 flex-1 justify-center max-w-3xl mx-auto">
-          <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
+          <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full" onClick={()=> router.back()}>
             <ArrowLeft className="w-5 h-5" />
           </button>
           <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
@@ -235,9 +264,9 @@ const Navbar = () => {
                       <span>Activation keys</span>
                       <ChevronRight className="w-4 h-4 text-gray-400" />
                     </button>
-                    <button className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
+                    <a href="/dashboard/profile" className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
                       <span>User Profile</span>
-                    </button>
+                    </a>
                     <button className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
                       <span>Organization profile</span>
                     </button>
@@ -245,7 +274,10 @@ const Navbar = () => {
                       <span>Activity History</span>
                     </button>
                     <div className="border-t border-gray-100 my-1"></div>
-                    <button className="w-full flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
+                    <button 
+                      className="w-full flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
+                      onClick={handleLogout}
+                    >
                       <span>Log out</span>
                     </button>
                     <div className="px-4 py-3 flex items-center gap-3">
