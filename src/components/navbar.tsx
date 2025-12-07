@@ -178,7 +178,7 @@ const Navbar = () => {
                   <span className="text-sm font-medium text-gray-900">{userDetails?.username || 'User'}</span>
                    <span className="text-xs text-gray-500">{userDetails?.email}</span>
                   <a href="/dashboard/profile" className="text-sm text-gray-900 hover:text-gray-600 mt-2">User Profile</a>
-                  <a href="#" className="text-sm text-gray-900 hover:text-gray-600">Organization profile</a>
+                  <a href="/dashboard/organization" className="text-sm text-gray-900 hover:text-gray-600">Organization profile</a>
                 </nav>
               </div>
 
@@ -267,9 +267,9 @@ const Navbar = () => {
                     <a href="/dashboard/profile" className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
                       <span>User Profile</span>
                     </a>
-                    <button className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
+                    <a href="/dashboard/organization" className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
                       <span>Organization profile</span>
-                    </button>
+                    </a>
                     <button className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
                       <span>Activity History</span>
                     </button>
