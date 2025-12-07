@@ -43,7 +43,7 @@ export function InstanceCharts() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Connections Chart */}
-      <div>
+      <div className="min-w-0">
         <h3 className="text-sm font-semibold text-gray-700 mb-4">Connections</h3>
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
@@ -76,7 +76,7 @@ export function InstanceCharts() {
       </div>
 
       {/* Bandwidth Chart */}
-       <div>
+       <div className="min-w-0">
         <h3 className="text-sm font-semibold text-gray-700 mb-4">Bandwidth</h3>
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
@@ -100,7 +100,7 @@ export function InstanceCharts() {
       </div>
 
        {/* Memory Chart */}
-       <div>
+       <div className="min-w-0">
         <h3 className="text-sm font-semibold text-gray-700 mb-4">Memory</h3>
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
@@ -124,7 +124,7 @@ export function InstanceCharts() {
       </div>
 
        {/* CPU Chart */}
-       <div>
+       <div className="min-w-0">
         <h3 className="text-sm font-semibold text-gray-700 mb-4">CPU</h3>
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
