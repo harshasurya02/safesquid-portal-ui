@@ -44,7 +44,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/details`,{credentials: "include"});
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/details`,{method: 'GET',credentials: "include"});
         console.log(response);
         if (response.ok) {
           const data = await response.json();
@@ -55,7 +55,7 @@ const Navbar = () => {
           }
         } else {
             console.warn("Failed to fetch user details");
-            router.push('/');
+            // router.push('/');
         }
       } catch (error) {
         console.error("Error fetching user details:", error);
