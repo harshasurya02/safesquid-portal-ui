@@ -13,6 +13,7 @@ import {
   Legend,
 } from "recharts";
 import { InstanceGraphs } from "@/services/instance.service";
+import { format } from "date-fns";
 
 interface InstanceChartsProps {
     graphs: InstanceGraphs;
@@ -75,7 +76,7 @@ export function InstanceCharts({ graphs }: InstanceChartsProps) {
             </AreaChart>
           </ResponsiveContainer>
         </div>
-        {graphs.connections.length > 0 && <div className="text-center text-[10px] text-gray-400 mt-2">{new Date(graphs.connections[0].time).toLocaleDateString()}</div>}
+        {graphs.connections.length > 0 && <div className="text-center text-[10px] text-gray-400 mt-2">{format(new Date(graphs.connections[0].time), "yyyy-MM-dd")}</div>}
       </div>
 
       {/* Bandwidth Chart */}
@@ -99,7 +100,7 @@ export function InstanceCharts({ graphs }: InstanceChartsProps) {
             </AreaChart>
           </ResponsiveContainer>
         </div>
-        {graphs.bandwidth.length > 0 && <div className="text-center text-[10px] text-gray-400 mt-2">{new Date(graphs.bandwidth[0].time).toLocaleDateString()}</div>}
+        {graphs.bandwidth.length > 0 && <div className="text-center text-[10px] text-gray-400 mt-2">{format(new Date(graphs.bandwidth[0].time), "yyyy-MM-dd")}</div>}
       </div>
 
        {/* Memory Chart */}
@@ -123,7 +124,7 @@ export function InstanceCharts({ graphs }: InstanceChartsProps) {
             </AreaChart>
           </ResponsiveContainer>
         </div>
-        {graphs.memory.length > 0 && <div className="text-center text-[10px] text-gray-400 mt-2">{new Date(graphs.memory[0].time).toLocaleDateString()}</div>}
+        {graphs.memory.length > 0 && <div className="text-center text-[10px] text-gray-400 mt-2">{format(new Date(graphs.memory[0].time), "yyyy-MM-dd")}</div>}
       </div>
 
        {/* CPU Chart */}
@@ -147,7 +148,7 @@ export function InstanceCharts({ graphs }: InstanceChartsProps) {
             </AreaChart>
           </ResponsiveContainer>
         </div>
-        {graphs.cpu.length > 0 && <div className="text-center text-[10px] text-gray-400 mt-2">{new Date(graphs.cpu[0].time).toLocaleDateString()}</div>}
+        {graphs.cpu.length > 0 && <div className="text-center text-[10px] text-gray-400 mt-2">{format(new Date(graphs.cpu[0].time), "yyyy-MM-dd")}</div>}
       </div>
 
     </div>

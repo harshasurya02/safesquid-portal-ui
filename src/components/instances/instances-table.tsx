@@ -2,19 +2,20 @@
 
 import React from "react";
 import { Instance } from "@/services/instance.service";
-
+import { parseISO, format, isValid } from 'date-fns';
 interface InstancesTableProps {
     instances: Instance[];
 }
 
 export function InstancesTable({ instances }: InstancesTableProps) {
     const formatDate = (dateString: string) => {
-        try {
-            return new Date(dateString).toLocaleString();
-        } catch (e) {
-            return dateString;
-        }
-    };
+  const date = parseISO(dateString);
+
+  if (!isValid(date)) return dateString;
+
+  return format(date, 'yyyy-MM-dd HH:mm:ss');
+};
+
 
     return (
         <div className="overflow-x-auto">
