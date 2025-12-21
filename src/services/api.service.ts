@@ -19,7 +19,7 @@ async function apiRequest<T>(
   }
 
   const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
-
+  
   if (!response.ok) {
     throw new Error(`API Error: ${response.status} ${response.statusText}`);
   }
@@ -41,6 +41,8 @@ export const apiGet = <T>(
   const query = params
     ? "?" + new URLSearchParams(params as Record<string, string>).toString()
     : "";
+
+
   return apiRequest(endpoint + query, "GET");
 };
 

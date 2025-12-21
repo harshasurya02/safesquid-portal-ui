@@ -1,6 +1,9 @@
+"use client";
+
 import { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/contexts/UserContext";
 
 type SubtitleVariant = "default" | "warn" | "destructive";
 
@@ -35,9 +38,15 @@ export const DashboardItem = ({
     variant = "default"
 }: DashboardItemProps) => {
     const subtitleColorClass = getSubtitleColorClass(variant);
+    const { selectedKeyId } = useUser();
+
+    // Append key ID to link if available
+    const href = selectedKeyId 
+        ? `${link}${link === "/dashboard/instances" && link.includes('?') ? '&' : '?'}k=${selectedKeyId}` 
+        : link;
 
     return (
-        <Link className="flex flex-col md:flex-row items-center md:items-center gap-3 md:gap-4 p-4 bg-white rounded-lg w-full" href={link}>
+        <Link className="flex flex-col md:flex-row items-center md:items-center gap-3 md:gap-4 p-4 bg-white rounded-lg w-full" href={href}>
             <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-blue-50 rounded-lg text-primary">
                 <Icon className="w-5 h-5 md:w-6 md:h-6" />
             </div>

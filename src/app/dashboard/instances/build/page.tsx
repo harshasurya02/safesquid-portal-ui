@@ -41,7 +41,7 @@ export default function InstanceBuildPage() {
         isProxyActive: false,
         isLBActive: false,
         isLogActive: false,
-        location: "Location 1"
+        location: "Mumbai, India"
     });
 
     // Proxy State

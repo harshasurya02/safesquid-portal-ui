@@ -1,4 +1,5 @@
-import Navbar from "@/components/navbar";
+"use client"
+// import Navbar from "@/components/navbar";
 import { DashboardItem, DashboardItemProps } from "@/components/dashboard/dashboard-item";
 import { dashboardItems } from "@/lib/dashboard-data";
 

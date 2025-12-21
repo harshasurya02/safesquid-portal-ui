@@ -19,6 +19,10 @@ interface StepProvisionHardwareProps {
 
 export function StepProvisionHardware({ state, setState }: StepProvisionHardwareProps) {
 
+    // const locations = [{
+    //     name: "", value: ""
+    // }]
+
     const updateState = (updates: Partial<HardwareState>) => {
         setState(prev => ({ ...prev, ...updates }));
     };
@@ -81,9 +85,9 @@ export function StepProvisionHardware({ state, setState }: StepProvisionHardware
                                 </button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => updateState({ location: "Location 1" })}>Location 1</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => updateState({ location: "Location 2" })}>Location 2</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => updateState({ location: "Location 3" })}>Location 3</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => updateState({ location: "Mumbai, India" })}>Mumbai, India</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => updateState({ location: "New York, USA" })}>New York, USA</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => updateState({ location: "Sydney, Australia" })}>Location 3</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>

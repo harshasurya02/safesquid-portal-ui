@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { X, ChevronDown, ChevronRight } from "lucide-react";
 import { dashboardItems } from "@/lib/dashboard-data";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/contexts/UserContext";
 
 export function GlobalSearch() {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -36,23 +37,31 @@ export function GlobalSearch() {
         );
     };
 
+    const { selectedKeyId } = useUser();
+
     const filteredItems = dashboardItems.map((item) => {
-        // If query is empty, return item as is
-        if (!query) return item;
+        // Construct a new object with modified links
+        const modifyLink = (link: string) => selectedKeyId ? `${link}${link.includes('?') ? '&' : '?'}k=${selectedKeyId}` : link;
+
+        const newItem = { ...item, link: modifyLink(item.link) };
+        if (newItem.subItems) {
+            newItem.subItems = newItem.subItems.map(si => ({ ...si, link: modifyLink(si.link) }));
+        }
+
+        // If query is empty, return newItem
+        if (!query) return newItem;
 
         // Check if category matches
-        const categoryMatches = item.title.toLowerCase().includes(query.toLowerCase());
+        const categoryMatches = newItem.title.toLowerCase().includes(query.toLowerCase());
 
         // Check if any sub-items match
-        const matchingSubItems = item.subItems?.filter((subItem) =>
+        const matchingSubItems = newItem.subItems?.filter((subItem) =>
             subItem.title.toLowerCase().includes(query.toLowerCase())
         );
 
-        // If category matches, return all sub-items (or maybe just matching ones? usually all if category matches)
-        // If sub-items match, return item with those sub-items
-        if (categoryMatches) return item;
+        if (categoryMatches) return newItem;
         if (matchingSubItems && matchingSubItems.length > 0) {
-            return { ...item, subItems: matchingSubItems };
+            return { ...newItem, subItems: matchingSubItems };
         }
 
         return null;
