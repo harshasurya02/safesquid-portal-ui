@@ -1,63 +1,154 @@
 "use client";
 
-import { Key } from "lucide-react";
+import { useState, Dispatch, SetStateAction } from "react";
+import { Download, ArrowRight } from "lucide-react";
+import { StatefulInput } from "@/components/stateful-input";
+import { ProxyState } from "../../../../app/dashboard/instances/build/page";
 
-export function StepActivationKey() {
+interface StepActivationKeyProps {
+    onActivate: () => void;
+    onBack: () => void;
+    deploymentOption: string;
+    proxyState: ProxyState;
+    setProxyState: Dispatch<SetStateAction<ProxyState>>;
+}
+
+export function StepActivationKey({ 
+    onActivate, 
+    onBack, 
+    deploymentOption,
+    proxyState,
+    setProxyState
+}: StepActivationKeyProps) {
+    const [errors, setErrors] = useState<{ commonName?: string; port?: string }>({});
+
+    const handleActivateWithValidation = () => {
+        const newErrors: { commonName?: string; port?: string } = {};
+        
+        if (!proxyState.commonName.trim()) {
+            newErrors.commonName = "Common name is required";
+        }
+
+        if (!proxyState.port.trim()) {
+            newErrors.port = "Port is required";
+        } else if (isNaN(Number(proxyState.port))) {
+            newErrors.port = "Port must be a number";
+        }
+
+        setErrors(newErrors);
+
+        if (Object.keys(newErrors).length === 0) {
+            onActivate();
+        }
+    };
+
+    const updateProxyState = (key: keyof ProxyState, value: string) => {
+        setProxyState(prev => ({ ...prev, [key]: value }));
+        // Clear error when user types
+        if (errors[key]) {
+            setErrors(prev => ({ ...prev, [key]: undefined }));
+        }
+    };
+
     return (
-        <div className="max-w-2xl">
-            <div className="mb-8">
+        <div className="flex flex-col gap-12">
+            <div>
                 <h1 className="text-xl font-semibold text-gray-900">
-                    Activate your SafeSquid Instance
+                    Activate your SafeSquid instance
                 </h1>
                 <p className="mt-2 text-sm text-gray-500">
-                    Enter your product activation key to finalize the setup.
+                    Product activation key is the unique secret required to activate and validate authenticity of your SafeSquid
                 </p>
                 <div className="mt-4 border-b border-gray-100" />
             </div>
 
-            <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
-                <div className="flex flex-col gap-6">
-                    <div>
-                        <label htmlFor="activation-key" className="block text-sm font-medium text-gray-700">
-                            Activation Key
-                        </label>
-                        <div className="relative mt-2 rounded-md shadow-sm">
-                            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                <Key className="h-5 w-5 text-gray-400" aria-hidden="true" />
+            <div className="flex flex-col gap-16 px-4">
+                {/* Section 1: Download Key (Only for Manual Installation) */}
+                {deploymentOption === "manual" && (
+                    <div className="grid grid-cols-12 gap-8 items-center">
+                        <div className="col-span-6">
+                            <h3 className="font-medium text-gray-900">Download your Activation key</h3>
+                            <p className="mt-1 text-sm text-gray-400 leading-relaxed">
+                                Activate multiple instances with the same key to seamlessly synchronize them
+                            </p>
+                        </div>
+                        <div className="col-span-6">
+                            <div className="relative">
+                                <input 
+                                    type="text" 
+                                    readOnly 
+                                    value="Activation.key"
+                                    className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-600 outline-none"
+                                />
+                                <a 
+                                    href="https://ezklsfsdgqlzllsrsqry.supabase.co/storage/v1/object/sign/certificates/4d04b2f5-2905-4ccf-8fda-4a47f200502e/50421fa7e3b387fc18af813f98e100750c41d321/public.pem?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82OTFmNGNjMC0yMjZlLTRmMGItYTZjNS01MTRmMTg4NTRlYzciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJjZXJ0aWZpY2F0ZXMvNGQwNGIyZjUtMjkwNS00Y2NmLThmZGEtNGE0N2YyMDA1MDJlLzUwNDIxZmE3ZTNiMzg3ZmMxOGFmODEzZjk4ZTEwMDc1MGM0MWQzMjEvcHVibGljLnBlbSIsImlhdCI6MTc2NjM0NDcyNywiZXhwIjoxNzY4OTM2NzI3fQ.m2H_c09WQ1d3Q-g5934VcTNPRpaxbxCxZCDrkmcPmjk"
+                                    target="_blank"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                >
+                                    <Download size={18} />
+                                </a>
                             </div>
-                            <input
-                                type="text"
-                                name="activation-key"
-                                id="activation-key"
-                                className="block w-full rounded-md border-gray-300 py-3 pl-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                                placeholder="XXXX-XXXX-XXXX-XXXX"
+                        </div>
+                    </div>
+                )}
+
+                {/* Section 2: Configure Proxy */}
+                <div className="grid grid-cols-12 gap-8 items-start">
+                    <div className="col-span-6">
+                        <h3 className="font-medium text-gray-900">Configure HTTP(S) proxy on your system</h3>
+                    </div>
+                    <div className="col-span-6 flex gap-4">
+                        <div className="flex-1">
+                            <StatefulInput
+                                label="Common name"
+                                placeholder="IP Address of proxy server"
+                                value={proxyState.commonName}
+                                onChange={(e) => updateProxyState("commonName", e.target.value)}
+                                error={errors.commonName}
                             />
                         </div>
-                        <p className="mt-2 text-xs text-gray-500">
-                            You can find your activation key in your email providing the license purchase.
-                        </p>
-                    </div>
-
-                    <div className="rounded-md bg-blue-50 p-4">
-                        <div className="flex">
-                            <div className="flex-shrink-0">
-                                <svg className="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                                </svg>
-                            </div>
-                            <div className="ml-3 flex-1 md:flex md:justify-between">
-                                <p className="text-sm text-blue-700">Do not have a key?</p>
-                                <p className="mt-3 text-sm md:ml-6 md:mt-0">
-                                    <a href="#" className="whitespace-nowrap font-medium text-blue-700 hover:text-blue-600">
-                                        Contact Sales
-                                        <span aria-hidden="true"> &rarr;</span>
-                                    </a>
-                                </p>
-                            </div>
+                        <div className="w-24">
+                            <StatefulInput
+                                label="Port"
+                                placeholder="8080"
+                                value={proxyState.port}
+                                onChange={(e) => updateProxyState("port", e.target.value)}
+                                error={errors.port}
+                            />
                         </div>
                     </div>
                 </div>
+
+                {/* Section 3: Faded Text */}
+                <div className="grid grid-cols-12 gap-8">
+                    <div className="col-span-12 md:col-span-8 flex gap-4 items-center">
+                        {/* <ArrowRight className="text-blue-500" size={20} /> */}
+                        <p className="text-sm text-gray-900">
+                             Access the <a href="#" className="text-blue-600 font-medium">Product interface</a> and upload the activation key
+                        </p>
+                    </div>
+                    {/* Divider not needed here or should be below? User image shows it separating content from footer or just a line. Keeping logic simple. */}
+                </div>
+                
+                <div className="border-t border-gray-100" />
+            </div>
+
+            {/* Footer */}
+            <div className="mt-auto flex justify-end gap-4">
+                <button 
+                    onClick={onBack}
+                    className="rounded-lg border border-blue-200 px-8 py-2.5 text-sm font-medium text-blue-600 hover:bg-blue-50"
+                >
+                    Back
+                </button>
+                <button 
+                    onClick={handleActivateWithValidation}
+                    className="rounded-lg bg-blue-600 px-8 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
+                >
+                    Activate
+                </button>
             </div>
         </div>
     );
 }
+

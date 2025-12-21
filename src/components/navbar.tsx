@@ -5,25 +5,17 @@ import { ArrowLeft, Home, CircleHelp, X, Menu, ChevronRight, ChevronLeft, Plus, 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { GlobalSearch } from "@/components/global-search";
+import { useUser } from "@/contexts/UserContext";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [showActivationKeys, setShowActivationKeys] = useState(false);
-  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
-  const [selectedKeyId, setSelectedKeyId] = useState<string | null>(null);
+  // Use global user context
+  const { userDetails, selectedKeyId, setSelectedKeyId } = useUser();
+  
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-
-  interface UserDetails {
-    email: string;
-    username: string;
-    keys: {
-      id: string;
-      name: string;
-      key: string;
-    }[];
-  }
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -39,31 +31,6 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  // Fetch User Details
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/details`,{method: 'GET',credentials: "include"});
-        console.log(response);
-        if (response.ok) {
-          const data = await response.json();
-          setUserDetails(data);
-          // Set default selected key if not already set
-          if (data.keys && data.keys.length > 0 && !selectedKeyId) {
-            setSelectedKeyId(data.keys[0].id);
-          }
-        } else {
-            console.warn("Failed to fetch user details");
-            // router.push('/');
-        }
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
-    };
-
-    fetchUserDetails();
-  }, [selectedKeyId]); // Added selectedKeyId dependency so logic runs correctly if it changes externally, though fetch mainly on mount
 
   const handleKeySelect = (keyId: string) => {
     setSelectedKeyId(keyId);

@@ -10,6 +10,9 @@ export function StepDeploymentOptions({
     selectedOption: DeploymentOption;
     setSelectedOption: (option: DeploymentOption) => void;
 }) {
+    const handleOptionSelect = (option: DeploymentOption) => {
+        setSelectedOption(option);
+    };
     return (
         <>
             <div className="mb-12">
@@ -28,19 +31,19 @@ export function StepDeploymentOptions({
                         title="On Premise"
                         description="Compatible with standard Intel architecture server-class physical/virtual hardware."
                         isSelected={selectedOption === "on-premise"}
-                        onClick={() => setSelectedOption("on-premise")}
+                        onClick={() => handleOptionSelect("on-premise")}
                     />
                         <OptionCard
                         title="Private Cloud"
                         description="Compatible with all PaaS platforms"
                         isSelected={selectedOption === "private-cloud"}
-                        onClick={() => setSelectedOption("private-cloud")}
+                        onClick={() => handleOptionSelect("private-cloud")}
                     />
                         <OptionCard
                         title="Manual Installation"
                         description="Compatible with all Linux distributions"
                         isSelected={selectedOption === "manual"}
-                        onClick={() => setSelectedOption("manual")}
+                        onClick={() => handleOptionSelect("manual")}
                     />
                 </div>
 

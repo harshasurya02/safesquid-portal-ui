@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import {
@@ -10,15 +10,26 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { HardwareState } from "../../../../app/dashboard/instances/build/page";
 
-export function StepProvisionHardware() {
-    const [proxyCount, setProxyCount] = useState(1);
-    const [isProxyActive, setProxyActive] = useState(false);
-    const [isLBActive, setLBActive] = useState(false);
-    const [isLogActive, setLogActive] = useState(false);
+interface StepProvisionHardwareProps {
+    state: HardwareState;
+    setState: Dispatch<SetStateAction<HardwareState>>;
+}
 
-    const handleIncrement = () => setProxyCount(prev => prev + 1);
-    const handleDecrement = () => setProxyCount(prev => Math.max(1, prev - 1));
+export function StepProvisionHardware({ state, setState }: StepProvisionHardwareProps) {
+
+    const updateState = (updates: Partial<HardwareState>) => {
+        setState(prev => ({ ...prev, ...updates }));
+    };
+
+    const handleIncrement = () => updateState({ proxyCount: state.proxyCount + 1 });
+    const handleDecrement = () => updateState({ proxyCount: Math.max(1, state.proxyCount - 1) });
+    
+    // Toggle Handlers
+    const toggleLog = (active: boolean) => updateState({ isLogActive: active });
+    const toggleProxy = (active: boolean) => updateState({ isProxyActive: active });
+    const toggleLB = (active: boolean) => updateState({ isLBActive: active });
 
     return (
         <div className="flex flex-col">
@@ -38,8 +49,10 @@ export function StepProvisionHardware() {
                 </label>
                 <input 
                     type="number" 
-                    defaultValue={2}
+                    value={state.deploymentLocations}
+                    onChange={(e) => updateState({ deploymentLocations: parseInt(e.target.value) || 0 })}
                     className="w-24 rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                    min={1}
                 />
             </div>
 
@@ -53,7 +66,8 @@ export function StepProvisionHardware() {
                             <span className="text-sm text-blue-600">Maximum Concurrent Connections:</span>
                             <input 
                                 type="text" 
-                                defaultValue="12,000"
+                                value={state.maxConcurrentConnections}
+                                onChange={(e) => updateState({ maxConcurrentConnections: e.target.value })}
                                 className="w-24 rounded border border-blue-100 bg-blue-50 px-3 py-1 text-sm text-blue-600 focus:outline-none"
                             />
                         </div>
@@ -62,14 +76,14 @@ export function StepProvisionHardware() {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <button className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 outline-none">
-                                    Location 1
+                                    {state.location}
                                     <ChevronDown size={16} className="text-gray-400" />
                                 </button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuItem>Location 1</DropdownMenuItem>
-                                <DropdownMenuItem>Location 2</DropdownMenuItem>
-                                <DropdownMenuItem>Location 3</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => updateState({ location: "Location 1" })}>Location 1</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => updateState({ location: "Location 2" })}>Location 2</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => updateState({ location: "Location 3" })}>Location 3</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>
@@ -125,9 +139,9 @@ export function StepProvisionHardware() {
                 <div className="flex flex-col gap-8 p-8 min-h-[300px]">
                     {/* Top Row: Available Components Source */}
                     <div className="flex h-20 items-center justify-center gap-8 border-b border-dashed border-gray-100 pb-8">
-                        {!isLogActive && (
+                        {!state.isLogActive && (
                             <button 
-                                onClick={() => setLogActive(true)}
+                                onClick={() => toggleLog(true)}
                                 className="group flex flex-col items-center justify-center gap-2 p-2 opacity-50 transition-all hover:scale-105 hover:opacity-100"
                             >
                                 <div className="rounded border border-dashed border-gray-400 p-2">
@@ -137,9 +151,9 @@ export function StepProvisionHardware() {
                             </button>
                         )}
 
-                        {!isProxyActive && (
+                        {!state.isProxyActive && (
                             <button 
-                                onClick={() => setProxyActive(true)}
+                                onClick={() => toggleProxy(true)}
                                 className="group flex flex-col items-center justify-center gap-2 p-2 transition-all hover:scale-105"
                             >
                                 <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-gray-200 bg-white shadow-sm group-hover:border-blue-200 group-hover:shadow-md">
@@ -149,9 +163,9 @@ export function StepProvisionHardware() {
                             </button>
                         )}
 
-                        {!isLBActive && (
+                        {!state.isLBActive && (
                             <button 
-                                onClick={() => setLBActive(true)}
+                                onClick={() => toggleLB(true)}
                                 className="group flex flex-col items-center justify-center gap-2 p-2 transition-all hover:scale-105"
                             >
                                 <div className="flex h-12 w-12 items-center justify-center">
@@ -161,7 +175,7 @@ export function StepProvisionHardware() {
                             </button>
                         )}
 
-                        {isLogActive && isProxyActive && isLBActive && (
+                        {state.isLogActive && state.isProxyActive && state.isLBActive && (
                             <span className="text-xs text-gray-300">All components deployed</span>
                         )}
                     </div>
@@ -170,8 +184,8 @@ export function StepProvisionHardware() {
                     <div className="relative flex flex-1 items-center justify-center gap-4">
                         
                         {/* Log Aggregator (Overlay) */}
-                        {isLogActive && (
-                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center group cursor-pointer" onClick={() => setLogActive(false)}>
+                        {state.isLogActive && (
+                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center group cursor-pointer" onClick={() => toggleLog(false)}>
                                 <div className="rounded border border-dashed border-gray-400 p-2 bg-white/50 hover:bg-red-50 hover:border-red-200 transition-colors">
                                     <Image src="/icons/log.png" alt="Log Aggregator" width={24} height={24} className="opacity-60" />
                                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100">
@@ -199,12 +213,12 @@ export function StepProvisionHardware() {
                             </div>
 
                             {/* Proxy (Conditional) */}
-                            {isProxyActive && (
+                            {state.isProxyActive && (
                                 <>
                                     <div className="group relative flex flex-col items-center justify-center rounded-xl p-4 transition-all hover:bg-gray-50">
                                         {/* Hover Controls */}
                                         <div className="absolute -top-2 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-                                            <button onClick={() => setProxyActive(false)} className="rounded bg-red-100 px-2 py-0.5 text-[10px] font-medium text-red-600 hover:bg-red-200">
+                                            <button onClick={() => toggleProxy(false)} className="rounded bg-red-100 px-2 py-0.5 text-[10px] font-medium text-red-600 hover:bg-red-200">
                                                 Cancel
                                             </button>
                                         </div>
@@ -220,7 +234,7 @@ export function StepProvisionHardware() {
                                                 <Image src="/icons/proxy.png" alt="Proxy" width={48} height={48} />
                                             </div>
                                             <span className="text-center text-sm font-medium text-gray-900 leading-tight">
-                                                {proxyCount} Proxy<br/>Server{proxyCount !== 1 ? 's' : ''}
+                                                {state.proxyCount} Proxy<br/>Server{state.proxyCount !== 1 ? 's' : ''}
                                             </span>
                                         </div>
                                     </div>
@@ -233,12 +247,12 @@ export function StepProvisionHardware() {
                             )}
 
                             {/* Load Balancer (Conditional) */}
-                            {isLBActive && (
+                            {state.isLBActive && (
                                 <>
                                     <div className="group relative flex flex-col items-center justify-center rounded-xl p-4 transition-all hover:bg-gray-50">
                                          {/* Hover Controls */}
                                          <div className="absolute -top-2 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-                                            <button onClick={() => setLBActive(false)} className="rounded bg-red-100 px-2 py-0.5 text-[10px] font-medium text-red-600 hover:bg-red-200">
+                                            <button onClick={() => toggleLB(false)} className="rounded bg-red-100 px-2 py-0.5 text-[10px] font-medium text-red-600 hover:bg-red-200">
                                                 Cancel
                                             </button>
                                         </div>

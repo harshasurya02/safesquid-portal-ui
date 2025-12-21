@@ -11,6 +11,7 @@ async function apiRequest<T>(
   const options: RequestInit = {
     method,
     headers: { "Content-Type": "application/json" },
+    credentials: "include"
   };
 
   if (body && method !== "GET") {
