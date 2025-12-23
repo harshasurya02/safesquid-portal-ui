@@ -2,6 +2,7 @@
 
 import { OptionCard } from "./option-card";
 import { DeploymentOption } from "../../../../app/dashboard/instances/build/page";
+import Link from "next/link";
 
 export function StepDeploymentOptions({
     selectedOption,
@@ -65,9 +66,9 @@ export function StepDeploymentOptions({
                                         <li>Deploy and configure your SWG</li>
                                     </ul>
                                 </div>
-                                <a href="https://downloads.safesquid.com/appliance/safesquid.iso" target="_blank" rel="noopener noreferrer" className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-medium text-white hover:bg-blue-700">
+                                <Link href="https://downloads.safesquid.com/appliance/safesquid.iso" target="_blank" rel="noopener noreferrer" className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-medium text-white hover:bg-blue-700">
                                     Download SAB
-                                </a>
+                                </Link>
                             </div>
                         )}
 
@@ -95,9 +96,9 @@ export function StepDeploymentOptions({
                                         <p className="my-4 text-center text-xs text-gray-400">- or -</p>
                                     </div>
                                 </div>
-                                    <a href="https://github.com/SafeSquid-Github/safesquid_cloud-init/blob/main/safesquid_cloud-init.yaml" target="_blank" rel="noopener noreferrer" className="block w-full rounded-lg bg-blue-600 px-4 py-3 text-center text-sm font-medium text-white hover:bg-blue-700">
+                                    <Link href="https://github.com/SafeSquid-Github/safesquid_cloud-init/blob/main/safesquid_cloud-init.yaml" target="_blank" rel="noopener noreferrer" className="block w-full rounded-lg bg-blue-600 px-4 py-3 text-center text-sm font-medium text-white hover:bg-blue-700">
                                         Download Cloud-init Script
-                                    </a>
+                                    </Link>
                             </div>
                         )}
 
@@ -114,9 +115,9 @@ export function StepDeploymentOptions({
                                         <li>Execute the setup.sh script to install SafeSquid</li>
                                     </ol>
                                 </div>
-                                <a href="http://downloads.safesquid.net/appliance/binary/safesquid_latest.tar.gz" className="block w-full rounded-lg bg-blue-600 px-4 py-3 text-center text-sm font-medium text-white hover:bg-blue-700">
+                                <Link href="http://downloads.safesquid.net/appliance/binary/safesquid_latest.tar.gz" className="block w-full rounded-lg bg-blue-600 px-4 py-3 text-center text-sm font-medium text-white hover:bg-blue-700">
                                     Download Tarball
-                                </a>
+                                </Link>
                             </div>
                         )}
                     </div>

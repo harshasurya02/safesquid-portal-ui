@@ -1,5 +1,5 @@
 
-import { apiGet } from "./api.service";
+import { apiGet, apiPut } from "./api.service";
 import { apiGetServer } from "./api.server.service";
 
 export interface Instance {
@@ -62,6 +62,24 @@ export interface InstanceDetails {
     lastUpdated: string;
 }
 
+export interface InstanceHistoryItem {
+    id: string;
+    description: string;
+    timestamp: string;
+    user: string;
+}
+
+export interface InstanceHistoryResponse {
+    error: boolean;
+    data: InstanceHistoryItem[];
+    pagination: {
+        page: number;
+        limit: number;
+        total: number;
+        totalPages: number;
+    };
+}
+
 interface InstancesResponse {
     error: boolean;
     data: Instance[];
@@ -90,4 +108,13 @@ export const getInstanceDetails = async (instanceId: string): Promise<InstanceDe
 export const getInstanceDetailsServer = async (instanceId: string, options?: RequestInit): Promise<InstanceDetails> => {
     const response = await apiGetServer<InstanceDetailsResponse>(`/api/instance/${instanceId}`, {}, options);
     return response.data;
+};
+
+export const getInstanceHistoryServer = async (instanceId: string, page: number = 1, limit: number = 10, options?: RequestInit): Promise<InstanceHistoryResponse> => {
+    const response = await apiGetServer<InstanceHistoryResponse>(`/api/instance/${instanceId}/history`, { page, limit }, options);
+    return response;
+};
+
+export const updateInstance = async (instanceId: string, data: { instanceName: string; location: string }): Promise<void> => {
+    await apiPut<void>(`/api/instance/${instanceId}`, data);
 };

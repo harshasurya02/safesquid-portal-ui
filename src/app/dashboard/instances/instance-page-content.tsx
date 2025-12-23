@@ -6,6 +6,7 @@ import { InstancesTable } from "@/components/instances/instances-table";
 import { Instance } from "@/services/instance.service";
 import { useUser } from "@/contexts/UserContext";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface InstancePageContentProps {
     initialInstances: Instance[];
@@ -42,10 +43,10 @@ export default function InstancePageContent({ initialInstances, searchParamsKey 
                             <Download className="w-4 h-4" />
                             Download key
                         </button>
-                        <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium shadow-sm">
+                        <Link href="/dashboard/instances/build" className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium shadow-sm">
                             <Plus className="w-4 h-4" />
                             Setup new instance
-                        </button>
+                        </Link>
                     </div>
                 </div>
 

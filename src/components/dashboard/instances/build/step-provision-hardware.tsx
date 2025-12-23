@@ -85,9 +85,9 @@ export function StepProvisionHardware({ state, setState }: StepProvisionHardware
                                 </button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => updateState({ location: "Mumbai, India" })}>Mumbai, India</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => updateState({ location: "New York, USA" })}>New York, USA</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => updateState({ location: "Sydney, Australia" })}>Location 3</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => updateState({ location: "Mumbai" })}>Mumbai, India</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => updateState({ location: "New York" })}>New York, USA</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => updateState({ location: "Sydney" })}>Sydney, Australia</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>

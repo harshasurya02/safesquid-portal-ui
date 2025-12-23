@@ -4,6 +4,7 @@ import { useState, Dispatch, SetStateAction } from "react";
 import { Download, ArrowRight } from "lucide-react";
 import { StatefulInput } from "@/components/stateful-input";
 import { ProxyState } from "../../../../app/dashboard/instances/build/page";
+import Link from "next/link";
 
 interface StepActivationKeyProps {
     onActivate: () => void;
@@ -124,7 +125,7 @@ export function StepActivationKey({
                     <div className="col-span-12 md:col-span-8 flex gap-4 items-center">
                         {/* <ArrowRight className="text-blue-500" size={20} /> */}
                         <p className="text-sm text-gray-900">
-                             Access the <a href="#" className="text-blue-600 font-medium">Product interface</a> and upload the activation key
+                             Access the <Link href="#" className="text-blue-600 font-medium">Product interface</Link> and upload the activation key
                         </p>
                     </div>
                     {/* Divider not needed here or should be below? User image shows it separating content from footer or just a line. Keeping logic simple. */}

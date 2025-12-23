@@ -3,6 +3,7 @@
 import React from "react";
 import { Instance } from "@/services/instance.service";
 import { parseISO, format, isValid } from 'date-fns';
+import Link from "next/link";
 interface InstancesTableProps {
     instances: Instance[];
 }
@@ -63,9 +64,9 @@ export function InstancesTable({ instances }: InstancesTableProps) {
                                 {instance.location}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href={`/dashboard/instances/${instance.id}`} className="text-blue-600 hover:text-blue-900 font-medium px-3 py-1 rounded hover:bg-blue-50 transition-colors inline-block">
+                                <Link href={`/dashboard/instances/${instance.id}`} className="text-blue-600 hover:text-blue-900 font-medium px-3 py-1 rounded hover:bg-blue-50 transition-colors inline-block">
                                     Manage
-                                </a>
+                                </Link>
                             </td>
                         </tr>
                     ))}

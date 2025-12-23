@@ -41,7 +41,7 @@ export default function InstanceBuildPage() {
         isProxyActive: false,
         isLBActive: false,
         isLogActive: false,
-        location: "Mumbai, India"
+        location: "Mumbai"
     });
 
     // Proxy State
@@ -50,7 +50,7 @@ export default function InstanceBuildPage() {
         port: ""
     });
 
-    const { selectedKeyId } = useUser();
+    const { selectedKeyId,userDetails : user } = useUser();
 
     const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
@@ -65,7 +65,9 @@ export default function InstanceBuildPage() {
                 deploymentOption: selectedOption,
                 numberOfDeployments: hardwareState.deploymentLocations,
                 proxyCommonName: proxyState.commonName,
-                port: Number(proxyState.port)
+                port: Number(proxyState.port),
+                location: hardwareState.location,
+                username: user?.username
             };
             
             await apiPost(`/api/instance/`, payload);

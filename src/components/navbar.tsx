@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { GlobalSearch } from "@/components/global-search";
 import { useUser } from "@/contexts/UserContext";
+import Link from "next/link";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -144,8 +145,8 @@ const Navbar = () => {
                 <nav className="flex flex-col space-y-4">
                   <span className="text-sm font-medium text-gray-900">{userDetails?.username || 'User'}</span>
                    <span className="text-xs text-gray-500">{userDetails?.email}</span>
-                  <a href="/dashboard/profile" className="text-sm text-gray-900 hover:text-gray-600 mt-2">User Profile</a>
-                  <a href="/dashboard/organization" className="text-sm text-gray-900 hover:text-gray-600">Organization profile</a>
+                  <Link href="/dashboard/profile" className="text-sm text-gray-900 hover:text-gray-600 mt-2">User Profile</Link>
+                  <Link href="/dashboard/organization" className="text-sm text-gray-900 hover:text-gray-600">Organization profile</Link>
                 </nav>
               </div>
 
@@ -153,9 +154,9 @@ const Navbar = () => {
               <div>
                 <h3 className="text-xs text-gray-400 mb-3">Account</h3>
                 <nav className="flex flex-col space-y-4">
-                  <a href="#" className="text-sm text-gray-900 hover:text-gray-600">History</a>
-                  <a href="#" className="text-sm text-gray-900 hover:text-gray-600">Feedback</a>
-                  <a href="#" className="text-sm text-gray-900 hover:text-gray-600">Get help</a>
+                  <Link href="#" className="text-sm text-gray-900 hover:text-gray-600">History</Link>
+                  <Link href="#" className="text-sm text-gray-900 hover:text-gray-600">Feedback</Link>
+                  <Link href="#" className="text-sm text-gray-900 hover:text-gray-600">Get help</Link>
                   <button 
                     onClick={handleLogout}
                     className="text-sm text-gray-900 hover:text-gray-600 text-left"
@@ -187,9 +188,9 @@ const Navbar = () => {
           <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full" onClick={()=> router.back()}>
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
+          <Link href={"/dashboard"} className="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
             <Home className="w-5 h-5" />
-          </button>
+          </Link>
 
 
 
@@ -231,12 +232,12 @@ const Navbar = () => {
                       <span>Activation keys</span>
                       <ChevronRight className="w-4 h-4 text-gray-400" />
                     </button>
-                    <a href="/dashboard/profile" className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
+                    <Link href="/dashboard/profile" className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
                       <span>User Profile</span>
-                    </a>
-                    <a href="/dashboard/organization" className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
+                    </Link>
+                    <Link href="/dashboard/organization" className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
                       <span>Organization profile</span>
-                    </a>
+                    </Link>
                     <button className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
                       <span>Activity History</span>
                     </button>
