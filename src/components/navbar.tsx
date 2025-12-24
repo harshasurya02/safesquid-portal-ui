@@ -207,15 +207,15 @@ const Navbar = () => {
 
           <div className="relative" ref={dropdownRef}>
             <button
-              className="flex items-center gap-3 pl-4 border-l border-gray-200 text-left hover:bg-gray-50 rounded p-2 transition-colors"
+              className="flex items-center gap-3 pl-4 border-l border-gray-200 text-left hover:bg-gray-50 rounded p-2 transition-colors w-64"
               onClick={() => setIsProfileOpen(!isProfileOpen)}
             >
-              <div className="w-8 h-8 bg-blue-600 text-white rounded flex items-center justify-center text-xs font-medium">
+              <div className="w-8 h-8 bg-blue-600 text-white rounded flex items-center justify-center text-xs font-medium flex-shrink-0">
                  {userDetails?.username?.substring(0, 2).toUpperCase() || 'US'}
               </div>
-              <div className="flex flex-col">
-                <span className="text-xs font-medium text-gray-900">{activeKey?.name || userDetails?.username || 'Loading...'}</span>
-                <span className="text-[10px] text-gray-500">{activeKey ? `Key: ${activeKey.key.substring(0, 8)}...` : 'No Active Key'}</span>
+              <div className="flex flex-col min-w-0 flex-1">
+                <span className="text-xs font-medium text-gray-900 truncate">{activeKey?.name || userDetails?.username || 'Loading...'}</span>
+                <span className="text-[10px] text-gray-500 truncate">{activeKey ? `Key: ${activeKey.key.substring(0, 8)}...` : 'No Active Key'}</span>
               </div>
             </button>
 

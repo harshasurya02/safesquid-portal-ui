@@ -119,12 +119,7 @@ export function GlobalSearch() {
                     </button>
                 ) : (
                     <button className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 pointer-events-none">
-                        {/* Maybe a search icon if empty? Screenshot shows X but maybe that's when typed? 
-                 Actually screenshot shows X in the input. 
-                 Wait, the screenshot shows a modal with "What would you like to do today?" and X on top right.
-                 But user wants dropdown.
-                 In navbar screenshot, there is X in input.
-             */}
+                     
                         <X className="w-4 h-4" />
                     </button>
                 )}
@@ -168,7 +163,7 @@ export function GlobalSearch() {
                                             {item.subItems.map((subItem, index) => (
                                                 <div
                                                     key={subItem.title}
-                                                    className="flex items-center gap-3 py-2 pl-11 pr-2 hover:bg-gray-100 rounded-md cursor-pointer text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                                                    className="flex items-center gap-3 py-2 pl-2 pr-2 hover:bg-gray-100 rounded-md cursor-pointer text-sm text-gray-600 hover:text-gray-900 transition-colors"
                                                     onClick={() => handleSelect(subItem.link)}
                                                 >
                                                     <span className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-full bg-gray-200 text-[10px] font-medium text-gray-600">

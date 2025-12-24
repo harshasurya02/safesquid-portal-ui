@@ -1,10 +1,11 @@
 "use client"
 // import Navbar from "@/components/navbar";
 import { DashboardItem, DashboardItemProps } from "@/components/dashboard/dashboard-item";
+import { useUser } from "@/contexts/UserContext";
 import { dashboardItems } from "@/lib/dashboard-data";
 
 export default function DashboardPage() {
-  const userName = "Mukund";
+  const {userDetails:user} = useUser()
 
   return (
     // <div className="min-h-screen bg-white">
@@ -13,7 +14,7 @@ export default function DashboardPage() {
     <main className="xl:max-w-5xl lg:max-w-5xl md:max-w-3xl sm:max-w-xl max-w-md mx-auto px-8 py-12">
       <div className="flex flex-col items-center mb-16">
         <h1 className="text-4xl font-normal text-gray-900">
-          Hi <span className="font-medium">{userName}</span>
+          Hi <span className="font-medium">{user?.username}</span>
         </h1>
       </div>
 
