@@ -3,17 +3,40 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { X, ChevronDown, ChevronRight } from "lucide-react";
-import { dashboardItems } from "@/lib/dashboard-data";
+import { getDashboardItems, DashboardItemProps } from "@/lib/dashboard-data";
 import { cn } from "@/lib/utils";
 import { useUser } from "@/contexts/UserContext";
+import { getLatestInstances } from "@/services/instance.service";
 
 export function GlobalSearch() {
     const [isOpen, setIsOpen] = React.useState(false);
     const [query, setQuery] = React.useState("");
     const [expandedCategories, setExpandedCategories] = React.useState<string[]>([]);
+    const [dashboardItems, setDashboardItems] = React.useState<DashboardItemProps[]>(getDashboardItems());
     const containerRef = React.useRef<HTMLDivElement>(null);
     const router = useRouter();
+    const { selectedKeyId } = useUser();
 
+    // Fetch latest instances when selectedKeyId changes
+    React.useEffect(() => {
+        const fetchLatestInstances = async () => {
+            if (!selectedKeyId) {
+                setDashboardItems(getDashboardItems());
+                return;
+            }
+
+            try {
+                const data = await getLatestInstances(selectedKeyId);
+                setDashboardItems(getDashboardItems(data));
+            } catch (error) {
+                console.error("Failed to fetch latest instances:", error);
+                // Fallback to default dashboard items
+                setDashboardItems(getDashboardItems());
+            }
+        };
+
+        fetchLatestInstances();
+    }, [selectedKeyId]);
 
     // Close dropdown when clicking outside
     React.useEffect(() => {
@@ -36,8 +59,6 @@ export function GlobalSearch() {
                 : [...prev, title]
         );
     };
-
-    const { selectedKeyId } = useUser();
 
     const filteredItems = dashboardItems.map((item) => {
         // Construct a new object with modified links

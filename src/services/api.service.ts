@@ -5,7 +5,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 // Common request handler
 async function apiRequest<T>(
   endpoint: string,
-  method: "GET" | "POST" | "PUT" | "DELETE",
+  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
   body?: Record<string, unknown>
 ): ApiResponse<T> {
   const options: RequestInit = {
@@ -51,6 +51,12 @@ export const apiPut = <T>(
   endpoint: string,
   body: Record<string, unknown>
 ): ApiResponse<T> => apiRequest(endpoint, "PUT", body);
+
+// PATCH
+export const apiPatch = <T>(
+  endpoint: string,
+  body: Record<string, unknown>
+): ApiResponse<T> => apiRequest(endpoint, "PATCH", body);
 
 // DELETE
 export const apiDelete = <T>(

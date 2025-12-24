@@ -11,7 +11,7 @@ import {
   Trash2, 
   Key 
 } from "lucide-react";
-import { InstanceDetails } from "@/services/instance.service";
+import { InstanceDetails, toggleInstanceActivation } from "@/services/instance.service";
 import { EditInstanceDialog } from "./edit-instance-dialog";
 
 interface InstanceHeaderProps {
@@ -21,6 +21,8 @@ interface InstanceHeaderProps {
 
 export function InstanceHeader({ instanceDetails, activeTab }: InstanceHeaderProps) {
     const [isEditOpen, setIsEditOpen] = useState(false);
+    const [isActivating, setIsActivating] = useState(false);
+    const [optimisticStatus, setOptimisticStatus] = useState<string | null>(null);
     const router = useRouter();
 
     const formatDate = (dateString: string) => {
@@ -39,6 +41,30 @@ export function InstanceHeader({ instanceDetails, activeTab }: InstanceHeaderPro
         router.refresh();
     };
 
+    const handleToggleActivation = async () => {
+        try {
+            setIsActivating(true);
+            const newStatus = instanceDetails.status === "active" ? "inactive" : "active";
+            // Optimistically update the UI
+            setOptimisticStatus(newStatus);
+            await toggleInstanceActivation(instanceDetails.id, newStatus);
+            router.refresh();
+        } catch (error) {
+            console.error("Failed to toggle activation:", error);
+            // Revert optimistic update on error
+            setOptimisticStatus(null);
+            // You can add toast notification here if you have a toast system
+        } finally {
+            setIsActivating(false);
+            // Clear optimistic status after refresh completes
+            setTimeout(() => setOptimisticStatus(null), 1000);
+        }
+    };
+
+    // Use optimistic status if available, otherwise use actual status
+    const displayStatus = optimisticStatus || instanceDetails.status;
+
+    
     return (
         <div className="flex flex-col gap-4">
             <EditInstanceDialog 
@@ -81,9 +107,13 @@ export function InstanceHeader({ instanceDetails, activeTab }: InstanceHeaderPro
                          <History className="w-4 h-4" />
                          History
                      </Link>
-                     <button className="flex items-center gap-2 px-3 py-1.5 text-gray-500 hover:bg-gray-50 rounded text-sm font-medium">
+                     <button 
+                         onClick={handleToggleActivation}
+                         disabled={isActivating}
+                         className="flex items-center gap-2 px-3 py-1.5 text-gray-500 hover:bg-gray-50 rounded text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                     >
                          <Ban className="w-4 h-4" />
-                         {instanceDetails.status === "active" ? "Deactivate" : "Activate"}
+                         {isActivating ? "Processing..." : (displayStatus === "active" ? "Deactivate" : "Activate")}
                      </button>
                      <button 
                          onClick={() => setIsEditOpen(true)}

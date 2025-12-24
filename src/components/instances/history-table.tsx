@@ -8,8 +8,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 interface HistoryTableProps {
     data: InstanceHistoryItem[];
     pagination: {
-        page: number;
-        limit: number;
+        page: string | number;
+        limit: string | number;
         total: number;
         totalPages: number;
     };
@@ -20,10 +20,15 @@ export function HistoryTable({ data, pagination }: HistoryTableProps) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
+    // Convert pagination values to numbers
+    const currentPage = Number(pagination.page);
+    const currentLimit = Number(pagination.limit);
+    const totalPages = pagination.totalPages;
+
     // Group data by date
     const groupedData = React.useMemo(() => {
         return data.reduce((acc, item) => {
-            const date = new Date(item.timestamp).toLocaleDateString('en-GB', {
+            const date = new Date(item.createdAt).toLocaleDateString('en-GB', {
                  day: 'numeric',
                  month: 'long',
                  year: 'numeric'
@@ -71,10 +76,10 @@ export function HistoryTable({ data, pagination }: HistoryTableProps) {
                             {items.map((activity, index) => (
                                 <tr key={activity.id || index} className="hover:bg-gray-50 transition-colors">
                                     <td className="py-3 px-4 text-sm text-gray-500 whitespace-nowrap">
-                                        {formatTime(activity.timestamp)}
+                                        {formatTime(activity.createdAt)}
                                     </td>
                                     <td className="py-3 px-4 text-sm text-gray-600">
-                                        {activity.description}
+                                        {activity.message}
                                     </td>
                                 </tr>
                             ))}
@@ -91,22 +96,21 @@ export function HistoryTable({ data, pagination }: HistoryTableProps) {
             </table>
             
             {/* Pagination */}
-            {pagination.totalPages > 1 && (
+            {totalPages > 1 && (
                 <div className="flex items-center justify-end gap-2 p-4 border-t border-gray-100">
                      <button 
-                        onClick={() => handlePageChange(pagination.page - 1)}
-                        disabled={pagination.page <= 1}
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage <= 1}
                         className="p-1 rounded hover:bg-gray-100 text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
                      >
                          <span className="sr-only">Previous</span>
                          <ChevronLeft className="w-5 h-5" />
                      </button>
-                     <span className="text-xs text-gray-600 font-medium">{pagination.page} / {pagination.totalPages}</span>
+                     <span className="text-xs text-gray-600 font-medium">{currentPage} / {totalPages}</span>
                      <button 
-                        onClick={() => handlePageChange(pagination.page + 1)}
-                        disabled={pagination.page >= pagination.totalPages}
-                        className="p-1 rounded hover:bg-gray-100 text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                     >
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage >= totalPages}
+                        className="p-1 rounded hover:bg-gray-100 text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed">
                          <span className="sr-only">Next</span>
                          <ChevronRight className="w-5 h-5" />
                      </button>

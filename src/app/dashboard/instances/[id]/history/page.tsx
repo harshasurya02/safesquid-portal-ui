@@ -4,7 +4,7 @@ import { InstanceHeader } from "@/components/instances/instance-header";
 import { HistoryTable } from "@/components/instances/history-table";
 
 interface PageProps {
-    params: { id: string };
+    params: Promise<{ id: string }>;
     searchParams: Promise<{ page?: string, limit?: string }>;
 }
 
@@ -14,9 +14,11 @@ export default async function InstanceHistoryPage({ params, searchParams }: Page
     
     // Fetch data in parallel
     const [instanceDetails, historyResponse] = await Promise.all([
-        getInstanceDetailsServer(params.id),
-        getInstanceHistoryServer(params.id, page, limit)
+        getInstanceDetailsServer((await params).id),
+        getInstanceHistoryServer((await params).id, page, limit)
     ]);
+
+    // console.log(historyResponse)
 
     return (
         <div className="p-8 max-w-[1600px] mx-auto space-y-6">
