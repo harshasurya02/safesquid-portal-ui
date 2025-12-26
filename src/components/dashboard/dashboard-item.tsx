@@ -41,20 +41,20 @@ export const DashboardItem = ({
     const { selectedKeyId } = useUser();
 
     // Append key ID to link if available
-    const href = selectedKeyId 
-        ? `${link}${link === "/dashboard/instances" && link.includes('?') ? '&' : '?'}k=${selectedKeyId}` 
+    const href = selectedKeyId
+        ? `${link}${link === "/dashboard/instances" && link.includes('?') ? '&' : '?'}k=${selectedKeyId}`
         : link;
 
     return (
         <Link className="flex flex-col md:flex-row items-center md:items-center gap-3 md:gap-4 p-4 bg-white rounded-lg w-full" href={href}>
-            <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-blue-50 rounded-lg text-primary">
+            <div className="flex items-center justify-center bg-blue-50 rounded-lg text-primary p-6">
                 <Icon className="w-5 h-5 md:w-6 md:h-6" />
             </div>
             <div className="flex flex-col items-center md:items-start gap-0.5">
-                <span className="text-sm md:text-base font-medium text-gray-900 md:hidden text-center">{mobileTitle}</span>
-                <span className="text-sm md:text-base font-medium text-gray-900 hidden md:block">{title}</span>
+                <span className="text-sm md:text-base font-normal text-gray-900 md:hidden text-center">{mobileTitle}</span>
+                <span className="text-sm md:text-base lg:text-xl xl:text-2xl font-medium text-gray-900 hidden md:block">{title}</span>
                 <span className={cn("text-xs md:text-sm md:hidden text-center", subtitleColorClass)}>{mobileSubtitle}</span>
-                <span className={cn("text-xs md:text-sm hidden md:block", subtitleColorClass)}>{subtitle}</span>
+                <span className={cn("text-xs md:text-sm lg:text-base xl:text-lg hidden md:block font-normal", subtitleColorClass)}>{subtitle}</span>
             </div>
         </Link>
     );
