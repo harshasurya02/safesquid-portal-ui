@@ -23,10 +23,10 @@ export function OptionCard({
                     : "opacity-60 hover:opacity-100"
             )}
         >
-            <h3 className={cn("text-base font-semibold", isSelected ? "text-gray-900" : "text-blue-600")}>
+            <h3 className={cn("text-xs md:text-base lg:text-md xl:text-lg 2xl:text-xl font-medium", isSelected ? "text-gray-900" : "text-primary")}>
                 {title}
             </h3>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-xs md:text-sm lg:text-base text-gray-500">
                 {description}
             </p>
         </div>

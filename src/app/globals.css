@@ -139,3 +139,14 @@ input::-ms-reveal {
 input::-ms-clear {
   display: none;
 }
+::selection {
+  background-color:var(--primary); /* Background color of selected text */
+  color:var(--primary-foreground); /* Text color when selected */
+}
+
+/* For Firefox compatibility */
+::-moz-selection {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+

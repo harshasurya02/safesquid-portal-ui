@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { ArrowLeft, Rocket, Monitor, Disc, Key } from "lucide-react";
 
-// --- Types ---
 export type Step = "deployment-options" | "provision-hardware" | "installation" | "activation-key";
 
 export const STEPS: { id: Step; label: string; icon: any }[] = [
@@ -31,12 +30,12 @@ const StepperItem = ({
     isLast?: boolean
 }) => {
     return (
-        <div className="relative flex items-center gap-4">
+        <div className="relative flex items-center gap-4 ">
              {/* Vertical Line */}
             {!isLast && (
                 <div className={cn(
                     "absolute left-[19px] top-[40px] h-[30px] w-[1px]",
-                    isCompleted ? "bg-green-500" : "bg-gray-200"
+                    isCompleted ? "bg-gray-200" : "bg-gray-200"
                 )} />
             )}
 
@@ -50,15 +49,15 @@ const StepperItem = ({
             )}>
                 {isCompleted ? (
                     <div className="flex bg-blue-100 h-full w-full items-center justify-center rounded-lg">
-                        <Check size={18} strokeWidth={2.5} className="text-blue-600" />
+                        <Check size={24} strokeWidth={2.5} className="text-blue-600" />
                     </div>
                 ) : (
-                    <Icon size={20} strokeWidth={1.5} />
+                    <Icon size={24} strokeWidth={1.5} />
                 )}
             </div>
             <span className={cn(
-                "font-medium transition-colors",
-                 isActive ? "text-gray-900" : "text-gray-400"
+                "text-xs md:text-sm lg:text-base xl:text-lg 2xl:text-xl font-medium transition-colors",
+                 isActive ? "text-black opacity-100" : "text-black opacity-40"
             )}>
                 {label}
             </span>
@@ -79,7 +78,7 @@ export function Stepper({ currentStep }: { currentStep: Step }) {
 
     return (
         <aside className="w-80 border-r bg-white p-8">
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-8 md:gap-10 lg:gap-12">
                 {STEPS.map((step, index) => {
                     const status = getStepStatus(step.id);
                     return (
@@ -99,10 +98,10 @@ export function Stepper({ currentStep }: { currentStep: Step }) {
              <div className="mt-auto pt-20">
                 <Link 
                     href="/dashboard/instances" 
-                    className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900"
+                    className="flex items-center gap-4 text-xs md:text-sm lg:text-base xl:text-lg 2xl:text-xl text-black opacity-40 hover:text-black hover:opacity-100"
                 >
                     <div className="flex h-8 w-8 items-center justify-center rounded-md border bg-white shadow-sm">
-                         <ArrowLeft size={16} />
+                         <ArrowLeft size={24} strokeWidth={2.5} />
                     </div>
                     Back to Instances
                 </Link>
