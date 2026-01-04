@@ -14,7 +14,7 @@ const Navbar = () => {
   const [showActivationKeys, setShowActivationKeys] = useState(false);
   // Use global user context
   const { userDetails, selectedKeyId, setSelectedKeyId } = useUser();
-  
+
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -111,24 +111,24 @@ const Navbar = () => {
                 <h3 className="text-xs text-gray-400 mb-3">Keys</h3>
                 <div className="space-y-2">
                   {/* Map Keys for Mobile */}
-                   {userDetails?.keys?.map((key) => (
-                      <div 
-                        key={key.id} 
-                        className="flex items-start justify-between p-3 first:bg-blue-50 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
-                        onClick={() => handleKeySelect(key.id)}
-                      >
-                        <div className="flex items-start gap-3">
-                          <div className={`w-1.5 h-1.5 rounded-full mt-2 ${key.id === activeKey?.id ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
-                          <div className="flex flex-col">
-                            <span className="text-sm font-medium text-gray-900">{key.name}</span>
-                            <span className="text-xs text-gray-500">Key: {key.key}</span>
-                          </div>
+                  {userDetails?.keys?.map((key) => (
+                    <div
+                      key={key.id}
+                      className="flex items-start justify-between p-3 first:bg-blue-50 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                      onClick={() => handleKeySelect(key.id)}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`w-1.5 h-1.5 rounded-full mt-2 ${key.id === activeKey?.id ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
+                        <div className="flex flex-col">
+                          <span className="text-sm font-medium text-gray-900">{key.name}</span>
+                          <span className="text-xs text-gray-500">Key: {key.key}</span>
                         </div>
-                        <button className="p-1 text-gray-400">
-                          <Pencil className="w-4 h-4" />
-                        </button>
                       </div>
-                   ))}
+                      <button className="p-1 text-gray-400">
+                        <Pencil className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
 
                   {/* Add Button */}
                   <div className="flex justify-center mt-4">
@@ -143,8 +143,8 @@ const Navbar = () => {
               <div className="mb-8">
                 <h3 className="text-xs text-gray-400 mb-3">Profile</h3>
                 <nav className="flex flex-col space-y-4">
-                  <span className="text-sm font-medium text-gray-900">{userDetails?.username || 'User'}</span>
-                   <span className="text-xs text-gray-500">{userDetails?.email}</span>
+                  {/* <span className="text-sm font-medium text-gray-900">{userDetails?.username || 'User'}</span>
+                   <span className="text-xs text-gray-500">{userDetails?.email}</span> */}
                   <Link href="/dashboard/profile" className="text-sm text-gray-900 hover:text-gray-600 mt-2">User Profile</Link>
                   <Link href="/dashboard/organization" className="text-sm text-gray-900 hover:text-gray-600">Organization profile</Link>
                 </nav>
@@ -157,7 +157,7 @@ const Navbar = () => {
                   <Link href="#" className="text-sm text-gray-900 hover:text-gray-600">History</Link>
                   <Link href="#" className="text-sm text-gray-900 hover:text-gray-600">Feedback</Link>
                   <Link href="#" className="text-sm text-gray-900 hover:text-gray-600">Get help</Link>
-                  <button 
+                  <button
                     onClick={handleLogout}
                     className="text-sm text-gray-900 hover:text-gray-600 text-left"
                   >
@@ -185,7 +185,7 @@ const Navbar = () => {
 
         {/* Center Actions */}
         <div className="flex items-center gap-4 flex-1 justify-center max-w-3xl mx-auto">
-          <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full" onClick={()=> router.back()}>
+          <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full" onClick={() => router.back()}>
             <ArrowLeft className="w-5 h-5" />
           </button>
           <Link href={"/dashboard"} className="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
@@ -211,7 +211,7 @@ const Navbar = () => {
               onClick={() => setIsProfileOpen(!isProfileOpen)}
             >
               <div className="w-8 h-8 bg-blue-600 text-white rounded flex items-center justify-center text-xs font-medium flex-shrink-0">
-                 {userDetails?.username?.substring(0, 2).toUpperCase() || 'US'}
+                {userDetails?.username?.substring(0, 2).toUpperCase() || 'US'}
               </div>
               <div className="flex flex-col min-w-0 flex-1">
                 <span className="text-xs font-medium text-gray-900 truncate">{activeKey?.name || userDetails?.username || 'Loading...'}</span>
@@ -242,7 +242,7 @@ const Navbar = () => {
                       <span>Activity History</span>
                     </button>
                     <div className="border-t border-gray-100 my-1"></div>
-                    <button 
+                    <button
                       className="w-full flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
                       onClick={handleLogout}
                     >
@@ -272,23 +272,23 @@ const Navbar = () => {
                     </div>
                     <div className="bg-blue-50/50">
                       {userDetails?.keys?.length ? (
-                          userDetails.keys.map((key) => (
-                            <div 
-                              key={key.id} 
-                              className={`px-4 py-3 border-b border-gray-100 last:border-0 flex items-center justify-between group cursor-pointer hover:bg-blue-50 transition-colors ${key.id === activeKey?.id ? 'bg-blue-50' : ''}`}
-                              onClick={() => handleKeySelect(key.id)}
-                            >
-                              <div className="flex flex-col">
-                                <span className="text-sm font-medium text-gray-900">{key.name}</span>
-                                <span className="text-xs text-blue-600">{key.key}</span>
-                              </div>
-                              <button className="p-1 text-gray-400 hover:text-gray-600">
-                                <Pencil className="w-4 h-4" />
-                              </button>
+                        userDetails.keys.map((key) => (
+                          <div
+                            key={key.id}
+                            className={`px-4 py-3 border-b border-gray-100 last:border-0 flex items-center justify-between group cursor-pointer hover:bg-blue-50 transition-colors ${key.id === activeKey?.id ? 'bg-blue-50' : ''}`}
+                            onClick={() => handleKeySelect(key.id)}
+                          >
+                            <div className="flex flex-col">
+                              <span className="text-sm font-medium text-gray-900">{key.name}</span>
+                              <span className="text-xs text-blue-600">{key.key}</span>
                             </div>
-                          ))
+                            <button className="p-1 text-gray-400 hover:text-gray-600">
+                              <Pencil className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ))
                       ) : (
-                           <div className="px-4 py-3 text-sm text-gray-500">No keys found</div>
+                        <div className="px-4 py-3 text-sm text-gray-500">No keys found</div>
                       )}
                     </div>
                     <button className="w-full flex items-center justify-center py-3 text-gray-600 hover:bg-gray-50 border-t border-gray-100">
