@@ -74,7 +74,7 @@ export function InstanceHeader({ instanceDetails, activeTab }: InstanceHeaderPro
                 onSuccess={handleUpdateSuccess}
             />
             {/* Top Row: Title & Actions */}
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                  <div>
                     <div className="flex items-center gap-2 text-xl text-gray-900 font-semibold">
                         <Link href="/dashboard/instances" className="text-gray-400 hover:text-gray-600">Instances</Link>
@@ -84,7 +84,7 @@ export function InstanceHeader({ instanceDetails, activeTab }: InstanceHeaderPro
                  </div>
                  
                  {/* Action Toolbar */}
-                 <div className="flex items-center gap-2">
+                 <div className="flex items-center gap-2 flex-wrap">
                      <Link 
                         href={`/dashboard/instances/${instanceDetails.id}`} 
                         className={`flex items-center gap-2 px-3 py-1.5 rounded text-sm font-medium ${
@@ -134,7 +134,7 @@ export function InstanceHeader({ instanceDetails, activeTab }: InstanceHeaderPro
             </div>
 
             {/* Bottom Row: Metadata */}
-            <div className="flex items-center gap-6 text-xs text-gray-500">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-x-6 gap-y-2 text-xs text-gray-500 flex-wrap">
                 <span className="flex items-center gap-1">
                     <span className="font-medium text-gray-400">Service Id:</span>
                     <span>{instanceDetails.id}</span>

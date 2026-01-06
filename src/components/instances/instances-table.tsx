@@ -25,12 +25,12 @@ export function InstancesTable({ instances }: InstancesTableProps) {
                     <tr>
                         <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
                         <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Service Name & ID</th>
-                        <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Version</th>
-                        <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Last Updated</th>
-                        <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Uptime</th>
-                        <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Ip Address</th>
-                        <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Location</th>
-                        <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"></th>
+                        <th className="hidden md:table-cell px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Version</th>
+                        <th className="hidden md:table-cell px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Last Updated</th>
+                        <th className="hidden md:table-cell px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Uptime</th>
+                        <th className="hidden md:table-cell px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Ip Address</th>
+                        <th className="hidden md:table-cell px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Location</th>
+                        <th className="hidden md:table-cell px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"></th>
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-100">
@@ -48,22 +48,22 @@ export function InstancesTable({ instances }: InstancesTableProps) {
                                     <span className="text-xs text-gray-500">{instance.id}</span>
                                 </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                            <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                 {instance.version}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                            <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                 <div className="whitespace-pre-line">{formatDate(instance.lastUpdated)}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                            <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                 <div className="whitespace-pre-line">{instance.lastUptime}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                            <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                 {instance.ipAddress}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                            <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                 {instance.location}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <Link href={`/dashboard/instances/${instance.id}`} className="text-blue-600 hover:text-blue-900 font-medium px-3 py-1 rounded hover:bg-blue-50 transition-colors inline-block">
                                     Manage
                                 </Link>

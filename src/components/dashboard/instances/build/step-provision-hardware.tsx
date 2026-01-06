@@ -36,19 +36,19 @@ export function StepProvisionHardware({ state, setState }: StepProvisionHardware
     const toggleLB = (active: boolean) => updateState({ isLBActive: active });
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
             {/* Header */}
             <div className="mb-6">
-                <h1 className="text-xl font-semibold text-gray-900">
+                <h1 className="text-2xl font-medium text-black">
                     Estimate your hardware requirements
                 </h1>
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-lg font-light text-[#737373]">
                     SafeSquid is SMP-Aware (for Scale Up) and Cluster Ready (for Scale Out)
                 </p>
             </div>
 
             <div className="flex flex-col gap-1">
-                <label className="text-sm font-medium text-gray-900">
+                <label className="text-xl font-medium text-black">
                     Total number of Deployment locations
                 </label>
                 <input 
@@ -67,12 +67,12 @@ export function StepProvisionHardware({ state, setState }: StepProvisionHardware
                     {/* Line 1: Controls */}
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                            <span className="text-sm text-blue-600">Maximum Concurrent Connections:</span>
+                            <span className="text-base text-primary">Maximum Concurrent Connections:</span>
                             <input 
                                 type="text" 
                                 value={state.maxConcurrentConnections}
                                 onChange={(e) => updateState({ maxConcurrentConnections: e.target.value })}
-                                className="w-24 rounded border border-blue-100 bg-blue-50 px-3 py-1 text-sm text-blue-600 focus:outline-none"
+                                className="w-24 rounded border border-blue-100 px-3 py-1 text-sm text-primary focus:outline-none"
                             />
                         </div>
 
@@ -93,7 +93,7 @@ export function StepProvisionHardware({ state, setState }: StepProvisionHardware
                     </div>
 
                     {/* Line 2: Helper Text */}
-                    <div className="mt-2 text-xs text-gray-400">
+                    <div className="mt-2 text-lg opacity-90 text-[#737373]">
                         <p>On average, a user makes 4 concurrent connections</p>
                         <p>Click on icons to add to your topology</p>
                     </div>

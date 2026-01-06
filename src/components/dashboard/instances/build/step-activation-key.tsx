@@ -54,10 +54,10 @@ export function StepActivationKey({
     return (
         <div className="flex flex-col gap-12">
             <div>
-                <h1 className="text-xl font-semibold text-gray-900">
+                <h1 className="text-base md:text-xl lg:text-2xl font-medium text-black">
                     Activate your SafeSquid instance
                 </h1>
-                <p className="mt-2 text-sm text-gray-500">
+                <p className="mt-2 text-sm md:text-base lg:text-xl text-[#737373] font-normal">
                     Product activation key is the unique secret required to activate and validate authenticity of your SafeSquid
                 </p>
                 <div className="mt-4 border-b border-gray-100" />
@@ -68,8 +68,8 @@ export function StepActivationKey({
                 {deploymentOption === "manual" && (
                     <div className="grid grid-cols-12 gap-8 items-center">
                         <div className="col-span-6">
-                            <h3 className="font-medium text-gray-900">Download your Activation key</h3>
-                            <p className="mt-1 text-sm text-gray-400 leading-relaxed">
+                            <h3 className="font-medium text-black text-sm md:text-base lg:text-xl">Download your Activation key</h3>
+                            <p className="mt-1 text-xs md:text-base lg:text-lg text-[#737373] font-normal leading-relaxed">
                                 Activate multiple instances with the same key to seamlessly synchronize them
                             </p>
                         </div>
@@ -96,7 +96,7 @@ export function StepActivationKey({
                 {/* Section 2: Configure Proxy */}
                 <div className="grid grid-cols-12 gap-8 items-start">
                     <div className="col-span-6">
-                        <h3 className="font-medium text-gray-900">Configure HTTP(S) proxy on your system</h3>
+                        <h3 className="font-medium text-black text-sm md:text-base lg:text-xl">Configure HTTP(S) proxy on your system</h3>
                     </div>
                     <div className="col-span-6 flex gap-4">
                         <div className="flex-1">
@@ -123,12 +123,10 @@ export function StepActivationKey({
                 {/* Section 3: Faded Text */}
                 <div className="grid grid-cols-12 gap-8">
                     <div className="col-span-12 md:col-span-8 flex gap-4 items-center">
-                        {/* <ArrowRight className="text-blue-500" size={20} /> */}
-                        <p className="text-sm text-gray-900">
+                        <p className="text-xs md:text-base lg:text-xl text-[#737373] font-normal">
                              Access the <Link href="#" className="text-blue-600 font-medium">Product interface</Link> and upload the activation key
                         </p>
                     </div>
-                    {/* Divider not needed here or should be below? User image shows it separating content from footer or just a line. Keeping logic simple. */}
                 </div>
                 
                 <div className="border-t border-gray-100" />

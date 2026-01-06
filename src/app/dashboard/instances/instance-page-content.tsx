@@ -37,7 +37,7 @@ export default function InstancePageContent({ initialInstances, searchParamsKey 
             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
                 {/* Header Actions */}
                 <div className="flex items-center justify-between p-6 border-b border-gray-100">
-                    <h1 className="text-2xl font-semibold text-gray-900">Instances</h1>
+                    <h1 className="text-base md:text-xl lg:text-2xl font-medium text-black">Instances</h1>
                     <div className="flex gap-3">
                         <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium shadow-sm">
                             <Download className="w-4 h-4" />
