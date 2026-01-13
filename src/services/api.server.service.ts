@@ -19,8 +19,10 @@ async function apiRequestServer<T>(
     .map((cookie) => `${cookie.name}=${cookie.value}`)
     .join("; ");
 
+  console.log(cookieHeader);
+
   const sessionToken = cookieStore.get("session_token")?.value || "";
-  // console.log()
+  console.log("t:", sessionToken);
 
   const { headers, ...remainingOptions } = customOptions || {};
 
