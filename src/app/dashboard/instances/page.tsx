@@ -11,9 +11,8 @@ interface InstancesPageProps {
 export default async function InstancesPage({ searchParams }: InstancesPageProps) {
   const { k } = await searchParams; 
   const cookieStore = await cookies()
-  // console.log(cookieStore.get("session_token")?.value)
   // Fetch instances on the server if key is present
-  const instances = k ? await getInstancesServer(k,{headers:{Cookie: cookieStore.toString()}}) : [];
+  const instances = k ? await getInstancesServer(k) : [];
 
   if(instances.length === 0) {
     redirect("/dashboard/instances/build")

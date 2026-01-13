@@ -16,14 +16,16 @@ async function apiRequestServer<T>(
   const cookieStore = await cookies();
   const cookieHeader = cookieStore.toString();
 
+  const { headers, ...remainingOptions } = customOptions || {};
+
   const options: RequestInit = {
     method,
     headers: {
       "Content-Type": "application/json",
       Cookie: cookieHeader,
-      ...customOptions?.headers,
+      ...headers,
     },
-    ...customOptions,
+    ...remainingOptions,
   };
 
   if (body && method !== "GET") {
