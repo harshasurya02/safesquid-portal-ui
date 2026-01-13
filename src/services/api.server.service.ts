@@ -16,8 +16,11 @@ async function apiRequestServer<T>(
   const cookieStore = await cookies();
   const cookieHeader = cookieStore
     .getAll()
-    .map(cookie => `${cookie.name}=${cookie.value}`)
-    .join('; ');
+    .map((cookie) => `${cookie.name}=${cookie.value}`)
+    .join("; ");
+
+  const sessionToken = cookieStore.get("session_token")?.value || "";
+  // console.log()
 
   const { headers, ...remainingOptions } = customOptions || {};
 
@@ -26,6 +29,7 @@ async function apiRequestServer<T>(
     headers: {
       "Content-Type": "application/json",
       Cookie: cookieHeader,
+      ...(sessionToken && { Authorization: `Bearer: ${sessionToken}` }),
       ...headers,
     },
     ...remainingOptions,
