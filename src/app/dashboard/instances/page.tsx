@@ -10,7 +10,7 @@ interface InstancesPageProps {
 
 export default async function InstancesPage({ searchParams }: InstancesPageProps) {
   const { k } = await searchParams; 
-  const cookieStore = await cookies()
+  // const cookieStore = await cookies()
   // Fetch instances on the server if key is present
   const instances = k ? await getInstancesServer(k) : [];
 

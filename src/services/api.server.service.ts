@@ -14,7 +14,10 @@ async function apiRequestServer<T>(
   customOptions?: RequestInit
 ): ApiResponse<T> {
   const cookieStore = await cookies();
-  const cookieHeader = cookieStore.toString();
+  const cookieHeader = cookieStore
+    .getAll()
+    .map(cookie => `${cookie.name}=${cookie.value}`)
+    .join('; ');
 
   const { headers, ...remainingOptions } = customOptions || {};
 
