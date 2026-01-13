@@ -8,20 +8,19 @@ interface InstancesPageProps {
   searchParams: { k?: string };
 }
 
-export default async function InstancesPage({ searchParams }: InstancesPageProps) {
-  const { k } = await searchParams; 
-  // const cookieStore = await cookies()
+export default async function InstancesPage({
+  searchParams,
+}: InstancesPageProps) {
+  const { k } = await searchParams;
+  const cookieStore = await cookies();
   // Fetch instances on the server if key is present
-  const instances = k ? await getInstancesServer(k) : [];
+  const instances = k ? await getInstancesServer(k, cookieStore) : [];
 
-  if(instances.length === 0) {
-    redirect("/dashboard/instances/build")
+  if (instances.length === 0) {
+    redirect("/dashboard/instances/build");
   }
   // console.log(instances);
   return (
-    <InstancePageContent 
-      initialInstances={instances} 
-      searchParamsKey={k} 
-    />
+    <InstancePageContent initialInstances={instances} searchParamsKey={k} />
   );
 }

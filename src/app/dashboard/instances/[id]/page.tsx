@@ -1,22 +1,32 @@
-
 import React from "react";
+import { cookies } from "next/headers";
 import { InstanceCharts } from "@/components/instances/instance-charts";
 import { getInstanceDetailsServer } from "@/services/instance.service";
 import { InstanceHeader } from "@/components/instances/instance-header";
 
-export default async function InstanceDetailsPage({ params }: { params: Promise<{ id: string }> }) {
-    const instanceDetails = await getInstanceDetailsServer((await params).id);
-    // console.log(instanceDetails);
-    console.log(instanceDetails.graphs);
-    return (
-        <div className="p-4 md:p-8 max-w-[1600px] mx-auto space-y-6">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
-                <InstanceHeader instanceDetails={instanceDetails} activeTab="graphs" />
+export default async function InstanceDetailsPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const cookieStore = await cookies();
+  const instanceDetails = await getInstanceDetailsServer(
+    (
+      await params
+    ).id,
+    cookieStore
+  );
+  // console.log(instanceDetails);
+  console.log(instanceDetails.graphs);
+  return (
+    <div className="p-4 md:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
+        <InstanceHeader instanceDetails={instanceDetails} activeTab="graphs" />
 
-                <div className="pt-6 border-t border-gray-100">
-                    <InstanceCharts graphs={instanceDetails.graphs} />
-                </div>
-            </div>
+        <div className="pt-6 border-t border-gray-100">
+          <InstanceCharts graphs={instanceDetails.graphs} />
         </div>
-    );
+      </div>
+    </div>
+  );
 }

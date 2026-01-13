@@ -1,6 +1,4 @@
-"use server";
-
-import { cookies } from "next/headers";
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
 type ApiResponse<T = any> = Promise<T>;
 
@@ -11,21 +9,28 @@ async function apiRequestServer<T>(
   endpoint: string,
   method: "GET" | "POST" | "PUT" | "DELETE",
   body?: Record<string, unknown>,
-  customOptions?: RequestInit
+  customOptions?: RequestInit,
+  cookieStore?: ReadonlyRequestCookies
 ): ApiResponse<T> {
-  const cookieStore = await cookies();
-  const cookieHeader = cookieStore
-    .getAll()
-    .map((cookie) => `${cookie.name}=${cookie.value}`)
-    .join("; ");
+  let cookieHeader = "";
+  let sessionToken = "";
+
+  if (cookieStore) {
+    cookieHeader = cookieStore
+      .getAll()
+      .map((cookie: any) => `${cookie.name}=${cookie.value}`)
+      .join("; ");
+    sessionToken = cookieStore.get("session_token")?.value || "";
+  }
 
   // console.log(cookieHeader);
 
-  const sessionToken = cookieStore.get("session_token")?.value;
-  console.log(
-    "t:",
-    cookieStore.getAll().map((cookie) => cookie.name)
-  );
+  if (cookieStore) {
+    console.log(
+      "t:",
+      cookieStore.getAll().map((cookie: any) => cookie.name)
+    );
+  }
 
   const { headers, ...remainingOptions } = customOptions || {};
 
@@ -33,8 +38,8 @@ async function apiRequestServer<T>(
     method,
     headers: {
       "Content-Type": "application/json",
-      Cookie: cookieHeader,
-      ...(sessionToken && { Authorization: `Bearer: ${sessionToken}` }),
+      ...(cookieHeader && { Cookie: cookieHeader }),
+      ...(sessionToken && { Authorization: `Bearer ${sessionToken}` }),
       ...headers,
     },
     ...remainingOptions,
@@ -57,10 +62,17 @@ async function apiRequestServer<T>(
 export const apiGetServer = async <T>(
   endpoint: string,
   params?: Record<string, string | number>,
-  options?: RequestInit
+  options?: RequestInit,
+  cookieStore?: any
 ): ApiResponse<T> => {
   const query = params
     ? "?" + new URLSearchParams(params as Record<string, string>).toString()
     : "";
-  return apiRequestServer(endpoint + query, "GET", undefined, options);
+  return apiRequestServer(
+    endpoint + query,
+    "GET",
+    undefined,
+    options,
+    cookieStore
+  );
 };
