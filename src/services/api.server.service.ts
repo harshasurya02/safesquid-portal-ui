@@ -1,5 +1,3 @@
-"use server";
-
 import { cookies } from "next/headers";
 
 type ApiResponse<T = any> = Promise<T>;
@@ -19,7 +17,7 @@ async function apiRequestServer<T>(
     .map((cookie) => `${cookie.name}=${cookie.value}`)
     .join("; ");
 
-  console.log(cookieHeader);
+  // console.log(cookieHeader);
 
   const sessionToken = cookieStore.get("session_token")?.value;
   console.log(
