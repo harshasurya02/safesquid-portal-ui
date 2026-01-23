@@ -1,6 +1,7 @@
 import { InfoTooltip } from "@/components/info-tooltip";
 import { StatefulButton } from "@/components/stateful-button";
 import { StatefulInput } from "@/components/stateful-input";
+import { apiPost } from "@/services/api.service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Edit2, Eye, EyeOff } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -73,25 +74,17 @@ export const RegisterPasswordStep = ({
         setServerError(null);
 
         try {
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/signup/set-password`,
+            const response = await apiPost<{ success: boolean; message?: string }>(
+                "/api/signup/set-password",
                 {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        email,
-                        password: data.password,
-                        confirmPassword: data.confirmPassword,
-                    }),
+                    email,
+                    password: data.password,
+                    confirmPassword: data.confirmPassword,
                 }
             );
 
-            const result = await response.json();
-
-            if (result.success) {
-                console.log("[v0] Password set successfully:", result);
+            if (response.success) {
+                console.log("[v0] Password set successfully:", response);
                 onSuccess();
             } else {
                 setServerError("Failed to set password");

@@ -1,40 +1,63 @@
+import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { RegisterDetailsStep } from "./register-details-step";
 import { RegisterEmailStep } from "./register-email-step";
+import { RegisterInviteTeamStep } from "./register-invite-step";
 import { RegisterOtpStep } from "./register-otp-step";
+import { RegisterOrganizationStep } from "./register-organization-step";
 import { RegisterPasswordStep } from "./register-password-step";
 
-type RegisterStep = "email" | "otp" | "password" | "details";
+export type RegisterStep =
+    | "email"
+    | "otp"
+    | "password"
+    | "details"
+    | "organization"
+    | "invite";
 
-const RegisterForm = () => {
-    const [registerStep, setRegisterStep] = useState<RegisterStep>("email");
+interface RegisterFormProps {
+    onStepChange?: (step: RegisterStep) => void;
+}
+
+const RegisterForm = ({ onStepChange }: RegisterFormProps) => {
+    const [registerStep, setRegisterStep] = useState<RegisterStep>("invite");
     const [email, setEmail] = useState("admin@email.com");
+    const [orgId, setOrgId] = useState<string | null>("6aa51808-6271-4852-bb33-57c943533661");
+
+
+    const updateStep = (step: RegisterStep) => {
+        setRegisterStep(step);
+        if (onStepChange) onStepChange(step);
+    };
 
     const handleEmailSuccess = (email: string) => {
         setEmail(email);
-        setRegisterStep("otp");
+        updateStep("otp");
     };
 
     const handleOtpSuccess = () => {
-        setRegisterStep("password");
+        updateStep("password");
     };
 
     const handlePasswordSuccess = () => {
-        setRegisterStep("details");
+        updateStep("details");
+    };
+
+    const handleDetailsSuccess = () => {
+        updateStep("organization");
+    };
+
+    const handleOrganizationNext = (orgId: string) => {
+        setOrgId(orgId);
+        updateStep("invite");
     };
 
     const handleEditEmail = () => {
-        setRegisterStep("email");
+        updateStep("email");
     };
 
     const handleBackStep = () => {
-        // if (registerStep === "otp") {
-        setRegisterStep("email");
-        // } else if (registerStep === "password") {
-        //     setRegisterStep("otp");
-        // } else if (registerStep === "details") {
-        //     setRegisterStep("password");
-        // }
+        updateStep("email");
     };
 
     const renderRegisterForm = () => {
@@ -68,8 +91,19 @@ const RegisterForm = () => {
                         email={email}
                         onEditEmail={handleEditEmail}
                         onBack={handleBackStep}
+                        onSuccess={handleDetailsSuccess}
                     />
                 );
+            case "organization":
+                return (
+                    <RegisterOrganizationStep
+                        email={email}
+
+                        onNext={handleOrganizationNext}
+                    />
+                );
+            case "invite":
+                return <RegisterInviteTeamStep orgId={orgId} />;
             default:
                 return null;
         }

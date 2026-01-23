@@ -11,12 +11,14 @@ interface RegisterDetailsStepProps {
     email: string;
     onEditEmail: () => void;
     onBack: () => void;
+    onSuccess?: () => void;
 }
 
 export const RegisterDetailsStep = ({
     email,
     onEditEmail,
     onBack,
+    onSuccess,
 }: RegisterDetailsStepProps) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +56,7 @@ export const RegisterDetailsStep = ({
                         designation: data.designation,
                         phone: `${data.countryCode}${data.phone}`,
                     }),
+                    credentials: "include",
                 }
             );
 
@@ -65,7 +68,10 @@ export const RegisterDetailsStep = ({
                 localStorage.setItem("signupComplete", "true");
                 localStorage.setItem("signupEmail", email);
 
-                if (result.session) router.push("/dashboard");
+                if (result.session) {
+                    // router.push("/dashboard"); // Handled by parent
+                    if (onSuccess) onSuccess();
+                }
             } else {
                 setServerError(
                     result.message || "Registration failed. Please try again."
@@ -169,7 +175,7 @@ export const RegisterDetailsStep = ({
                     disabled={isLoading}
                     className="flex-1"
                 >
-                    {isLoading ? "Please wait..." : "Setup first SafeSquid"}
+                    {isLoading ? "Please wait..." : "Organization"}
                 </StatefulButton>
             </div>
 

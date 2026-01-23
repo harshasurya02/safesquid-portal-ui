@@ -1,6 +1,7 @@
 import { OtpInput } from "@/components/otp-input";
 import { StatefulButton } from "@/components/stateful-button";
 import { StatefulInput } from "@/components/stateful-input";
+import { apiPost } from "@/services/api.service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -52,20 +53,12 @@ export const RegisterOtpStep = ({
         }, 1000);
 
         try {
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/signup/resend-otp`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ email }),
-                }
+            const response = await apiPost<{ success: boolean; message?: string }>(
+                "/api/signup/resend-otp",
+                { email }
             );
 
-            const data = await response.json();
-
-            if (data.success) {
+            if (response.success) {
                 console.log("[v0] OTP resent successfully");
                 setServerError(null);
             } else {
@@ -82,21 +75,13 @@ export const RegisterOtpStep = ({
         setServerError(null);
 
         try {
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/signup/verify-otp`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ email, otp: data.otp }),
-                }
+            const response = await apiPost<{ success: boolean; message?: string }>(
+                "/api/signup/verify-otp",
+                { email, otp: data.otp }
             );
 
-            const result = await response.json();
-
-            if (result.success) {
-                console.log("[v0] Email verified successfully:", result);
+            if (response.success) {
+                console.log("[v0] Email verified successfully:", response);
                 onSuccess(data.otp);
             } else {
                 setServerError("Invalid OTP");
