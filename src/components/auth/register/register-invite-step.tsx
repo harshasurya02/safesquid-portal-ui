@@ -32,7 +32,6 @@ export const RegisterInviteTeamStep = ({ orgId }: { orgId: string | null }) => {
         defaultValues: {
             invites: [
                 { email: "", roleType: "Admin" },
-                { email: "", roleType: "Admin" },
             ],
         },
     });

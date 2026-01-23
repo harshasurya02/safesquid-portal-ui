@@ -20,9 +20,9 @@ interface RegisterFormProps {
 }
 
 const RegisterForm = ({ onStepChange }: RegisterFormProps) => {
-    const [registerStep, setRegisterStep] = useState<RegisterStep>("invite");
+    const [registerStep, setRegisterStep] = useState<RegisterStep>("email");
     const [email, setEmail] = useState("admin@email.com");
-    const [orgId, setOrgId] = useState<string | null>("6aa51808-6271-4852-bb33-57c943533661");
+    const [orgId, setOrgId] = useState<string | null>(null);
 
 
     const updateStep = (step: RegisterStep) => {
