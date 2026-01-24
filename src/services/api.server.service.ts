@@ -10,7 +10,7 @@ async function apiRequestServer<T>(
   method: "GET" | "POST" | "PUT" | "DELETE",
   body?: Record<string, unknown>,
   customOptions?: RequestInit,
-  cookieStore?: ReadonlyRequestCookies
+  cookieStore?: ReadonlyRequestCookies,
 ): ApiResponse<T> {
   let cookieHeader = "";
   let sessionToken = "";
@@ -25,12 +25,12 @@ async function apiRequestServer<T>(
 
   // console.log(cookieHeader);
 
-  if (cookieStore) {
-    console.log(
-      "t:",
-      cookieStore.getAll().map((cookie: any) => cookie.name)
-    );
-  }
+  // if (cookieStore) {
+  //   console.log(
+  //     "t:",
+  //     cookieStore.getAll().map((cookie: any) => cookie.name)
+  //   );
+  // }
 
   const { headers, ...remainingOptions } = customOptions || {};
 
@@ -63,7 +63,7 @@ export const apiGetServer = async <T>(
   endpoint: string,
   params?: Record<string, string | number>,
   options?: RequestInit,
-  cookieStore?: any
+  cookieStore?: any,
 ): ApiResponse<T> => {
   const query = params
     ? "?" + new URLSearchParams(params as Record<string, string>).toString()
@@ -73,6 +73,6 @@ export const apiGetServer = async <T>(
     "GET",
     undefined,
     options,
-    cookieStore
+    cookieStore,
   );
 };
