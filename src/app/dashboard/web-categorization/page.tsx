@@ -6,8 +6,16 @@ import { AddCategoryCard } from "@/components/web-categorization/add-category-ca
 import { DashboardFilters } from "@/components/web-categorization/dashboard-filters";
 import { useUser } from "@/contexts/UserContext";
 import { apiGet, apiDelete } from "@/services/api.service";
-import { Category } from "./mock-data";
+
 import { Loader2 } from "lucide-react";
+
+
+export interface Category {
+    id: string;
+    name: string;
+    description: string;
+    websites: string[];
+}
 
 interface ApiCategory {
     id: string;
