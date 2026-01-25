@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 interface Key {
@@ -8,9 +9,16 @@ interface Key {
     key: string;
 }
 
+interface Org {
+    id: string;
+    name: string;
+    description: string;
+}
+
 interface UserDetails {
     email: string;
     username: string;
+    orgs?: Org[];
     keys: Key[];
 }
 
@@ -25,6 +33,7 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
+    const router = useRouter();
     const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
     const [selectedKeyId, setSelectedKeyId] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -35,11 +44,11 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
                 method: 'GET',
                 credentials: "include"
             });
-            
+
             if (response.ok) {
                 const data = await response.json();
                 setUserDetails(data);
-                
+
                 // Set default selected key if not already set
                 if (data.keys && data.keys.length > 0 && !selectedKeyId) {
                     setSelectedKeyId(data.keys[0].id);
@@ -58,12 +67,16 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         fetchUserDetails();
     }, []);
 
+    useEffect(() => {
+        router.push(`/dashboard?k=${selectedKeyId}`)
+    }, [selectedKeyId])
+
     return (
-        <UserContext.Provider 
-            value={{ 
-                userDetails, 
-                selectedKeyId, 
-                setSelectedKeyId, 
+        <UserContext.Provider
+            value={{
+                userDetails,
+                selectedKeyId,
+                setSelectedKeyId,
                 isLoading,
                 refreshUser: fetchUserDetails
             }}
