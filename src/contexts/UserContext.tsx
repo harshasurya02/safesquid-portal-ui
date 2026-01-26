@@ -68,8 +68,16 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }, []);
 
     useEffect(() => {
-        router.push(`/dashboard?k=${selectedKeyId}`)
-    }, [selectedKeyId])
+        if (!selectedKeyId) return;
+
+        const url = new URL(window.location.href);
+        const currentK = url.searchParams.get('k');
+
+        if (currentK !== selectedKeyId) {
+            url.searchParams.set('k', selectedKeyId);
+            router.push(url.pathname + url.search);
+        }
+    }, [selectedKeyId, router]);
 
     return (
         <UserContext.Provider
