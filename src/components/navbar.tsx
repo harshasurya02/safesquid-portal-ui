@@ -146,7 +146,7 @@ const Navbar = () => {
                   {/* <span className="text-sm font-medium text-gray-900">{userDetails?.username || 'User'}</span>
                    <span className="text-xs text-gray-500">{userDetails?.email}</span> */}
                   <Link href="/dashboard/profile" className="text-sm text-gray-900 hover:text-gray-600 mt-2">User Profile</Link>
-                  <Link href="/dashboard/organization" className="text-sm text-gray-900 hover:text-gray-600">Organization profile</Link>
+                  <Link href={`/dashboard/organization?k=${activeKey?.id}`} className="text-sm text-gray-900 hover:text-gray-600">Organization profile</Link>
                 </nav>
               </div>
 
@@ -235,7 +235,7 @@ const Navbar = () => {
                     <Link href="/dashboard/profile" className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
                       <span>User Profile</span>
                     </Link>
-                    <Link href="/dashboard/organization" className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
+                    <Link href={`/dashboard/organization?k=${activeKey?.id}`} className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
                       <span>Organization profile</span>
                     </Link>
                     <button className="w-full flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">

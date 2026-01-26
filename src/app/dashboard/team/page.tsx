@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Search, Users, LogOut, Plus, Loader2, AlertCircle } from "lucide-react";
 import { TeamSection } from "@/components/dashboard/team/team-section";
 import { AddMemberDialog } from "@/components/dashboard/team/add-member-dialog";
@@ -8,7 +8,7 @@ import { TeamGroup, OrganizationSummary, Role, OrganizationData } from "@/lib/te
 import { apiGet, apiPost } from "@/services/api.service";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function TeamPage() {
+function TeamContent() {
     const router = useRouter();
     const searchParams = useSearchParams()
     const [searchQuery, setSearchQuery] = useState("");
@@ -159,5 +159,18 @@ export default function TeamPage() {
                 onSuccess={fetchData}
             />
         </div>
+    );
+}
+
+export default function TeamPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                <p className="text-sm text-gray-500 font-medium">Loading team members...</p>
+            </div>
+        }>
+            <TeamContent />
+        </Suspense>
     );
 }
