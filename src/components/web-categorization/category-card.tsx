@@ -1,6 +1,12 @@
 import { Pencil, Trash2, Globe } from "lucide-react";
 import Link from "next/link";
-import { Category } from "@/app/dashboard/web-categorization/mock-data";
+
+export interface Category {
+    id: string;
+    name: string;
+    description: string;
+    websites: string[];
+}
 
 interface CategoryCardProps {
     category: Category;

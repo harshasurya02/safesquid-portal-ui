@@ -2,7 +2,13 @@ import { notFound } from "next/navigation";
 import { CategoryEditor } from "@/components/web-categorization/category-editor";
 import { apiGetServer } from "@/services/api.server.service";
 import { cookies } from "next/headers";
-import { Category } from "../mock-data";
+
+export interface Category {
+    id: string;
+    name: string;
+    description: string;
+    websites: string[];
+}
 
 interface ApiWebsite {
     id: string;

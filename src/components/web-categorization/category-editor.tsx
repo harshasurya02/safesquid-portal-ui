@@ -3,10 +3,16 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Check, X, Pencil, Trash2, Loader2 } from "lucide-react";
-import { Category } from "@/app/dashboard/web-categorization/mock-data";
 import { WebsiteInput, WebsiteTag } from "./website-tag";
 import { useUser } from "@/contexts/UserContext";
 import { apiPost, apiPut } from "@/services/api.service";
+
+export interface Category {
+    id: string;
+    name: string;
+    description: string;
+    websites: string[];
+}
 
 interface CategoryEditorProps {
     category?: Category;
