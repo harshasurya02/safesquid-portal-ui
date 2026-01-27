@@ -24,44 +24,54 @@ export interface DashboardItemProps {
   subItems?: DashboardSubItem[];
 }
 
-export interface LatestInstanceData {
-  instances: {
-    id: string;
-    instanceName: string;
-  }[];
-  activeCount: number;
+export interface DashboardData {
+  instancescount: number;
+  certificateExpiryDate: string;
+  signaturesCount: number;
+  webCategoriesCount: number;
+  subscriptionEndDate: string;
+  teamStrengthcount: number;
 }
 
 export const getDashboardItems = (
-  instanceData?: LatestInstanceData,
+  data?: DashboardData,
 ): DashboardItemProps[] => {
-  const instanceSubItems = instanceData?.instances.map((instance) => ({
-    title: instance.instanceName,
-    link: `/dashboard/instances/${instance.id}`,
-  })) || [
-    { title: "Instance_database_12", link: "/dashboard/instances/1" },
-    { title: "Instance_testing_12", link: "/dashboard/instances/2" },
-  ];
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "2-digit",
+    }); // e.g., 27 Jan 27
+  };
 
-  const activeCount = instanceData?.activeCount ?? 5;
+  const instancesCount = data?.instancescount ?? 0;
+  const webCategoriesCount = data?.webCategoriesCount ?? 0;
+  const signaturesCount = data?.signaturesCount ?? 0;
+  const teamStrengthcount = data?.teamStrengthcount ?? 0;
 
   return [
     {
       icon: Database,
       title: "Instances",
       mobileTitle: "Instances",
-      subtitle: `${activeCount} Active`,
-      mobileSubtitle: `${activeCount} Active`,
+      subtitle: `${instancesCount} Active`,
+      mobileSubtitle: `${instancesCount} Active`,
       link: "/dashboard/instances",
       variant: "default",
-      subItems: instanceSubItems,
+      subItems: [{ title: "View Instances", link: "/dashboard/instances" }],
     },
     {
       icon: FileBadge,
       title: "Certificate",
       mobileTitle: "Certificate",
-      subtitle: "Renew before 12 Jan 23",
-      mobileSubtitle: "Renew before 01/12/2023",
+      subtitle: data?.certificateExpiryDate
+        ? `Renew before ${formatDate(data.certificateExpiryDate)}`
+        : "Add a certificate",
+      mobileSubtitle: data?.certificateExpiryDate
+        ? `Renew before ${formatDate(data.certificateExpiryDate)}`
+        : "Add a certificate",
       link: "/dashboard/certificate",
       variant: "warn",
       subItems: [
@@ -74,8 +84,8 @@ export const getDashboardItems = (
       icon: GlobeLock,
       title: "Web Categorization",
       mobileTitle: "Categories",
-      subtitle: "21 Custom Categories",
-      mobileSubtitle: "21 Categories",
+      subtitle: `${webCategoriesCount} Custom Categories`,
+      mobileSubtitle: `${webCategoriesCount} Categories`,
       link: "/dashboard/web-categorization",
       variant: "default",
       subItems: [
@@ -86,8 +96,8 @@ export const getDashboardItems = (
       icon: ShieldAlert,
       title: "Signatures",
       mobileTitle: "Signatures",
-      subtitle: "21 Signatures",
-      mobileSubtitle: "21 Signatures",
+      subtitle: `${signaturesCount} Signatures`,
+      mobileSubtitle: `${signaturesCount} Signatures`,
       link: "/dashboard/signatures",
       variant: "default",
       subItems: [
@@ -98,8 +108,8 @@ export const getDashboardItems = (
       icon: Users,
       title: "Team",
       mobileTitle: "Team",
-      subtitle: "38 Members",
-      mobileSubtitle: "38 Members",
+      subtitle: `${teamStrengthcount} Members`,
+      mobileSubtitle: `${teamStrengthcount} Members`,
       link: "/dashboard/team",
       variant: "default",
       subItems: [{ title: "Add a member", link: "/dashboard/team/add" }],
@@ -108,8 +118,12 @@ export const getDashboardItems = (
       icon: CreditCard,
       title: "Subscription",
       mobileTitle: "Subscription",
-      subtitle: "Renew before 12 Jan 23",
-      mobileSubtitle: "Renew before 01/12/2023",
+      subtitle: data?.subscriptionEndDate
+        ? `Renew before ${formatDate(data.subscriptionEndDate)}`
+        : "No subscription found",
+      mobileSubtitle: data?.subscriptionEndDate
+        ? `Renew before ${formatDate(data.subscriptionEndDate)}`
+        : "No subscription found",
       link: "/dashboard/subscription",
       variant: "destructive",
       subItems: [
