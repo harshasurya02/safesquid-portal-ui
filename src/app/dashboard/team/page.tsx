@@ -12,7 +12,7 @@ import { useUser } from "@/contexts/UserContext";
 function TeamContent() {
     const router = useRouter();
     const searchParams = useSearchParams()
-    const { selectedKeyId } = useUser()
+    const { selectedKeyId, isLoading: isUserLoading } = useUser()
     const [searchQuery, setSearchQuery] = useState("");
     const [teams, setTeams] = useState<OrganizationData>({ team: [], strength: 0, orgId: "" });
     const [roles, setRoles] = useState<Role[]>([]);
@@ -22,6 +22,8 @@ function TeamContent() {
     const [error, setError] = useState<string | null>(null);
 
     const fetchData = async () => {
+        if (!selectedKeyId) return;
+
         setIsLoading(true);
         setError(null);
         try {
@@ -40,8 +42,14 @@ function TeamContent() {
     };
 
     useEffect(() => {
-        fetchData();
-    }, [selectedKeyId]);
+        if (!isUserLoading) {
+            if (selectedKeyId) {
+                fetchData();
+            } else {
+                setIsLoading(false);
+            }
+        }
+    }, [selectedKeyId, isUserLoading]);
 
     const handleLeaveOrganization = async () => {
         if (!confirm("Are you sure you want to leave this organization?")) return;
