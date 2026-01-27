@@ -6,7 +6,6 @@ import { X, ChevronDown, ChevronRight } from "lucide-react";
 import { getDashboardItems, DashboardItemProps } from "@/lib/dashboard-data";
 import { cn } from "@/lib/utils";
 import { useUser } from "@/contexts/UserContext";
-import { getLatestInstances } from "@/services/instance.service";
 
 export function GlobalSearch() {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -17,25 +16,31 @@ export function GlobalSearch() {
     const router = useRouter();
     const { selectedKeyId } = useUser();
 
-    // Fetch latest instances when selectedKeyId changes
+    // Fetch dashboard data when selectedKeyId changes
     React.useEffect(() => {
-        const fetchLatestInstances = async () => {
+        const fetchDashboardData = async () => {
             if (!selectedKeyId) {
                 setDashboardItems(getDashboardItems());
                 return;
             }
 
             try {
-                const data = await getLatestInstances(selectedKeyId);
-                setDashboardItems(getDashboardItems(data));
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard?keyId=${selectedKeyId}`, {
+                    credentials: "include"
+                });
+                const result = await response.json();
+
+                if (!result.error) {
+                    setDashboardItems(getDashboardItems(result.data));
+                }
             } catch (error) {
-                console.error("Failed to fetch latest instances:", error);
+                console.error("Failed to fetch dashboard data:", error);
                 // Fallback to default dashboard items
                 setDashboardItems(getDashboardItems());
             }
         };
 
-        fetchLatestInstances();
+        fetchDashboardData();
     }, [selectedKeyId]);
 
     // Close dropdown when clicking outside
@@ -119,7 +124,7 @@ export function GlobalSearch() {
                     </button>
                 ) : (
                     <button className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 pointer-events-none">
-                     
+
                         <X className="w-4 h-4" />
                     </button>
                 )}
