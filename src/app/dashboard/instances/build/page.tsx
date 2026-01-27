@@ -9,6 +9,7 @@ import { StepActivationKey } from "@/components/dashboard/instances/build/step-a
 import { apiPost } from "@/services/api.service";
 import { useUser } from "@/contexts/UserContext";
 import { CircleCheckBig } from "lucide-react";
+import Link from "next/link";
  
 export type { Step } from "@/components/dashboard/instances/build/stepper";
 export type DeploymentOption = "on-premise" | "private-cloud" | "manual";
@@ -117,9 +118,9 @@ export default function InstanceBuildPage() {
                     <h2 className="mt-6 text-xl font-semibold text-gray-900">
                         Congratulations on your first SafeSquid Instance
                     </h2>
-                    <button className="mt-8 rounded-lg bg-blue-600 px-8 py-3 text-sm font-medium text-white hover:bg-blue-700">
+                    <Link href="/dashboard/certificate" className="mt-8 rounded-lg bg-blue-600 px-8 py-3 text-sm font-medium text-white hover:bg-blue-700">
                         Get your SSL certificate
-                    </button>
+                    </Link>
                 </div>
             </div>
         );

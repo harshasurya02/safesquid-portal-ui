@@ -7,10 +7,12 @@ import { AddMemberDialog } from "@/components/dashboard/team/add-member-dialog";
 import { TeamGroup, OrganizationSummary, Role, OrganizationData } from "@/lib/team-data";
 import { apiGet, apiPost } from "@/services/api.service";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useUser } from "@/contexts/UserContext";
 
 function TeamContent() {
     const router = useRouter();
     const searchParams = useSearchParams()
+    const { selectedKeyId } = useUser()
     const [searchQuery, setSearchQuery] = useState("");
     const [teams, setTeams] = useState<OrganizationData>({ team: [], strength: 0, orgId: "" });
     const [roles, setRoles] = useState<Role[]>([]);
@@ -24,7 +26,7 @@ function TeamContent() {
         setError(null);
         try {
             const [membersData, rolesData] = await Promise.all([
-                apiGet<OrganizationData>(`/api/organization/members?keyId=${searchParams.get("k")}`),
+                apiGet<OrganizationData>(`/api/organization/members?keyId=${selectedKeyId}`),
                 apiGet<Role[]>("/api/roles")
             ]);
             setTeams(membersData);
@@ -39,7 +41,7 @@ function TeamContent() {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [selectedKeyId]);
 
     const handleLeaveOrganization = async () => {
         if (!confirm("Are you sure you want to leave this organization?")) return;
